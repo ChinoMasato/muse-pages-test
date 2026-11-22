@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>11/23 初級課題 ─ GitHubに上げて、AIと開発をつなぐ（2D）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+</style>
+</head>
+<body>
+<button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
+<nav class="quicknav"><a href="#/why">💡 なぜ上げるか</a><a href="#/step1">🐙 手順1</a><a href="#/step2">👥 手順2</a><a href="#/check">✅ 完了チェック</a></nav>
+<div class="reveal">
+<div class="slides">
+
+<!-- 00 表紙 -->
+<section id="title">
+<p style="font-family:'DotGothic16',sans-serif;color:var(--main-color);font-size:.85em;letter-spacing:.12em;margin:0 0 .4em;width:100%;box-sizing:border-box;padding-right:min(38vw,17em);text-align:center">2026.11.23（月）1限　初級課題（2D・532教室）　担当：千野正登</p>
+<div style="max-width:46em;width:100%">
+<p style="color:#aab;margin:0 0 .2em">初級課題（個人制作）</p>
+<h1 style="margin-bottom:.25em!important">GitHubに上げて、AIと開発をつなぐ。<br><span style="font-size:.62em;color:#fff;text-shadow:0 0 12px rgba(0,255,204,.5)">今作っているものを、記録が残る場所へ。</span></h1>
+<p style="font-size:1.25em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.2em 0 .5em">金曜の「ゲーム開発」と同じやり方を、個人制作でも始める。</p>
+<div class="glass-card mint"><span class="t">🎯 今日の到達点</span>
+<p>今作っている<span class="hl">個人制作のGitHubリポジトリを作り</span>、最新の状態を上げ、<span class="ac">chinomasato をメンバーに登録</span>して、<span class="hl">リポジトリのURLを共有</span>する。<br>この3つが揃った状態で、今日の授業を終える。</p>
+<p style="margin-top:.35em">そして一番大きなメリットは、<span class="yl">自分のAIエージェントともコードを共有できるようになる</span>こと。GitHubを経由して自分のAIエージェントにリポジトリを読ませれば、<span class="hl">AI駆動開発のフローがつながる</span>。</p></div>
+</div>
+<aside class="notes">表紙。今日は個人制作をGitHubに上げ、chinomasatoを登録し、URLを共有する。</aside>
+</section>
+
+<!-- 01 今日やること -->
+<section id="today"><div class="kicker"><span class="no">01</span>今日やること</div>
+<h2>今日やることは1つだけ。作品をGitHubに上げる。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">🐙 1．リポジトリを作る</span><p>今作っている個人制作のために、<span class="hl">自分のリポジトリを1つ</span>作る（個人制作なので、1人1リポジトリ）。</p><p style="margin-top:.3em"><a class="jump" href="#/step1">▶ 05 手順1</a></p></div>
+<div class="glass-card pink"><span class="t">👥 2．chinomasatoを登録</span><p>リポジトリのメンバーに<span class="ac">chinomasato</span>（先生のアカウント）を登録する。これでMuseが開発を見られるようになる。</p><p style="margin-top:.3em"><a class="jump" href="#/step2">▶ 06 手順2</a></p></div>
+<div class="glass-card yel"><span class="t">🔗 3．URLを共有する</span><p>リポジトリの<span class="yl">URLを、授業で案内された共有先に投稿</span>する。投稿まで済んで、初めて完了。</p><p style="margin-top:.3em"><a class="jump" href="#/check">▶ 07 完了チェック</a></p></div>
+</div>
+<div class="banner mint">作業そのものは難しくない。大事なのは、<span class="hl">今日から開発の記録がGitHubに残り始める</span>ことだ。そして上げたコードは、<span class="yl">自分のAIエージェントともそのまま共有できる</span>。 <a class="jump" href="#/why">▶ 02 なぜ上げるのか</a></div>
+<aside class="notes">今日やることは1つ：リポジトリ作成＋chinomasato登録＋URL共有。</aside>
+</section>
+
+<!-- 02 なぜ上げるか -->
+<section id="why"><div class="kicker"><span class="no">02</span>なぜGitHubに上げるのか</div>
+<h2>一番大きいのは、自分のAIエージェントとコードを共有できること。</h2>
+<p class="lead">GitHubに上げると、<span class="hl">自分のAIエージェントにリポジトリを読ませて、そのまま一緒に開発できる</span>。コードを貼り直したり、状況を言葉で説明し直したりしなくても、AIエージェントが今のコードを読んだ状態で作業が始まる。<span class="yl">AI駆動開発のフローが、ここでつながる。</span></p>
+<div class="glass-card pink"><span class="t">⭐ 最大のメリット ─ 自分のAIエージェントとつながる</span><ul class="checks"><li>自分のAIエージェントが<span class="ac">リポジトリ全体を読んで</span>、今のコードを前提に直す・足す・調べる</li><li>「作る → 上げる → AIエージェントに読ませて直す → また上げる」の<span class="hl">AI駆動開発のループ</span>が回り始める</li><li>手元だけで開発していると、このループはつながらない。上げることが、その入口になる</li></ul></div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">🛠 先生のMuseからも見てもらえる</span><ul class="checks"><li>chinomasatoを登録すると、先生のMuse（AIエージェント）もリポジトリを読んで開発状況を把握できる</li><li>開発のサポートも、ポートフォリオ作りのサポートもシームレスになる</li></ul></div>
+<div class="glass-card yel"><span class="t">📁 ポートフォリオの材料になる</span><ul class="checks"><li>作ったものと作る過程が、そのままポートフォリオの材料になる</li><li>就活で見せる「作品」と「過程」が、リポジトリ1つに揃う</li></ul></div>
+</div>
+<div class="banner yel">まず自分のためだ。<span class="hl">上げた瞬間から、自分のAIエージェントと一緒に開発できる状態</span>になる。 <a class="jump" href="#/record">▶ 03 記録が残る</a></div>
+<aside class="notes">上げる理由の一番は、自分のAIエージェントとコードを共有でき、AI駆動開発のフローがつながること。先生のClaudeが見られること、ポートフォリオはその次。</aside>
+</section>
+
+<!-- 03 記録が残る -->
+<section id="record"><div class="kicker"><span class="no">03</span>記録が残る、ということ</div>
+<h2>試行錯誤まで残るから、アピールに漏れがない。</h2>
+<p class="lead">GitHubに上げ続けると、<span class="hl">コミット（変更の記録）として、開発の過程そのものが残る</span>。完成品だけではなく、<span class="yl">何を試して、何に詰まって、どう直したか</span>まで、後からたどれる。</p>
+<div class="timeline-bar"><div class="timeline-step"><div class="step-time">試す</div><div class="step-name">まず作ってみる</div></div><div class="timeline-arrow">▶</div><div class="timeline-step"><div class="step-time">詰まる</div><div class="step-name">うまくいかない</div></div><div class="timeline-arrow">▶</div><div class="timeline-step"><div class="step-time">直す</div><div class="step-name">やり方を変える</div></div><div class="timeline-arrow">▶</div><div class="timeline-step"><div class="step-time">進む</div><div class="step-name">遊べる形になる</div></div><div class="timeline-arrow">▶</div><div class="timeline-step" style="border-color:var(--main-color);background:rgba(0,255,204,.1)"><div class="step-time">全部</div><div class="step-name">コミットに残る</div></div></div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">✅ 記録があると</span><ul class="checks"><li>「何をアピールすればいいか」を、AIと一緒に履歴から拾える</li><li>工夫した点・苦労した点が、記憶頼みにならず証拠として残る</li><li>ポートフォリオや面接で、過程まで含めて語れる</li></ul></div>
+<div class="glass-card pink"><span class="t">⚠ 記録がないと</span><ul class="checks"><li>完成品しか残らず、過程の工夫は自分でも思い出せなくなる</li><li>アピールポイントの<span class="ac">漏れ</span>が出る（やったのに、言い忘れる）</li><li>AIも過程を見られないので、支援が的外れになりやすい</li></ul></div>
+</div>
+<div class="banner mint">大事なのは結果だけじゃない。<span class="hl">試行錯誤まで含めて、すべてが記録に残り、AIで把握できる</span>ことだ。</div>
+<aside class="notes">コミットに試行錯誤まで残るので、アピールポイントの漏れがなくなる。</aside>
+</section>
+
+<!-- 04 ゆだねる線引き -->
+<section id="balance"><div class="kicker"><span class="no">04</span>AIとの付き合い方</div>
+<h2>全部をAIにゆだねなくてよい。</h2>
+<p class="lead">GitHubに上げるのは、<span class="hl">全部をAIに任せるためではない</span>。任せるところは任せて、自分でやるところは自分でやる。その線引きは自分で決めていい。</p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">🤖 任せてよいところ</span><ul class="checks"><li>エラーの原因調べや、直し方の相談</li><li>繰り返しの作業や、定型的なコードのたたき台</li><li>記録の整理や、ポートフォリオの材料の拾い出し</li></ul></div>
+<div class="glass-card yel"><span class="t">✋ 自分でやるところ</span><ul class="checks"><li>「どんなゲームにするか」の判断と決定</li><li>遊んでみて面白いかどうかを確かめること</li><li>最終的に何を提出し、何をアピールするかの選択</li></ul></div>
+</div>
+<div class="banner pink" style="text-align:left"><b>重要なのは、AIに任せる範囲ではない。</b><span class="yl">開発の記録を、AIが把握できる状態にしておくこと</span>だ。記録さえつながっていれば、任せる・任せないをその都度選べる。</div>
+<aside class="notes">全部をAIにゆだねなくてよい。重要なのは開発記録をAIが把握できること。</aside>
+</section>
+
+<!-- 05 手順1 -->
+<section id="step1"><div class="kicker"><span class="no">05</span>手順1 ─ リポジトリを作って上げる</div>
+<h2>作って、最新版を上げて、目で確認する。</h2>
+<div class="glass-card mint"><span class="t">📮 手順</span><ol class="steps" style="margin:.2em 0 0 1.2em;color:#ddd">
+<li>GitHubで<span class="hl">新しいリポジトリを作成</span>する（名前は作品が分かるものに。例：作品名や「2D個人制作」など）</li>
+<li>今作っている<span class="hl">個人制作のプロジェクトを、そのまま上げる</span></li>
+<li><span class="ac">手元の最新版</span>を上げる（古い版や、一部だけのファイルはNG）</li>
+<li>上げ終わったら、ブラウザでリポジトリを開いて<span class="hl">ファイルが揃っているか目で確認</span>する</li>
+</ol></div>
+<div class="banner yel" style="text-align:left"><b>詰まったら、止まったままにしない。</b>エラー文をそのまま控えて、早めに先生に声をかける。 <a class="jump" href="#/muse-ask">▶ Museへの頼み方</a></div>
+<div class="glass-card" id="muse-ask"><span class="t" style="color:var(--main-color)">💬 Museに頼むとき（コピペ用）</span><div class="prompt">「GitHubに個人制作のリポジトリを作って、プロジェクトを上げたいです。手順を1つずつ教えてください。エラーが出たら、その都度貼るので原因を教えてください」</div></div>
+<p class="backline"><a class="jump" href="#/step2">▶ 06 手順2 chinomasatoを登録</a></p>
+<aside class="notes">手順1：リポジトリ作成→最新版を上げる→ブラウザで目視確認。</aside>
+</section>
+
+<!-- 06 手順2 -->
+<section id="step2"><div class="kicker"><span class="no">06</span>手順2 ─ メンバー登録とURL共有</div>
+<h2>chinomasatoを登録して、URLを共有する。</h2>
+<div class="grid2" style="grid-template-columns:1.25fr 1fr">
+<div class="glass-card pink"><span class="t">👥 メンバー登録の手順</span><ol class="steps" style="margin:.2em 0 0 1.2em;color:#ddd">
+<li>リポジトリの <span class="hl">Settings</span> を開く</li>
+<li><span class="hl">Collaborators</span>（コラボレーター）を開く</li>
+<li><span class="ac">chinomasato</span> を検索して追加（招待）する</li>
+<li>メンバー一覧に <span class="ac">chinomasato</span> が表示されることを<span class="hl">目で確認</span>する</li>
+</ol>
+<p style="margin-top:.35em">登録できたら、リポジトリの<span class="hl">URLをコピー</span>して、<span class="yl">授業で案内された共有先</span>に投稿する。</p></div>
+<div class="slack">
+<div class="slack-h">共有先への投稿イメージ</div>
+<div class="slack-m"><span class="slack-name">自分の名前（2D）</span>
+<div>初級課題／個人制作のリポジトリです。<br>作品名：＿＿＿＿<br>リポジトリURL：<span class="lnk">https://github.com/＿＿＿＿/＿＿＿＿</span><br>chinomasato の登録まで済んでいます。</div>
+</div>
+<div class="slack-m"><span class="slack-name">ポイント</span>
+<div>URLは手で打ち直さず、ブラウザのアドレスバーから<span style="color:#fff;font-weight:bold">そのままコピー</span>する。打ち間違いが一番多い。</div>
+</div>
+</div>
+</div>
+<div class="banner mint" style="text-align:left"><b>今日で終わりではない。</b>次回以降も、<span class="hl">作ったら上げる（コミット＆プッシュ）を続ける</span>。上げるたびに記録が積み上がり、Museが最新の状態を見られるようになる。一番多い忘れ物は、<span class="ac">chinomasato の登録し忘れ</span>。投稿する前に、メンバー一覧をもう一度開く。</div>
+<aside class="notes">手順2：Settings→Collaboratorsからchinomasatoを追加し確認。URLはコピーして共有先へ。その後も上げ続ける。</aside>
+</section>
+
+<!-- 07 完了チェック -->
+<section id="check"><div class="kicker"><span class="no">07</span>今日の完了チェック</div>
+<h2>この4つが揃ったら、今日は完了。</h2>
+<div class="glass-card mint" style="max-width:52em"><span class="t">✅ チェックリスト</span>
+<ul class="checks">
+<li><b class="hl">リポジトリを作成した</b>（個人制作用に1つ、自分のアカウントで）</li>
+<li><b class="hl">最新の状態を上げた</b>（ブラウザで開いて、ファイルが揃っていることを目で確認した）</li>
+<li><b class="ac">chinomasato をメンバーに登録した</b>（Settings → Collaborators の一覧で確認した）</li>
+<li><b class="hl">リポジトリのURLを共有した</b>（授業で案内された共有先に、コピーしたURLを投稿した）</li>
+</ul></div>
+<div class="banner yel">1つでも欠けていたら、<span class="hl">どこで止まっているかを先生に伝える</span>。黙って未完了のまま帰らない。</div>
+<p style="font-size:1.3em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.45em 0 0">上げたら、作る。作ったら、また上げる。その記録が、君の作品の証拠になる。</p>
+<p class="backline"><a class="jump" href="#/step1">▶ 05 手順1</a>　<a class="jump" href="#/step2">▶ 06 手順2</a></p>
+<aside class="notes">完了チェック4項目：作成・最新版アップ・chinomasato登録・URL共有。</aside>
+</section>
+
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+</body>
+</html>
