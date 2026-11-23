@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>パターンC試用比較：ベクター化版 vs Real-CUGAN版</title>
+<style>body{background:#0b0e1a;color:#e8ecf8;font-family:sans-serif;margin:0;padding:24px}
+h1{font-size:20px} h2{font-size:16px;color:#00ffcc;margin-top:36px}
+img{width:100%;max-width:1200px;display:block;border:1px solid #334;border-radius:8px}
+.crop{max-width:1070px}</style></head><body>
+<h1>パターンC（2Dイラスト）試用比較 — students 画像</h1>
+<p>上が試用のベクター化版（VTracer精細→ラスタライズ）、下が現行の Real-CUGAN 版（クリーン版）。正式ルートは未切り替え・試用のみ。</p>
+<h2>ベクター化版（試用）</h2><img src="vector.webp" alt="ベクター化版">
+<h2>Real-CUGAN版（現行・クリーン版）</h2><img src="cugan.webp" alt="Real-CUGAN版">
+<h2>中央部 100% 切り出し — ベクター化版</h2><img class="crop" src="vector_crop.webp" alt="ベクター化版 切り出し">
+<h2>中央部 100% 切り出し — Real-CUGAN版</h2><img class="crop" src="cugan_crop.webp" alt="Real-CUGAN版 切り出し">
+</body></html>
