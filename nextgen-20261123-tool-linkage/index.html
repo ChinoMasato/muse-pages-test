@@ -91,7 +91,7 @@
 </head>
 <body>
 <button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
-<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a></nav>
+<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a></nav>
 <div class="reveal">
 <div class="slides">
 
@@ -261,6 +261,36 @@
 <div class="glass-card yel"><span class="t">🔍 遊んで直す</span><ul class="checks"><li>停止＝idle、移動＝walk、ダッシュ＝run に切り替わるか</li><li>足元が震えないか、左右反転で崩れないか</li><li>背景チップの継ぎ目が目立たないか</li><li>おかしい所は「素材／取り込み／コード」に分けてから直させる</li></ul></div>
 </div>
 <aside class="notes">Webで作ってもよい。完成条件を満たす方を選ぶ。exe化するならGodot＋Windowsビルドが本命。</aside>
+</section>
+
+<!-- 実証1 -->
+<section id="proof1"><div class="kicker"><span class="no">実証</span>先生が先に全部回してみた ─ ChatGPT → AutoSprite</div>
+<h2>フローは、実際に回った。</h2>
+<div class="grid2">
+<div><div class="shots two" style="margin-bottom:.4em">
+<figure><img src="assets/result_char.png" alt="ChatGPTが生成したドット絵キャラ（実物）" style="height:20vh;object-fit:contain;background:#fff"><figcaption>ChatGPT生成キャラ（実物）</figcaption></figure>
+<figure><img src="assets/result_tiles.jpg" alt="ChatGPTが生成したタイルセット（実物）" style="height:20vh;object-fit:cover"><figcaption>ChatGPT生成タイル（実物）</figcaption></figure>
+</div>
+<div class="glass-card mint"><span class="t">⏱ 実測（2026-11-23、授業前）</span><ul class="checks"><li>ChatGPT：2点の生成＋ダウンロードまで <b>約3分</b>。制限表示なし</li><li>キャラは「白背景・武器なし」の指示どおり → 背景除去も縁の白だけ抜けば済んだ</li><li>AutoSprite：walk生成 <b>約2分</b>、消費は表示どおり <b>5クレジット</b>（残高13→8で確認）</li></ul></div></div>
+<div><img src="assets/walk_anim.gif" alt="AutoSpriteが生成したwalkアニメーション（実物、ループ再生）" style="height:24vh;object-fit:contain;border-radius:12px;border:2px solid var(--border-color);background:#181c2c;display:block;margin:0 auto"><p class="small" style="text-align:center;margin-top:.25em">▲ 生成されたwalk（実物・25フレーム）</p>
+<div class="glass-card yel"><span class="t">📏 数値でも判定した</span><p>フレーム間の高さのばらつき <span class="ac">3.2%</span>、足元位置のブレ <span class="ac">0.46px</span>。目視だけでなく測れる。<br>⚠ 新発見：<b>シートの無料ダウンロードは月2回まで</b>。生成（クレジット）とダウンロード（月2回）は別枠。</p></div></div>
+</div>
+<aside class="notes">全部、今日の授業の前に実機で回した実物。クレジット残高は先生のアカウントの実測値（使い始めの残高は人によって違う）。</aside>
+</section>
+
+<!-- 実証2 -->
+<section id="proof2"><div class="kicker"><span class="no">実証</span>ゲーム化 ─ ハマりどころと直し方</div>
+<h2>歩かせたら、潰れた。測って直した。</h2>
+<div class="grid2">
+<div><video src="assets/gameplay.mp4" autoplay loop muted playsinline style="width:100%;border-radius:12px;border:2px solid var(--border-color);display:block"></video><p class="small" style="text-align:center;margin-top:.25em">▲ 検証ゲーム（実物）。遊べる版：chinomasato.github.io/muse-pages-test/flow-test-20261123/</p>
+<div class="glass-card mint"><span class="t">🎯 教訓</span><p>シートの1フレームは256×256、でもキャラ本体は <span class="ac">110×192</span> だけ。余白ごと縮めると潰れる。<b>「写っている範囲」に合わせて切り出す</b>のが正解（Godotなら AtlasTexture の Region）。</p></div></div>
+<div><div class="shots two">
+<figure><img src="assets/game_squish.png" alt="横に潰れたキャラ（実際のバグ画面）" style="height:19vh;object-fit:contain;background:#111"><figcaption>✕ 潰れた（実際の画面）</figcaption></figure>
+<figure><img src="assets/game_fixed.png" alt="切り出しを直したゲーム画面" style="height:19vh;object-fit:cover"><figcaption>○ 切り出し修正後</figcaption></figure>
+</div>
+<div class="glass-card pink"><span class="t">もう1つの実測</span><p>ChatGPTのタイルは見た目きれいなグリッドでも、<b>間隔が完全には均一でない</b>。等分で切り出すとずれる ─ 境界を見て切り出すこと。</p></div></div>
+</div>
+<aside class="notes">バグ画面は実際に起きたもの。「素材が悪い」で片づけず、取り込み側の切り出しを疑うのが切り分けの実例。</aside>
 </section>
 
 <!-- 12 発注文 -->
