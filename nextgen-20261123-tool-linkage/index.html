@@ -293,6 +293,20 @@
 <aside class="notes">バグ画面は実際に起きたもの。「素材が悪い」で片づけず、取り込み側の切り出しを疑うのが切り分けの実例。</aside>
 </section>
 
+<!-- 実証3 -->
+<section id="proof3"><div class="kicker"><span class="no">実証</span>最終工程 ─ Godotでexe化</div>
+<h2>フローの終点は、Windowsのexe。</h2>
+<div class="shots two">
+<figure><img src="assets/godot_walk.png" alt="Godot版で歩くキャラ（実キャプチャ）" style="height:24vh;object-fit:cover"><figcaption>Godot版：歩行中（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/godot_idle.png" alt="Godot版で停止するキャラ（実キャプチャ）" style="height:24vh;object-fit:cover"><figcaption>Godot版：停止＝正面の待機絵に切替</figcaption></figure>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">🛠 Godot側の実装ポイント</span><ul class="checks"><li>AnimatedSprite2D ＋ AtlasTextureで25フレームを登録、12fps・ループ</li><li>Regionはキャラ本体の範囲（70,28／120×200）─ Web版の「潰れ」と同じ教訓がここでも効く</li><li>Filter＝Nearest、停止中は正面絵の別スプライトに切替、左向きは flip_h</li></ul></div>
+<div class="glass-card yel"><span class="t">📦 書き出し結果（実測）</span><ul class="checks"><li>Windows向けリリース書き出し成功：<b>単体exe・約82MB</b>（素材同梱）</li><li>プロジェクト一式を渡せば、同じ手順で自分のゲームもexe化できる</li><li>提出は前回どおり「exe＋スクショ」を #3d チャンネルのスレッドへ</li></ul></div>
+</div>
+<aside class="notes">キャプチャはGodot実機（仮想画面）でキー入力を再現して撮ったもの。exe自体のWindows実機起動は各自のPCで確認すること。</aside>
+</section>
+
 <!-- 12 発注文 -->
 <section id="order"><div class="kicker"><span class="no">12</span>発注文テンプレート</div>
 <h2>そのまま使える発注文。</h2>
@@ -301,8 +315,9 @@
 工程をつないで進め、各工程の成果物をファイルで残してください。
 1. ブラウザでChatGPTを開き、ドット絵の背景チップと、全身・単色背景のドット絵キャラクター1体を生成して保存する。キャラはアニメ化しやすい単純なシルエットにすること。
 2. ブラウザでAutoSprite（autosprite.io）を開き、キャラをアップロードして walk → run → idle の順に生成する。無料枠は15クレジットしかないので、walkのプレビューで顔や脚が崩れていたら、残りを消費せず止めて報告すること。
-3. スプライトシートPNGとJSON、背景チップを使って、Godot（またはWeb）でキー操作で動ける小さなゲームを作る。停止=idle、移動=walk、ダッシュ=run を切り替えること。
-4. 完成条件：キャラがアニメして動く画面のスクリーンショットを撮り、使った素材ファイルの一覧と一緒に報告すること。
+3. スプライトシートPNGとJSON、背景チップを使って、Godotでキー操作で動ける小さなゲームを作る。停止=idle、移動=walk、ダッシュ=run を切り替えること。スプライトはシートの余白ごと縮めると潰れるので、キャラが写っている範囲（Region）で切り出すこと。
+4. 最後にGodotのWindows向け書き出しで単体exeにする。
+5. 完成条件：exeと、キャラがアニメして動く画面のスクリーンショットを撮り、使った素材ファイルの一覧と一緒に報告すること。
 ログインや課金が必要な画面で止まったら、自分で判断せず私に回してください。</div></div>
 <div class="banner mint">ポイントは4つ：<span class="hl">工程・順序・止める条件・完成条件</span>。細部はAIエージェントに任せてよい。</div>
 <aside class="notes">発注文の型は第2回「いい感じにをなくす」、前回の「任せ方の型」と同じ。</aside>
