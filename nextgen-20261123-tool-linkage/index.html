@@ -1,266 +1,330 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>次世代ゲーム制作手法 ─ ツール連携｜Museから道具を呼び出す 2026.11.23</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
-<title>次世代ゲーム制作手法 — ツール連携｜Museから道具を呼び出す 2026.11.23</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080e20;--panel:#111d35;--ink:#edf3ff;--muted:#aebdd6;--cyan:#56e3f2;--lime:#c4fa72;--violet:#ad91ff;--amber:#ffd36c;--pink:#ff8fb2;--line:#2b3b59}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Yu Gothic UI','Meiryo',sans-serif;overflow:hidden}
-button,a{touch-action:manipulation}button{font:inherit;cursor:pointer}a{color:var(--cyan)}
-#stage{position:absolute;width:1680px;height:900px;transform-origin:top left;background:radial-gradient(ellipse at 95% 0%,#1b2349 0,transparent 48%),var(--bg);overflow:hidden}
-.slide{position:absolute;inset:0;display:none;padding:56px 76px 92px}.slide.active{display:block}
-.eyebrow{font:700 19px/1.4 Consolas,monospace;letter-spacing:.16em;color:var(--cyan);margin:0 0 16px}
-h1{font-size:62px;line-height:1.22;margin:0 0 22px}h2{font-size:50px;line-height:1.25;margin:0 0 26px}h3{font-size:29px;margin:0 0 12px;line-height:1.45}
-p{font-size:27px;line-height:1.65;margin:0 0 16px}.lead{font-size:32px;line-height:1.6}.muted{color:var(--muted)}.accent{color:var(--cyan)}.lime{color:var(--lime)}.amber{color:var(--amber)}.violet{color:var(--violet)}.pink{color:var(--pink)}
-.small{font-size:20px;line-height:1.6}
-.tag{display:inline-block;padding:7px 15px;border:1px solid #405574;border-radius:99px;font-size:18px;color:var(--muted);margin-right:8px;margin-bottom:8px}.tag.go{color:var(--lime);border-color:#5a7544}.tag.warn{color:var(--amber);border-color:#75653a}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}.cols.wide{grid-template-columns:.92fr 1.08fr}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.card{padding:26px 28px;background:linear-gradient(135deg,#16233d,#10192f);border:1px solid var(--line);border-radius:22px}.card p{font-size:24px}
-.num{font:700 22px Consolas,monospace;color:var(--cyan);margin-bottom:12px}
-.callout{padding:20px 28px;border-left:5px solid var(--cyan);background:#13233b;margin-top:22px;font-size:27px;line-height:1.6}
-.callout.warn{border-color:var(--amber);background:#2a2110}.callout.lime{border-color:var(--lime)}
-.flow{display:flex;gap:12px;align-items:stretch;margin:26px 0}.flow.node{flex:1;background:#14223b;border:1px solid #3b5270;border-radius:20px;padding:20px 16px;text-align:center;font-size:23px;line-height:1.5}.flow.node strong{display:block;color:var(--cyan);font-size:26px;margin-bottom:8px}.flow.node small{color:var(--muted);font-size:19px;line-height:1.45;display:block}.flow.arrow{display:flex;align-items:center;color:var(--cyan);font-size:32px;flex:none}
-.prompt{padding:24px 28px;border:1px solid #405478;border-radius:18px;background:#0d1729;font-size:23px;line-height:1.65;white-space:pre-wrap}
-.prompt b{color:var(--lime)}
-.steps{counter-reset:step}.step{display:flex;gap:18px;align-items:flex-start;margin:18px 0;font-size:26px;line-height:1.55}.step:before{counter-increment:step;content:counter(step);flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--cyan);color:#071223;font-weight:800;font-size:20px}
-table.spec{border-collapse:collapse;width:100%;font-size:23px}table.spec th,table.spec td{border:1px solid #33486a;padding:14px 16px;text-align:left;line-height:1.5;vertical-align:top}table.spec th{background:#14424f;color:#fff}table.spec td{background:#101c31}
-ul.tight{margin:0;padding-left:1.3em}ul.tight li{font-size:25px;line-height:1.6;margin:8px 0}
-.pillrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.pillrow span{padding:8px 15px;background:#23334d;color:var(--cyan);border-radius:11px;font-size:21px}
-.notes{display:none;position:absolute;left:76px;right:76px;bottom:88px;padding:18px 24px;background:#edf3ff;color:#14213b;z-index:20;border-radius:14px;font-size:21px;line-height:1.5;box-shadow:0 12px 45px #0008}body.show-notes.active.notes{display:block}
-footer{position:absolute;bottom:24px;left:76px;right:76px;display:flex;justify-content:space-between;border-top:1px solid #33405a;padding-top:14px;color:var(--muted);font-size:17px;z-index:25}
-#controls{position:fixed;bottom:14px;right:18px;display:flex;gap:6px;z-index:50}#controls button{background:#14223bed;border:1px solid #405171;border-radius:8px;color:#e9f3ff;padding:10px 14px;font-size:15px}
-#progress{position:absolute;bottom:0;left:0;height:4px;background:var(--cyan);z-index:30;transition:width.2s}
-#overview{display:none;position:fixed;inset:0;overflow:auto;padding:30px;background:#080e20fa;z-index:100;grid-template-columns:repeat(3,1fr);gap:14px;align-content:start}#overview.open{display:grid}#overview button{border:1px solid #3b5378;background:#15223a;color:#edf3ff;border-radius:14px;padding:22px;text-align:left;min-height:110px;font-size:21px}#overview button b{display:block;color:var(--cyan);font-size:14px;margin-bottom:10px}
-.diagram{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:center;margin:18px 0}.hub{background:var(--cyan);color:#071223;border-radius:20px;padding:28px 20px;text-align:center;font-weight:800;font-size:30px;line-height:1.3}
-.copybtn{margin-top:10px;background:#1d5f52;border:1px solid #35d0ba;color:#eafffa;border-radius:10px;padding:10px 18px;font-size:19px;font-weight:700}
-.course-kicker{font:700 20px/1.4 Consolas,monospace;letter-spacing:.22em;color:#071223;background:var(--cyan);display:inline-block;padding:10px 20px;border-radius:10px;margin:0 0 22px}
-.course-title{font-size:118px;line-height:1.08;font-weight:900;letter-spacing:.01em;margin:0 0 10px;color:#fff;text-shadow:0 6px 0 #14424f}
-.course-title .accent{color:var(--cyan)}
-.course-rule{width:100%;height:10px;background:linear-gradient(90deg,var(--cyan),var(--lime),var(--violet));border-radius:99px;margin:20px 0 28px}
-.cover-theme{font-size:52px;line-height:1.25;font-weight:800;margin:0 0 18px}
-@media print{@page{size:landscape;margin:0}body{overflow:visible;background:#080e20;-webkit-print-color-adjust:exact;print-color-adjust:exact}#stage{position:static;transform:none!important;width:1680px;height:auto}.slide{position:relative;display:block!important;width:1680px;height:900px;break-after:page}#controls,#overview,footer,#progress{display:none}.notes{display:none!important}}
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:.6em;width:100%;margin:.3em 0}
+.shots figure{margin:0}.shots img{width:100%;height:19vh;object-fit:cover;border-radius:10px;border:2px solid var(--border-color);display:block}
+.shots figcaption{font-size:.72em;color:#aab;margin-top:.25em;text-align:left}
+.shots.two{grid-template-columns:1fr 1fr}.shots.two img{height:24vh}
+.heroimg{width:100%;height:34vh;object-fit:cover;border-radius:12px;border:2px solid var(--main-color);display:block;box-shadow:0 0 18px rgba(0,255,204,.35)}
+.sideimg{width:100%;height:100%;max-height:52vh;object-fit:cover;border-radius:12px;border:2px solid var(--border-color);display:block}
+.charimg{height:30vh;border-radius:12px;border:2px solid var(--yellow);background:rgba(255,234,0,.05);display:block;margin:0 auto;padding:.3em}
+.flowimg{width:100%;height:30vh;object-fit:cover;border-radius:12px;border:2px solid var(--accent-color);display:block;box-shadow:0 0 18px rgba(255,0,255,.3)}
+@media (max-width:760px){.shots{grid-template-columns:1fr}.shots img,.shots.two img{height:auto}}
 </style>
 </head>
 <body>
-<main id="stage">
+<button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
+<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a></nav>
+<div class="reveal">
+<div class="slides">
 
-<section class="slide active" data-title="表紙｜次世代ゲーム制作手法">
-<p class="course-kicker">3Dクラス ／ 2026.11.23（月）2限・624教室</p>
-<h1 class="course-title">次世代ゲーム<br>制作手法</h1>
-<div class="course-rule"></div>
-<p class="cover-theme">今日のテーマ：ツール連携<br><span class="accent">Museから、道具を呼び出す。</span></p>
-<p class="lead">1つのAIで完結させない。得意な道具を組み合わせて、1本の制作フローにする。</p>
-<div style="margin:28px 0"><span class="tag go">前回：Godot + Blender を入れて使う</span><span class="tag">今日：連携を3層で理解する</span><span class="tag go">演習：ChatGPT → AutoSprite → ゲーム化</span></div>
-<p class="muted">担当：千野正登（ゲームクリエイター科）<br><span class="small">操作：← → 移動 ／ O 一覧 ／ N 教員メモ ／ F 全画面 ／ P 印刷</span></p>
-<aside class="notes">今日の位置づけを最初に固定する。前回は「Museの環境にアプリを入れて操作させる」までやった。今日はその先——連携の種類を増やし、最後は素材生成からゲーム化までを1本につなぐ演習にする。プロジェクターが使えない場合も、このスライドの流れを口頭＋板書のフロー図で再現できる。</aside>
-</section>
-
-<section class="slide" data-title="前回の復習">
-<p class="eyebrow">01 / RECAP</p>
-<h2>前回やったこと：<span class="accent">入れて、呼ばせて、作らせる</span></h2>
-<div class="three">
-<div class="card"><div class="num">INSTALL</div><h3>Godot + Blender を導入</h3><p>MuseのLinux環境（自分の作業場）に、ゲームエンジンと3Dツールをインストールした。</p></div>
-<div class="card"><div class="num">OPERATE</div><h3>Museが操作した</h3><p>Blenderでモデルを作り、Godotで読み込んで動かす——手順ではなく目的を渡して実行させた。</p></div>
-<div class="card"><div class="num">DELIVER</div><h3>exeまで出した</h3><p>#3dチャンネル課題（11/16）：Museでゲームを作り、Windowsで動くexeをスクショ付きでスレッド共有。実際に提出が集まった。</p></div>
-</div>
-<div class="callout">前回の学び：<strong>可能性は「賢さ」ではなく「道具を足せるか」で決まる。</strong> 今日は足し方を3種類に増やす。</div>
-<aside class="notes">Slack #3dチャンネルの実績に触れる：小堀・大田・飛留間・小堀壮太らのexe提出があったこと、先生自身も starhorsefarm.exe を同スレッドに出したこと。学生自身の提出が「前回できた証拠」になる。</aside>
-</section>
-
-<section class="slide" data-title="今日の論点">
-<p class="eyebrow">02 / THESIS</p>
-<h2>次世代の制作は、<br><span class="accent">「どのAIを使うか」ではなく「どうつなぐか」</span></h2>
-<p>1つのツールで全部やろうとすると、どこかで詰まる。絵が得意なAI、動きが得意なサービス、実装が得意なエージェント——<strong>工程ごとに最適な道具を選び、成果物をバトンとして渡す</strong>のが連携設計。</p>
-<div class="flow"><div class="node"><strong>企画・素材</strong>絵／音／テキスト<small>生成AI・素材サービス</small></div><div class="arrow">→</div><div class="node"><strong>変換・加工</strong>アニメ化／形式変換<small>専門ツール</small></div><div class="arrow">→</div><div class="node"><strong>実装</strong>ゲームに組み込む<small>Godot / Web</small></div><div class="arrow">→</div><div class="node"><strong>検証・公開</strong>遊んで直す<small>ビルド／共有</small></div></div>
-<p class="muted">今日の演習は、この4工程を実際に1回通す。つなぎ目で何が起きるか（形式・サイズ・命名・クレジット）を体で覚えるのが目的。</p>
-<aside class="notes">U.ZU Engineの考え方とも接続する：「作る→公開→遊ばれる→感想→直す」の循環も連携の一種。道具はゲームを作りながら磨く、という先生の原則を一言添える。</aside>
-</section>
-
-<section class="slide" data-title="連携は3層ある">
-<p class="eyebrow">03 / MAP — 全体マップ</p>
-<h2>Museの連携は、<span class="accent">3層</span>ある</h2>
-<div class="diagram"><div class="hub">Muse<br><span style="font-size:20px;font-weight:400">司令塔</span></div>
+<!-- 00 表紙 -->
+<section id="title">
+<p style="font-family:'DotGothic16',sans-serif;color:var(--main-color);font-size:.85em;letter-spacing:.12em;margin:0 0.4em;width:100%;text-align:center">2026.11.23（月）2限　3D・624教室　担当：千野正登（ゲームクリエイター科）</p>
+<div class="grid2" style="align-items:center">
 <div>
-<div class="card" style="margin-bottom:14px"><h3>① インストール型 — 環境に入れて使う</h3><p>Godot / Blender / Python / ffmpeg など。自分のLinuxに道具を足す。前回の型。</p></div>
-<div class="card" style="margin-bottom:14px"><h3>② 標準連携型 — つなげばすぐ使える</h3><p>GitHub / Slack / Gmail / Drive / Calendar / Sheets など。Museの標準機能として連携済み。</p></div>
-<div class="card"><h3>③ ブラウザ操作型 — サイトを開いて使う</h3><p>Webサービス全般。ChatGPT / AI Studio / Gemini / AutoSprite など。今日の主役。</p></div>
-</div></div>
-<p class="muted">層が上がるほど「相手に合わせる」要素が増える。①は自由、②は決まった窓口、③は画面と規約に合わせる。</p>
-<aside class="notes">この1枚が今日の地図。以降、①②を5分で確認し、③に時間を割く。学生には「自分の卒業制作で、どの層をまだ使っていないか」を考えさせながら進める。</aside>
-</section>
-
-<section class="slide" data-title="第1層｜インストール型">
-<p class="eyebrow">04 / LAYER 1 — INSTALL</p>
-<h2>第1層：<span class="accent">インストールして使う</span></h2>
-<div class="pillrow"><span>Godot</span><span>Blender</span><span>Python</span><span>ffmpeg</span><span>ImageMagick</span><span>LibreSprite / Aseprite系</span><span>コンパイラ</span><span>ブラウザ</span></div>
-<div class="cols"><div><h3>できること</h3><ul class="tight"><li>モデル生成・変換（.glb /.fbx）</li><li>画像の切り抜き・リサイズ・形式変換</li><li>ビルド、テスト、動画書き出しまで自動化</li></ul></div>
-<div><h3>連携のコツ</h3><ul class="tight"><li>「どのアプリで、何を入れて、何を出すか」を発注文に書く</li><li>入出力の<strong>ファイル形式と置き場所</strong>を決めて渡す</li><li>検証方法（スクショ／テスト）までセットで頼む</li></ul></div></div>
-<div class="callout">前回のGodot + Blenderは、この層の代表例。今日の演習でも、最後のゲーム化はこの層で受ける。</div>
-<aside class="notes">新しい話ではないので短く。ポイントは「今日の演習の出口も結局この層に戻ってくる」こと——Webで作った素材は、最終的にローカル環境で組み込む。</aside>
-</section>
-
-<section class="slide" data-title="第2層｜標準連携">
-<p class="eyebrow">05 / LAYER 2 — CONNECTORS</p>
-<h2>第2層：<span class="accent">標準連携は、つなげばすぐ使える</span></h2>
-<table class="spec"><tr><th style="width:22%">サービス</th><th style="width:39%">Museからできること（例）</th><th>制作で効く場面</th></tr>
-<tr><td><strong>GitHub</strong></td><td>リポジトリを読む／課題を実装／pushする</td><td>現行プロジェクトへの合流、版管理</td></tr>
-<tr><td><strong>Slack</strong></td><td>チャンネルを読む／下書き・投稿（承認あり）</td><td>課題確認、提出、連絡の整理</td></tr>
-<tr><td><strong>Gmail / Calendar</strong></td><td>メール検索・下書き、予定の確認・作成</td><td>締切管理、取材・見学の調整</td></tr>
-<tr><td><strong>Drive / Docs / Sheets</strong></td><td>資料を読む、表に集計する、文書を作る</td><td>仕様書・進捗表・発表資料の下準備</td></tr></table>
-<p class="muted" style="margin-top:16px">連携＝「文脈と置き場所」を渡すこと。毎回説明し直さなくてよくなる。送信・公開など外向きの操作は、必ず人の承認を挟む。</p>
-<aside class="notes">実例：この授業準備自体、Slackの #3dチャンネル過去ログを読んで前回課題と提出状況を確認してから作っている。その事実を伝えると「標準連携」が急に具体的に見える。パスワードはチャットで渡さない、セキュアストア経由——前回資料の話も一言で回収する。</aside>
-</section>
-
-<section class="slide" data-title="第3層｜ブラウザ操作">
-<p class="eyebrow">06 / LAYER 3 — BROWSER</p>
-<h2>第3層：<span class="accent">ブラウザ操作が、Museはかなり得意</span></h2>
-<div class="cols"><div><h3>なぜ強いのか</h3><ul class="tight"><li>サイトを開く、読む、フォームに入れる、ボタンを押す、ファイルを上げ下げする——人の操作をそのまま再現できる</li><li>専用連携がないサービスでも、<strong>Web画面がある限り使える</strong></li><li>複数サイトをまたぐ手順（作る→変換→取り込む）をつなげられる</li></ul></div>
-<div><h3>弱みと注意</h3><ul class="tight"><li>ログイン・本人確認（MFA）は<strong>本人がやる</strong>。Museにパスワードを貼らない</li><li>画面変更・利用制限・クレジット消費は相手次第。途中で止めて確認する設計にする</li><li>課金・公開・送信の直前は必ず自分が確認する</li></ul></div></div>
-<div class="callout warn">合言葉：<strong>「操作は任せる、ログインと課金と公開は自分」</strong></div>
-<aside class="notes">ブラウザ操作は万能ではないことも正直に言う。CAPTCHAやログインで止まることはある。そのときは「自分がその1画面だけ操作して渡す」分担が現実解になる。</aside>
-</section>
-
-<section class="slide" data-title="ブラウザ経由で他のAIを呼ぶ">
-<p class="eyebrow">07 / AI CALLS AI</p>
-<h2>ブラウザ経由で、<span class="accent">他のAIを呼び出して使う</span></h2>
-<div class="three">
-<div class="card"><div class="num">ChatGPT</div><h3>絵と相談役</h3><p>画像生成（ドット絵キャラ／背景チップ）、企画の壁打ち、プロンプト整形。先生のアカウントで画像生成まで実機検証済み（2026-11-22）。</p></div>
-<div class="card"><div class="num">Google AI Studio</div><h3>Geminiで一気に作る</h3><p>PlaygroundからGeminiに長いコード生成を頼める。寿司レースのプロンプトでHTMLゲーム全文の生成・回収まで検証済み（2026-11-22）。</p></div>
-<div class="card"><div class="num">Gemini（Web）</div><h3>調べ物と下書き</h3><p>要約、翻訳、アイデア出し。ブラウザで開けるAIは、原則どれも「部下の部下」として使える。</p></div>
+<p style="color:#aab;margin:0 0.2em">授業タイトル</p>
+<h1 style="margin-bottom:.2em!important;font-size:2.6em!important">次世代ゲーム<br>制作手法</h1>
+<p style="font-size:1.2em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.2em 0.45em">今日のテーマ：ツール連携<br>Museから、道具を呼び出す。</p>
+<div class="glass-card mint"><span class="t">🎯 今日の到達点</span><p>1つのAIで完結させない。<span class="hl">ChatGPTでドット絵を描き → AutoSpriteでアニメ化し → ゲームにする</span>までを、<span class="yl">1本のフローとしてつないで通す</span>。</p></div>
 </div>
-<p>なぜわざわざMuse経由にするのか？ —— <strong>生成して終わりではなく、その成果物を次の工程（保存・変換・組み込み・検証）まで自動でつなげるため。</strong> 単体で使うと、ダウンロードと配置とリネームを全部自分でやることになる。</p>
-<aside class="notes">検証済みの範囲だけを断定する：ChatGPTは画像生成の成功まで、AI Studioはコード生成と回収まで確認済み。ダウンロードの可否や制限はアカウント・時期で変わるので、授業では画面表示を正とする、と添える。</aside>
-</section>
-
-<section class="slide" data-title="今日の演習｜全体フロー">
-<p class="eyebrow">08 / WORKSHOP — 全体図</p>
-<h2>今日の演習：<span class="accent">素材からゲームまで、1本つなぐ</span></h2>
-<div class="flow">
-<div class="node"><strong>STEP 1</strong>ChatGPTで<br>背景チップ<small>タイル素材を作る</small></div><div class="arrow">→</div>
-<div class="node"><strong>STEP 2</strong>ChatGPTで<br>キャラ1体<small>全身・正面／横向き</small></div><div class="arrow">→</div>
-<div class="node"><strong>STEP 3</strong>AutoSpriteで<br>アニメ化<small>idle / walk / run</small></div><div class="arrow">→</div>
-<div class="node"><strong>STEP 4</strong>Museに渡して<br>ゲーム化<small>Godot または Web</small></div><div class="arrow">→</div>
-<div class="node"><strong>STEP 5</strong>遊んで直す<small>スクショで検証</small></div>
+<div><img class="sideimg" src="assets/hub.webp" alt="道具を指揮するAIロボットのイラスト"><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
 </div>
-<div class="two"><div class="card"><h3>進め方（どちらでも可）</h3><p><strong>A. Muse経由：</strong>自分のMuseに「ブラウザでChatGPTを開いて…」と工程ごと発注する。<br><strong>B. 手動＋Muse：</strong>生成サイトは自分で操作し、ファイルだけMuseに渡して組み込ませる。</p></div>
-<div class="card"><h3>今日の完成条件</h3><p>キャラがアニメーションして動く／背景チップが敷かれている／キー操作で遊べる状態の画面を、スクショで示せること。</p></div></div>
-<aside class="notes">時間配分の目安：説明25分、STEP1-2で25分、STEP3で25分、STEP4-5で35分、共有10分。詰まった人向けに、先生側で用意した検証用キャラ（verify_hero_01）と同じ進め方をしていることを伝える——配布素材がある場合はここで案内する。</aside>
+<aside class="notes">表紙。授業タイトルを大きく。今日は連携の3層を理解し、最後は素材生成からゲーム化まで1本通す演習。</aside>
 </section>
 
-<section class="slide" data-title="STEP 1-2｜ChatGPTでドット絵">
-<p class="eyebrow">09 / STEP 1-2 — ChatGPT</p>
-<h2>ChatGPTで、<span class="accent">背景チップとキャラを描く</span></h2>
-<div class="cols"><div><h3>背景チップ用プロンプト例</h3><div class="prompt">16bit風ドット絵のタイルチップセットを作ってください。
-・1タイル=32×32px相当で分割できる構図
-・含めるもの：草地、土、石畳、水辺の岸
-・色味とドットの粒度を統一し、継ぎ目が目立たないように
-・キャラクターや文字は入れない</div></div>
-<div><h3>キャラ用プロンプト例（重要）</h3><div class="prompt">ドット絵のゲームキャラクターを1体、全身で描いてください。
-・正面を向いた直立ポーズ、全身が切れずに入る
-・背景は単色（白）で、輪郭をはっきり
-・色数は少なめ、シルエットが単純に
-・武器やマントなどの細い揺れ物は付けない
-※このままAutoSpriteに渡します</div></div></div>
-<p class="muted">キャラの条件は「描きやすさ」ではなく<strong>「アニメ化しやすさ」</strong>で決める。先生の事前検証でも、マント・剣＋盾・正面チビ体型はドリフト（フレームごとの崩れ）の原因になると確認済み。</p>
-<aside class="notes">検証メモ（2026-11-20）の知見を根拠にする：入力は512〜1024px推奨、背景とキャラの分離が明確なこと、複雑な衣装・小物は一貫性を崩す。学生のキャラが崩れたら「絵の問題か、ツールの問題か」を切り分ける材料になる。</aside>
+<!-- 01 前回 -->
+<section id="recap"><div class="kicker"><span class="no">01</span>前回の復習</div>
+<h2>前回：入れて、呼ばせて、作らせる。</h2>
+<div class="shots">
+<figure><img src="assets/rpg_village.jpg" alt="HD-2D RPG 星屑の村の村画面（実スクショ）"><figcaption>HD-2D RPG『星屑の村』村画面 ─ Museで制作（実スクショ）</figcaption></figure>
+<figure><img src="assets/nova_gameplay.jpg" alt="SIDE NOVA プレイ画面（実スクショ）"><figcaption>3Dシューティング『SIDE NOVA』─ 授業当日に制作（実スクショ）</figcaption></figure>
+<figure><img src="assets/horse_race.jpg" alt="スターホース牧場 レース画面（実スクショ）"><figcaption>競馬ゲーム『スターホース牧場』レース ─ 実スクショ</figcaption></figure>
+</div>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">⬇ INSTALL</span><p>Godot + Blender を Muse の環境に<span class="hl">インストール</span>した。</p></div>
+<div class="glass-card pink"><span class="t">🎮 OPERATE</span><p>目的を渡して<span class="ac">操作させ</span>、モデルとゲームを作らせた。</p></div>
+<div class="glass-card yel"><span class="t">📦 DELIVER</span><p>#3dチャンネル課題（11/16）：<span class="yl">exe＋スクショ提出</span>が実際に集まった。</p></div>
+</div>
+<div class="banner mint">前回の学び：可能性は「賢さ」ではなく<span class="hl">「道具を足せるか」</span>で決まる。今日は足し方を3種類に増やす。 <a class="jump" href="#/map">▶ 03 連携マップ</a></div>
+<aside class="notes">スクショはすべて実際の制作物。学生自身のexe提出が前回できた証拠になる。</aside>
 </section>
 
-<section class="slide" data-title="STEP 3｜AutoSprite">
-<p class="eyebrow">10 / STEP 3 — AUTOSPRITE（autosprite.io）</p>
-<h2>AutoSpriteで、<span class="accent">1枚をアニメーションにする</span></h2>
-<div class="cols"><div><div class="steps">
-<div class="step"><strong>アップロード</strong>　キャラ画像を上げる（プロンプト生成は使わない）</div>
-<div class="step"><strong>基準ビュー確認</strong>　顔・配色・比率が原画と一致するか見る。ここで崩れていたら画像を直す</div>
-<div class="step"><strong>walkから生成</strong>　一番ごまかしが利かない動きで先に判定する（ゲート方式）</div>
-<div class="step"><strong>書き出し</strong>　PNGスプライトシート＋JSONアトラス＋個別フレームを保存</div>
-</div></div>
-<div><div class="card"><h3>⚠ 無料枠の配分がすべて</h3><p>新規アカウントは<strong>15クレジット</strong>、1アニメ＝<strong>5クレジット</strong>（無料はturbo固定）。つまり<strong>3アニメまで、再生成の余裕はゼロ</strong>。</p><p>推奨配分：<strong>walk（5）→ run（5）→ idle（5）</strong><br>やってはいけない：8方向パック（15で全額）、3D生成（50）など高額メニューを先に押すこと。</p><p class="small muted">※クレジット仕様は変わることがある。当日の画面表示を正とする。</p></div></div></div>
-<aside class="notes">この配分は先生の検証手順書（2026-11-20）そのもの。walkが不合格（顔が別人、脚の増減、ループ崩壊）なら残り10crを消費せず止め、入力画像を単純化して作り直す——「止める判断」も演習の学びに入れる。Godotへは公式拡張（autosprite-godot）で取り込む経路と、手動でSpriteFramesを作る経路の2つがある。</aside>
+<!-- 02 論点 -->
+<section id="thesis"><div class="kicker"><span class="no">02</span>今日の論点</div>
+<h2>「どのAIを使うか」ではなく、「どうつなぐか」。</h2>
+<p class="lead">1つのツールで全部やろうとすると、どこかで詰まる。絵が得意なAI、動きが得意なサービス、実装が得意なエージェント ─ <span class="hl">工程ごとに最適な道具を選び、成果物をバトンとして渡す</span>のが連携設計だ。</p>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">素材</span><span class="step-name">企画・絵・音<br>生成AI</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">変換</span><span class="step-name">アニメ化・形式変換<br>専門ツール</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">実装</span><span class="step-name">ゲームに組み込む<br>Godot / Web</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">検証</span><span class="step-name">遊んで直す<br>ビルド・共有</span></div>
+</div>
+<img class="flowimg" src="assets/pixel-flow.webp" alt="スプライトシートからゲーム画面になるドット絵のイラスト">
+<p class="small">▲ 今日の演習のイメージ：スプライトシート（左）が、タイルで組んだゲーム画面（右）になる。</p>
+<aside class="notes">つなぎ目で何が起きるか（形式・サイズ・命名・クレジット）を体で覚えるのが目的。</aside>
 </section>
 
-<section class="slide" data-title="STEP 4-5｜ゲーム化">
-<p class="eyebrow">11 / STEP 4-5 — BUILD &amp; PLAY</p>
-<h2>Museに渡して、<span class="accent">ゲームにする</span></h2>
-<div class="cols"><div><h3>Museに渡すもの（4点セット）</h3><ul class="tight"><li>背景チップ画像</li><li>スプライトシート PNG ＋ JSONアトラス</li><li>ゲームの仕様（1画面で書く：視点／操作／ゴール）</li><li>完成条件（下の発注文テンプレート参照）</li></ul><h3 style="margin-top:20px">Godot取り込みの要点</h3><ul class="tight"><li>AnimatedSprite2D / SpriteFrames にアニメ名 idle・walk・run を対応させる</li><li>ドット絵は Import で Filter＝Nearest、Mipmaps＝Off</li><li>目安は 12fps、左向きは flip_h</li></ul></div>
-<div><h3>遊んで直す（STEP 5）</h3><ul class="tight"><li>停止＝idle、移動＝walk、ダッシュ＝run に切り替わるか</li><li>足元が震えないか、左右反転で崩れないか</li><li>背景チップの継ぎ目が目立たないか</li><li>おかしい所は「素材の問題／取り込みの問題／コードの問題」に分けてから直させる</li></ul><div class="callout lime">検証はスクショと短い録画で残す。「動いた気がする」で終わらせない。</div></div></div>
-<aside class="notes">Web（HTML/JS）で作ってもよい。Godotにこだわって時間を溶かすより、完成条件を満たす方を選ぶよう促す。前回のexe提出形式につなげるならGodot＋Windowsビルドが本命。</aside>
+<!-- 03 マップ -->
+<section id="map"><div class="kicker"><span class="no">03</span>連携マップ</div>
+<h2>Museの連携は、3層ある。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">① インストール型</span><p><span class="hl">環境に入れて使う</span></p><p>Godot / Blender / Python / ffmpeg。自分のLinuxに道具を足す。前回の型。</p><p style="margin-top:.3em"><a class="jump" href="#/layer1">▶ 04 第1層</a></p></div>
+<div class="glass-card pink"><span class="t">② 標準連携型</span><p><span class="ac">つなげばすぐ使える</span></p><p>GitHub / Slack / Gmail / Drive / Calendar / Sheets。Museの標準機能。</p><p style="margin-top:.3em"><a class="jump" href="#/layer2">▶ 05 第2層</a></p></div>
+<div class="glass-card yel"><span class="t">③ ブラウザ操作型</span><p><span class="yl">サイトを開いて使う</span></p><p>ChatGPT / AI Studio / Gemini / AutoSprite。今日の主役。</p><p style="margin-top:.3em"><a class="jump" href="#/layer3">▶ 06 第3層</a></p></div>
+</div>
+<img class="heroimg" src="assets/hub.webp" alt="3Dモデル・ゲームエンジン・ブラウザ・チャット・ドット絵キャラがロボットにつながるイラスト">
+<div class="banner pink">層が上がるほど「相手に合わせる」要素が増える。①は自由、②は決まった窓口、③は画面と規約に合わせる。</div>
+<aside class="notes">この1枚が今日の地図。以降、①②を短く確認し、③に時間を割く。</aside>
 </section>
 
-<section class="slide" data-title="発注文テンプレート">
-<p class="eyebrow">12 / TEMPLATE — そのまま使える発注文</p>
-<h2>発注文テンプレート <span class="small muted">（自分のMuseに貼る）</span></h2>
-<div class="prompt" id="orderText">
+<!-- 04 第1層 -->
+<section id="layer1"><div class="kicker"><span class="no">04</span>第1層 ─ インストール型</div>
+<h2>インストールして使う。自由度は最大。</h2>
+<p><span class="tag">Godot</span><span class="tag">Blender</span><span class="tag">Python</span><span class="tag">ffmpeg</span><span class="tag">ImageMagick</span><span class="tag">コンパイラ</span><span class="tag">ブラウザ</span></p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">できること</span><ul><li>モデル生成・変換（.glb /.fbx）</li><li>画像の切り抜き・リサイズ・形式変換</li><li>ビルド、テスト、動画書き出しまで自動化</li></ul></div>
+<div class="glass-card yel"><span class="t">連携のコツ</span><ul><li>「どのアプリで、何を入れて、何を出すか」を発注文に書く</li><li>入出力の<span class="yl">ファイル形式と置き場所</span>を決めて渡す</li><li>検証方法（スクショ／テスト）までセットで頼む</li></ul></div>
+</div>
+<div class="banner mint">前回の Godot + Blender がこの層。今日の演習でも、最後のゲーム化はこの層で受ける。</div>
+<aside class="notes">短く。演習の出口も結局この層に戻ってくることを伝える。</aside>
+</section>
+
+<!-- 05 第2層 -->
+<section id="layer2"><div class="kicker"><span class="no">05</span>第2層 ─ 標準連携</div>
+<h2>標準連携は、つなげばすぐ使える。</h2>
+<table class="gt"><tr><th>サービス</th><th>Museからできること</th><th>制作で効く場面</th></tr>
+<tr><td>GitHub</td><td class="wrap">リポジトリを読む／課題を実装／pushする</td><td class="wrap">現行プロジェクトへの合流、版管理</td></tr>
+<tr><td>Slack</td><td class="wrap">チャンネルを読む／下書き・投稿（承認あり）</td><td class="wrap">課題確認、提出、連絡の整理</td></tr>
+<tr><td>Gmail / Calendar</td><td class="wrap">メール検索・下書き、予定の確認・作成</td><td class="wrap">締切管理、調整</td></tr>
+<tr><td>Drive / Sheets</td><td class="wrap">資料を読む、表に集計する、文書を作る</td><td class="wrap">仕様書・進捗表・発表資料</td></tr></table>
+<div class="shots two">
+<figure><img src="assets/github.webp" alt="GitHubリポジトリで協働するイラスト"><figcaption>GitHub連携：AIが開発メンバーとして合流する</figcaption></figure>
+<figure><img src="assets/google.webp" alt="Googleサービスがつながるイラスト"><figcaption>Google連携：Drive・Gmail・Sheetsが文脈になる</figcaption></figure>
+</div>
+<div class="banner yel">連携＝「文脈と置き場所」を渡すこと。送信・公開など外向きの操作は、必ず人の承認を挟む。</div>
+<aside class="notes">実例：この授業準備自体、Slack #3dチャンネルの過去ログを読んで作っている。パスワードはセキュアストア経由で、チャットに貼らない。</aside>
+</section>
+
+<!-- 06 第3層 -->
+<section id="layer3"><div class="kicker"><span class="no">06</span>第3層 ─ ブラウザ操作</div>
+<h2>ブラウザ操作が、Museはかなり得意。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">💪 なぜ強いのか</span><ul><li>開く・読む・入力する・押す・上げ下げする ─ 人の操作をそのまま再現できる</li><li>専用連携がなくても、<span class="hl">Web画面がある限り使える</span></li><li>複数サイトをまたぐ手順をつなげられる</li></ul></div>
+<div class="glass-card pink"><span class="t">⚠ 弱みと注意</span><ul><li>ログイン・本人確認（MFA）は<span class="ac">本人がやる</span>。パスワードを貼らない</li><li>画面変更・制限・クレジット消費は相手次第。途中で止めて確認する設計に</li><li>課金・公開・送信の直前は必ず自分が確認</li></ul></div>
+</div>
+<div class="banner pink" style="font-size:1.15em">合言葉：「操作は任せる、ログインと課金と公開は自分」</div>
+<aside class="notes">CAPTCHAやログインで止まることはある。その画面だけ自分で操作して渡す分担が現実解。</aside>
+</section>
+
+<!-- 07 AIを呼ぶ -->
+<section id="aicall"><div class="kicker"><span class="no">07</span>ブラウザ経由で他のAIを呼ぶ</div>
+<h2>他のAIも、「部下の部下」として使える。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">ChatGPT</span><p><span class="hl">絵と相談役</span></p><p>画像生成（ドット絵キャラ／背景チップ）、企画の壁打ち。画像生成まで実機検証済み（2026-11-22）。</p></div>
+<div class="glass-card pink"><span class="t">Google AI Studio</span><p><span class="ac">Geminiで一気に作る</span></p><p>長いコード生成を頼める。HTMLゲーム全文の生成・回収まで検証済み（2026-11-22）。</p></div>
+<div class="glass-card yel"><span class="t">Gemini（Web）</span><p><span class="yl">調べ物と下書き</span></p><p>要約、翻訳、アイデア出し。ブラウザで開けるAIは原則どれも使える。</p></div>
+</div>
+<div class="banner mint">なぜMuse経由にするのか？ 生成して終わりではなく、<span class="hl">保存・変換・組み込み・検証まで自動でつなげるため</span>。単体だと、ダウンロードと配置とリネームを全部自分でやることになる。</div>
+<aside class="notes">検証済みの範囲だけ断定する。制限や可否はアカウント・時期で変わるので画面表示を正とする。</aside>
+</section>
+
+<!-- 08 演習フロー -->
+<section id="flow"><div class="kicker"><span class="no">08</span>今日の演習 ─ 全体フロー</div>
+<h2>素材からゲームまで、1本つなぐ。</h2>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">STEP 1</span><span class="step-name">ChatGPT<br>背景チップ</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 2</span><span class="step-name">ChatGPT<br>キャラ1体</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 3</span><span class="step-name">AutoSprite<br>アニメ化</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 4</span><span class="step-name">Muse<br>ゲーム化</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 5</span><span class="step-name">遊んで<br>直す</span></div>
+</div>
+<img class="flowimg" src="assets/pixel-flow.webp" alt="ドット絵キャラのスプライトシートがゲーム画面になるイラスト">
+<div class="grid2">
+<div class="glass-card mint"><span class="t">進め方（どちらでも可）</span><p><b>A. Muse経由：</b>自分のAIエージェントに工程ごと発注する。<br><b>B. 手動＋Muse：</b>生成サイトは自分で操作し、ファイルだけ渡して組み込ませる。</p></div>
+<div class="glass-card yel"><span class="t">今日の完成条件</span><p>キャラが<span class="yl">アニメーションして動き</span>、背景チップが敷かれ、キー操作で遊べる画面を<span class="yl">スクショで示せる</span>こと。</p></div>
+</div>
+<aside class="notes">時間目安：説明25分、STEP1-2で25分、STEP3で25分、STEP4-5で35分、共有10分。</aside>
+</section>
+
+<!-- 09 STEP1-2 -->
+<section id="dot"><div class="kicker"><span class="no">09</span>STEP 1-2 ─ ChatGPTでドット絵</div>
+<h2>背景チップとキャラを描く。</h2>
+<div class="grid2">
+<div>
+<div class="glass-card mint"><span class="t">🗺 背景チップ用プロンプト例</span><div class="prompt">16bit風ドット絵のタイルチップセットを作ってください。1タイル=32×32px相当で分割できる構図。含めるもの：草地、土、石畳、水辺の岸。色味とドットの粒度を統一し、継ぎ目が目立たないように。キャラクターや文字は入れない。</div></div>
+<div class="glass-card pink" style="margin-top:.6em"><span class="t">👤 キャラ用プロンプト例（重要）</span><div class="prompt">ドット絵のゲームキャラクターを1体、全身で描いてください。正面を向いた直立ポーズ、全身が切れずに入る。背景は単色（白）で輪郭をはっきり。色数は少なめ、シルエットは単純に。武器やマントなどの細い揺れ物は付けない。※このままAutoSpriteに渡します</div></div>
+</div>
+<div><img class="charimg" src="assets/hero.png" alt="ChatGPTで生成した検証用ドット絵キャラ（実物）"><p class="small" style="text-align:center;margin-top:.3em">▲ 実際の検証用キャラ（ChatGPT生成 → 背景除去）verify_hero_01<br>剣＋盾＋マント付き = あえての「崩れやすい例」。今日はもっと単純に。</p>
+<div class="banner yel">キャラの条件は「描きやすさ」ではなく<span class="yl">「アニメ化しやすさ」</span>で決める。</div></div>
+</div>
+<aside class="notes">検証知見：入力は512〜1024px推奨、背景とキャラの分離が明確なこと、複雑な衣装・小物は一貫性を崩す。</aside>
+</section>
+
+<!-- 10 AutoSprite -->
+<section id="autosprite"><div class="kicker"><span class="no">10</span>STEP 3 ─ AutoSprite（autosprite.io）</div>
+<h2>1枚を、アニメーションにする。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">手順（ゲート方式）</span><ol class="steps"><li><b>アップロード</b> ─ キャラ画像を上げる（プロンプト生成は使わない）</li><li><b>基準ビュー確認</b> ─ 顔・配色・比率が原画と一致するか見る。崩れていたら画像を直す</li><li><b>walkから生成</b> ─ 一番ごまかしが利かない動きで先に判定</li><li><b>書き出し</b> ─ PNGシート＋JSONアトラス＋個別フレームを保存</li></ol></div>
+<div><img src="assets/hero-dark.png" alt="検証用キャラを暗背景に置いたプレビュー（実物）" style="width:100%;height:22vh;object-fit:contain;border-radius:12px;border:2px solid var(--border-color);background:#111;display:block"><p class="small" style="text-align:center;margin-top:.25em">▲ 透過チェックは暗・明の両背景で（実物の検証プレビュー）</p>
+<div class="glass-card pink"><span class="t">⚠ 無料枠の配分がすべて</span><p>新規は<span class="ac">15クレジット</span>、1アニメ＝<span class="ac">5クレジット</span> → <b>3アニメまで、再生成の余裕はゼロ</b>。推奨：<span class="hl">walk → run → idle</span>。8方向パック（15で全額）など高額メニューを先に押さない。※仕様は当日の画面表示を正とする。</p></div></div>
+</div>
+<aside class="notes">配分は検証手順書（2026-11-20）そのもの。walk不合格なら残りを消費せず止め、入力を単純化して作り直す。止める判断も学び。</aside>
+</section>
+
+<!-- 11 STEP4-5 -->
+<section id="build"><div class="kicker"><span class="no">11</span>STEP 4-5 ─ ゲーム化して、遊んで直す</div>
+<h2>Museに渡して、ゲームにする。</h2>
+<div class="shots two">
+<figure><img src="assets/rpg_battle.jpg" alt="HD-2D RPG 戦闘画面（実スクショ）"><figcaption>組み込み先のイメージ①：HD-2D RPG 戦闘（実スクショ）</figcaption></figure>
+<figure><img src="assets/nova_boss.jpg" alt="SIDE NOVA ボス戦（実スクショ）"><figcaption>組み込み先のイメージ②：SIDE NOVA ボス戦（実スクショ）</figcaption></figure>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">📦 Museに渡す4点セット</span><ul class="checks"><li>背景チップ画像</li><li>スプライトシートPNG ＋ JSONアトラス</li><li>ゲーム仕様（視点／操作／ゴールを1画面で）</li><li>完成条件（下の発注文テンプレート）</li></ul><p style="margin-top:.3em">Godot要点：AnimatedSprite2D、Filter＝Nearest、Mipmaps＝Off、目安12fps、左向きは flip_h。</p></div>
+<div class="glass-card yel"><span class="t">🔍 遊んで直す</span><ul class="checks"><li>停止＝idle、移動＝walk、ダッシュ＝run に切り替わるか</li><li>足元が震えないか、左右反転で崩れないか</li><li>背景チップの継ぎ目が目立たないか</li><li>おかしい所は「素材／取り込み／コード」に分けてから直させる</li></ul></div>
+</div>
+<aside class="notes">Webで作ってもよい。完成条件を満たす方を選ぶ。exe化するならGodot＋Windowsビルドが本命。</aside>
+</section>
+
+<!-- 12 発注文 -->
+<section id="order"><div class="kicker"><span class="no">12</span>発注文テンプレート</div>
+<h2>そのまま使える発注文。</h2>
+<p class="lead">自分のAIエージェントに貼る。視点とゴールは自分のゲームに書き換えること。<span class="hl">要約せず、全文のまま渡す</span>（条件が抜けるのを防ぐ）。</p>
+<div class="glass-card mint"><div class="prompt" style="white-space:pre-wrap">
 工程をつないで進め、各工程の成果物をファイルで残してください。
-
-1. ブラウザでChatGPTを開き、ドット絵の背景チップと、
-全身・単色背景のドット絵キャラクター1体を生成して保存する。
-キャラはアニメ化しやすい単純なシルエットにすること。
-2. ブラウザでAutoSprite（autosprite.io）を開き、キャラをアップロードして
-walk → run → idle の順に生成する。無料枠は15クレジットしかないので、
-walkのプレビューで顔や脚が崩れていたら、残りを消費せず止めて報告すること。
-3. スプライトシートPNGとJSON、背景チップを使って、
-Godot（またはWeb）でキー操作で動ける小さなゲームを作る。
-停止=idle、移動=walk、ダッシュ=run を切り替えること。
-4. 完成条件：キャラがアニメして動く画面のスクリーンショットを撮り、
-使った素材ファイルの一覧と一緒に報告すること。
-ログインや課金が必要な画面で止まったら、自分で判断せず私に回してください。</div>
-<button class="copybtn copy" data-copy="">この発注文をコピー</button>
-<p class="small muted" style="margin-top:12px">ポイント：工程・順序・止める条件・完成条件の4つが入っている。手順の細部はMuseに任せてよい。</p>
-<aside class="notes">コピーボタンはこのHTML内で動作する（スクリプトで上の文章をコピー）。学生には「自分のゲームに合わせて、視点とゴールを書き換えてから使う」よう指示する。全文を要約して渡すと条件が抜ける——プロンプトは全文のまま渡すのが原則。</aside>
+1. ブラウザでChatGPTを開き、ドット絵の背景チップと、全身・単色背景のドット絵キャラクター1体を生成して保存する。キャラはアニメ化しやすい単純なシルエットにすること。
+2. ブラウザでAutoSprite（autosprite.io）を開き、キャラをアップロードして walk → run → idle の順に生成する。無料枠は15クレジットしかないので、walkのプレビューで顔や脚が崩れていたら、残りを消費せず止めて報告すること。
+3. スプライトシートPNGとJSON、背景チップを使って、Godot（またはWeb）でキー操作で動ける小さなゲームを作る。停止=idle、移動=walk、ダッシュ=run を切り替えること。
+4. 完成条件：キャラがアニメして動く画面のスクリーンショットを撮り、使った素材ファイルの一覧と一緒に報告すること。
+ログインや課金が必要な画面で止まったら、自分で判断せず私に回してください。</div></div>
+<div class="banner mint">ポイントは4つ：<span class="hl">工程・順序・止める条件・完成条件</span>。細部はAIエージェントに任せてよい。</div>
+<aside class="notes">発注文の型は第2回「いい感じにをなくす」、前回の「任せ方の型」と同じ。</aside>
 </section>
 
-<section class="slide" data-title="つまずき対処">
-<p class="eyebrow">13 / TROUBLESHOOTING</p>
-<h2>つまずいたら、<span class="accent">まず切り分ける</span></h2>
-<table class="spec"><tr><th style="width:28%">症状</th><th style="width:32%">よくある原因</th><th>対処</th></tr>
-<tr><td>ログインで止まる</td><td>MFA・本人確認は本人しかできない</td><td>その画面だけ自分で操作して、Museに引き継ぐ</td></tr>
-<tr><td>キャラが別人になる</td><td>入力画像が複雑／正面＋揺れ物</td><td>クレジットを消費せず止める。画像を単純化して作り直す</td></tr>
-<tr><td>クレジットが足りない</td><td>高額メニューや再生成の連打</td><td>walk 1本で判定する配分に戻す。翌日のログインボーナスを待つのも手</td></tr>
-<tr><td>ゲームで絵がぼやける</td><td>ドット絵のフィルタ設定</td><td>Filter＝Nearest、Mipmaps＝Off で再インポート</td></tr>
-<tr><td>アニメがズレる／震える</td><td>フレームの基準線・サイズ不一致</td><td>JSONアトラスの columns / frameCount でグリッドを合わせ直す</td></tr></table>
-<aside class="notes">「全部AIのせい」にしない訓練。素材・変換・取り込み・コードのどこで壊れたかを言えることが、次世代の制作スキルの本体。先生の検証でも数値判定（身長のばらつき、足元のブレ）まで行っている——余裕のある学生にはその話もする。</aside>
+<!-- 13 つまずき -->
+<section id="trouble"><div class="kicker"><span class="no">13</span>つまずき対処</div>
+<h2>つまずいたら、まず切り分ける。</h2>
+<table class="gt"><tr><th>症状</th><th>よくある原因</th><th>対処</th></tr>
+<tr><td>ログインで止まる</td><td class="wrap">MFA・本人確認は本人しかできない</td><td class="wrap">その画面だけ自分で操作して引き継ぐ</td></tr>
+<tr><td>キャラが別人になる</td><td class="wrap">入力画像が複雑／揺れ物が多い</td><td class="wrap">クレジットを消費せず止める。画像を単純化して作り直す</td></tr>
+<tr><td>クレジット不足</td><td class="wrap">高額メニューや再生成の連打</td><td class="wrap">walk 1本で判定する配分に戻す</td></tr>
+<tr><td>絵がぼやける</td><td class="wrap">ドット絵のフィルタ設定</td><td class="wrap">Filter＝Nearest、Mipmaps＝Off で再インポート</td></tr>
+<tr><td>アニメが震える</td><td class="wrap">基準線・サイズの不一致</td><td class="wrap">JSONの columns / frameCount でグリッドを合わせ直す</td></tr></table>
+<div class="banner yel">「全部AIのせい」にしない。<span class="yl">素材・変換・取り込み・コード</span>のどこで壊れたかを言えることが、次世代の制作スキルの本体。</div>
+<aside class="notes">先生の検証では数値判定（身長のばらつき、足元のブレ）まで行っている。余裕のある学生にはその話も。</aside>
 </section>
 
-<section class="slide" data-title="提出と今日のゴール">
-<p class="eyebrow">14 / SUBMIT</p>
-<h2>提出物と、<span class="accent">今日のゴール</span></h2>
-<div class="cols"><div><h3>提出（#3dチャンネルへ）</h3><ul class="tight"><li>ゲーム画面のスクショ（アニメ中の1枚でよい）</li><li>使った素材：背景チップ／キャラ原画／スプライトシート</li><li>一言レポート：どの層の連携を、どこで使ったか。止まった所と、その切り分け</li><li>可能なら：動くゲーム本体（exe または URL）</li></ul></div>
-<div><h3>今日のゴール（再掲）</h3><ul class="tight"><li>連携の3層を自分の言葉で説明できる</li><li>ChatGPT → AutoSprite → ゲーム化を1回通した経験がある</li><li>「クレジット配分」と「止める判断」を含めて工程を設計できる</li></ul><div class="callout">次回：今日の素材フローを、自分の卒業制作・開発中タイトルに移植する。</div></div></div>
-<aside class="notes">提出先は従来どおり #3dチャンネルのスレッド形式に合わせる（exe＋スクショ共有の前回課題と同形式）。評価は完成度だけでなく、連携の設計と切り分けの報告を見る、と明言する。</aside>
-</section>
-
-<section class="slide" data-title="まとめ">
-<p class="eyebrow">15 / WRAP-UP</p>
-<h2>まとめ：<span class="accent">道具は、つないで初めて力になる</span></h2>
-<div class="three">
-<div class="card"><div class="num">LAYER 1</div><h3>入れる</h3><p>環境に道具を足す（Godot / Blender）。自由度は最大。</p></div>
-<div class="card"><div class="num">LAYER 2</div><h3>つなぐ</h3><p>標準連携で文脈を渡す（GitHub / Slack / Gmail / Drive）。</p></div>
-<div class="card"><div class="num">LAYER 3</div><h3>開いて使う</h3><p>ブラウザでWebサービスと他のAIを呼ぶ（ChatGPT / Gemini / AutoSprite）。</p></div>
+<!-- 14 提出 -->
+<section id="check"><div class="kicker"><span class="no">14</span>提出と今日のゴール</div>
+<h2>提出物（#3dチャンネルへ）</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">📮 提出するもの</span><ul class="checks"><li>ゲーム画面のスクショ（アニメ中の1枚でよい）</li><li>使った素材：背景チップ／キャラ原画／スプライトシート</li><li>一言レポート：どの層の連携をどこで使ったか。止まった所と切り分け</li><li>可能なら：動くゲーム本体（exe または URL）</li></ul></div>
+<div class="glass-card pink"><span class="t">🏁 今日のゴール</span><ul class="checks"><li>連携の3層を自分の言葉で説明できる</li><li>ChatGPT → AutoSprite → ゲーム化を1回通した</li><li>クレジット配分と「止める判断」を含めて工程を設計できる</li></ul></div>
 </div>
-<p class="lead" style="margin-top:24px">あなたの仕事は、全部を自分でやることではない。<br><strong>工程を設計し、道具を選び、つなぎ目を検証すること。</strong></p>
-<p class="muted">参考：AutoSprite公式 autosprite.io ／ 先生の検証手順「AutoSprite無料枠・1キャラ検証手順」（2026-11-20）／ 前回資料「Museの使い方と特徴」（2026-11-19）</p>
-<aside class="notes">最後に一言：今日のフローは正解の一つにすぎない。別の変換ツール、別の生成AIに差し替えても設計は同じ——そこが「次世代ゲーム制作手法」として学ぶ価値。質問を受けて終了。</aside>
+<p style="font-size:1.25em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.45em 0 0;text-align:center">道具は、つないで初めて力になる。<br>あなたの仕事は、工程を設計し、道具を選び、つなぎ目を検証すること。</p>
+<p class="small" style="text-align:center">次回：今日の素材フローを、自分の開発中タイトルに移植する。／ 参考：AutoSprite公式 autosprite.io、検証手順「AutoSprite無料枠・1キャラ検証手順」（2026-11-20）、前回資料「Museの使い方と特徴」（2026-11-19）</p>
+<p class="backline"><a class="jump" href="#/flow">▶ 08 演習フロー</a>　<a class="jump" href="#/order">▶ 12 発注文</a></p>
+<aside class="notes">提出は前回課題と同形式（exe＋スクショ）。評価は完成度だけでなく連携の設計と切り分けの報告を見る。</aside>
 </section>
 
-<footer><span style="color:#edf3ff;font-weight:800;font-size:21px;letter-spacing:.04em">次世代ゲーム制作手法 <span style="color:#56e3f2">（3D）</span> <span style="color:#aebdd6;font-weight:400;font-size:17px">/ ツール連携 — Museから道具を呼び出す</span></span><span id="counter"></span><span>← → でも移動できます</span></footer><div id="progress"></div>
-</main>
-<nav id="controls"><button id="prev">← 前へ</button><button id="next">次へ →</button><button id="list">一覧</button><button id="note">メモ</button><button id="full">全画面</button><button id="print">印刷</button></nav>
-<div id="overview" role="dialog" aria-label="スライド一覧"></div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
 <script>
-const DOC_TITLE="ツール連携｜次世代ゲーム制作手法";
-const slides=[...document.querySelectorAll('.slide')],stage=document.querySelector('#stage'),overview=document.querySelector('#overview');let current=0,lastFocus;
-function resize(){const s=Math.min(innerWidth/1680,innerHeight/900);stage.style.transform='scale('+s+')';stage.style.left=(innerWidth-1680*s)/2+'px';stage.style.top=(innerHeight-900*s)/2+'px'}
-function show(n,w=true){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((x,i)=>{x.classList.toggle('active',i===current);x.setAttribute('aria-hidden',i!==current)});document.querySelector('#counter').textContent=String(current+1).padStart(2,'0')+' / '+slides.length;document.querySelector('#progress').style.width=(current+1)/slides.length*100+'%';document.querySelector('#prev').disabled=current===0;document.querySelector('#next').disabled=current===slides.length-1;document.title=slides[current].dataset.title+'｜'+DOC_TITLE;if(w)history.replaceState(null,'','#'+(current+1))}
-function toggleOverview(f){const o=f??!overview.classList.contains('open');overview.classList.toggle('open',o);if(o){lastFocus=document.activeElement;overview.querySelectorAll('button')[current].focus()}else if(lastFocus)lastFocus.focus()}
-slides.forEach((s,i)=>{let b=document.createElement('button');let n=document.createElement('b');n.textContent=String(i+1).padStart(2,'0');b.append(n,document.createTextNode(s.dataset.title));b.onclick=()=>{show(i);toggleOverview(false)};overview.append(b)});
-document.querySelector('#prev').onclick=()=>show(current-1);document.querySelector('#next').onclick=()=>show(current+1);document.querySelector('#list').onclick=()=>toggleOverview();document.querySelector('#note').onclick=()=>document.body.classList.toggle('show-notes');document.querySelector('#full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen?.().catch(()=>{})};document.querySelector('#print').onclick=()=>print();
-addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;const k=e.key.toLowerCase();if(k==='escape'){toggleOverview(false);return}if(k==='o'){toggleOverview();return}if(overview.classList.contains('open'))return;if(['arrowright','pagedown',' '].includes(k)){e.preventDefault();show(current+1)}if(['arrowleft','pageup'].includes(k)){e.preventDefault();show(current-1)}if(k==='home')show(0);if(k==='end')show(slides.length-1);if(k==='n')document.body.classList.toggle('show-notes');if(k==='f')document.querySelector('#full').click();if(k==='p')print()});
-let tx=0,ty=0;addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY},{passive:true});addEventListener('touchend',e=>{if(e.target.closest('button,a')||overview.classList.contains('open'))return;let dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)show(current+(dx<0?1:-1))},{passive:true});
-const orderEl=document.querySelector('#orderText');document.querySelectorAll('.copy').forEach(b=>{b.dataset.copy=orderEl?orderEl.innerText:'';b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);b.textContent='コピーしました'}catch{const t=document.createElement('textarea');t.value=b.dataset.copy;document.body.append(t);t.select();try{document.execCommand('copy');b.textContent='コピーしました'}catch{b.textContent='コピーできませんでした'}t.remove()}}});
-addEventListener('hashchange',()=>show((parseInt(location.hash.slice(1),10)||1)-1,false));addEventListener('resize',resize);resize();show((parseInt(location.hash.slice(1),10)||1)-1,false);
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
 </script>
+</body>
+</html>
+
 </body>
 </html>
