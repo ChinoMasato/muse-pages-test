@@ -30,10 +30,10 @@ function draw(){
   if(loaded<7){requestAnimationFrame(draw);return}
   for(let r=0;r<8;r++)for(let c=0;c<12;c++){ctx.drawImage(IMG[T[MAP[r][c]]],c*64,r*64,64,64)}
   if(P.moving){
-    const f=P.frame,fx=(f%5)*256,fy=Math.floor(f/5)*256;
-    ctx.save();ctx.translate(P.x+28,P.y);
-    if(P.dir<0){ctx.scale(-1,1);ctx.translate(-56,0)}
-    ctx.drawImage(IMG.walk,fx,fy,256,256,0,0,56,84);ctx.restore();
+    const f=P.frame,fx=(f%5)*256+70,fy=Math.floor(f/5)*256+28;
+    ctx.save();ctx.translate(P.x+25,P.y);
+    if(P.dir<0){ctx.scale(-1,1);ctx.translate(-50,0)}
+    ctx.drawImage(IMG.walk,fx,fy,120,200,0,0,50,84);ctx.restore();
   }else{
     ctx.drawImage(IMG.idle,0,0,IMG.idle.width,IMG.idle.height,P.x+8,P.y,40,84);
   }
