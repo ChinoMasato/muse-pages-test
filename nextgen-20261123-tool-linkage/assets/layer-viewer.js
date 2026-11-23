@@ -25,17 +25,21 @@
     });
     if (!layers.length) return;
     let tx = 0, ty = 0, cx = 0, cy = 0; // 目標視点 / 現在視点（-1..1）
-    addEventListener('pointermove', (e) => {
+    let lastPointer = -1e9;
+    const onMove = (e) => {
       const r = box.getBoundingClientRect();
       tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
       ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2));
-    });
+      lastPointer = performance.now();
+    };
+    addEventListener('pointermove', onMove);
+    addEventListener('mousemove', onMove);
     function frame(t) {
-      if (tx === 0 && ty === 0) { // 無操作時はゆっくり周回
-        tx = 0.55 * Math.cos(t * 0.0004); ty = 0.35 * Math.sin(t * 0.0004);
+      if (t - lastPointer > 4000) { // ポインタ無操作が4秒を超えたらゆっくり周回
+        tx = 0.6 * Math.cos(t * 0.00042); ty = 0.38 * Math.sin(t * 0.00042);
       }
       cx += (tx - cx) * 0.055; cy += (ty - cy) * 0.055;
-      const maxShift = box.clientWidth * 0.016; // 前景の最大移動量（幅の1.6%）
+      const maxShift = box.clientWidth * 0.026; // 前景の最大移動量（幅の2.6%）
       layers.forEach(({ img, d }) => {
         const sx = -cx * maxShift * d, sy = -cy * maxShift * d * 0.6;
         img.style.transform = `scale(1.045) translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
