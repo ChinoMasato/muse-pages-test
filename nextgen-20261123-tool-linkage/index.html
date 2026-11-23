@@ -88,6 +88,7 @@
 .flowimg{width:100%;height:30vh;object-fit:cover;border-radius:12px;border:2px solid var(--accent-color);display:block;box-shadow:0 0 18px rgba(255,0,255,.3)}
 .layer-view{position:relative;width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);overflow:hidden;background:#0a0f1e}
 canvas.relief-view{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;background:#0a0f1e}
+img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;object-fit:cover}
 .layer-hero{width:64%;margin:0 auto;border-color:var(--main-color);box-shadow:0 0 18px rgba(0,255,204,.35)}
 @media (max-width:760px){.shots{grid-template-columns:1fr}.shots img,.shots.two img{height:auto}}
 </style>
@@ -108,7 +109,7 @@ canvas.relief-view{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;bor
 <p style="font-size:1.2em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.2em 0.45em">今日のテーマ：ツール連携<br>Museから、道具を呼び出す。</p>
 <div class="glass-card mint"><span class="t">🎯 今日の到達点</span><p>1つのAIで完結させない。<span class="hl">ChatGPTでドット絵を描き → AutoSpriteでアニメ化し → ゲームにする</span>までを、<span class="yl">1本のフローとしてつないで通す</span>。</p></div>
 </div>
-<div><canvas class="relief-view" data-diffuse="assets/hub_R_diff.webp?v=1" data-norm="assets/hub_R_norm.webp?v=1" data-depth="assets/hub_depth.png?v=1" aria-label="hubの深度つきイラスト"></canvas><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
+<div><img class="plain-art" src="assets/hub_diffuse.webp" alt="Museが道具を指揮するイラスト"><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
 </div>
 <aside class="notes">表紙。授業タイトルを大きく。今日は連携の3層を理解し、最後は素材生成からゲーム化まで1本通す演習。</aside>
 </section>
@@ -153,7 +154,7 @@ canvas.relief-view{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;bor
 <div class="glass-card pink"><span class="t">② 標準連携型</span><p><span class="ac">つなげばすぐ使える</span></p><p>GitHub / Slack / Gmail / Drive / Calendar / Sheets。Museの標準機能。</p><p style="margin-top:.3em"><a class="jump" href="#/layer2">▶ 05 第2層</a></p></div>
 <div class="glass-card yel"><span class="t">③ ブラウザ操作型</span><p><span class="yl">サイトを開いて使う</span></p><p>ChatGPT / AI Studio / Gemini / AutoSprite。今日の主役。</p><p style="margin-top:.3em"><a class="jump" href="#/layer3">▶ 06 第3層</a></p></div>
 </div>
-<canvas class="relief-view layer-hero" data-diffuse="assets/hub_R_diff.webp?v=1" data-norm="assets/hub_R_norm.webp?v=1" data-depth="assets/hub_depth.png?v=1" aria-label="hubの深度つきイラスト"></canvas>
+<img class="plain-art layer-hero" src="assets/hub_diffuse.webp" alt="Museが道具を指揮するイラスト">
 <div class="banner pink">層が上がるほど「相手に合わせる」要素が増える。①は自由、②は決まった窓口、③は画面と規約に合わせる。</div>
 <aside class="notes">この1枚が今日の地図。以降、①②を短く確認し、③に時間を割く。</aside>
 </section>
