@@ -87,7 +87,7 @@
 .charimg{height:30vh;border-radius:12px;border:2px solid var(--yellow);background:rgba(255,234,0,.05);display:block;margin:0 auto;padding:.3em}
 .flowimg{width:100%;height:30vh;object-fit:cover;border-radius:12px;border:2px solid var(--accent-color);display:block;box-shadow:0 0 18px rgba(255,0,255,.3)}
 .layer-view{position:relative;width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);overflow:hidden;background:#0a0f1e}
-canvas.pbr-layer{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;background:#0a0f1e}
+canvas.relief-view{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;background:#0a0f1e}
 .layer-hero{width:64%;margin:0 auto;border-color:var(--main-color);box-shadow:0 0 18px rgba(0,255,204,.35)}
 @media (max-width:760px){.shots{grid-template-columns:1fr}.shots img,.shots.two img{height:auto}}
 </style>
@@ -108,7 +108,7 @@ canvas.pbr-layer{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;borde
 <p style="font-size:1.2em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.2em 0.45em">今日のテーマ：ツール連携<br>Museから、道具を呼び出す。</p>
 <div class="glass-card mint"><span class="t">🎯 今日の到達点</span><p>1つのAIで完結させない。<span class="hl">ChatGPTでドット絵を描き → AutoSpriteでアニメ化し → ゲームにする</span>までを、<span class="yl">1本のフローとしてつないで通す</span>。</p></div>
 </div>
-<div><canvas class="pbr-layer" data-lb-diff="assets/hub_Lb_diff.webp?v=2" data-lb-norm="assets/hub_Lb_norm.webp?v=2" data-lm-diff="assets/hub_Lm_diff.webp?v=2" data-lm-norm="assets/hub_Lm_norm.webp?v=2" data-lf-diff="assets/hub_Lf_diff.webp?v=2" data-lf-norm="assets/hub_Lf_norm.webp?v=2" aria-label="hubのPBR多層イラスト"></canvas><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
+<div><canvas class="relief-view" data-diffuse="assets/hub_R_diff.webp?v=1" data-norm="assets/hub_R_norm.webp?v=1" data-depth="assets/hub_depth.png?v=1" aria-label="hubの深度つきイラスト"></canvas><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
 </div>
 <aside class="notes">表紙。授業タイトルを大きく。今日は連携の3層を理解し、最後は素材生成からゲーム化まで1本通す演習。</aside>
 </section>
@@ -153,7 +153,7 @@ canvas.pbr-layer{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;borde
 <div class="glass-card pink"><span class="t">② 標準連携型</span><p><span class="ac">つなげばすぐ使える</span></p><p>GitHub / Slack / Gmail / Drive / Calendar / Sheets。Museの標準機能。</p><p style="margin-top:.3em"><a class="jump" href="#/layer2">▶ 05 第2層</a></p></div>
 <div class="glass-card yel"><span class="t">③ ブラウザ操作型</span><p><span class="yl">サイトを開いて使う</span></p><p>ChatGPT / AI Studio / Gemini / AutoSprite。今日の主役。</p><p style="margin-top:.3em"><a class="jump" href="#/layer3">▶ 06 第3層</a></p></div>
 </div>
-<canvas class="pbr-layer layer-hero" data-lb-diff="assets/hub_Lb_diff.webp?v=2" data-lb-norm="assets/hub_Lb_norm.webp?v=2" data-lm-diff="assets/hub_Lm_diff.webp?v=2" data-lm-norm="assets/hub_Lm_norm.webp?v=2" data-lf-diff="assets/hub_Lf_diff.webp?v=2" data-lf-norm="assets/hub_Lf_norm.webp?v=2" aria-label="hubのPBR多層イラスト"></canvas>
+<canvas class="relief-view layer-hero" data-diffuse="assets/hub_R_diff.webp?v=1" data-norm="assets/hub_R_norm.webp?v=1" data-depth="assets/hub_depth.png?v=1" aria-label="hubの深度つきイラスト"></canvas>
 <div class="banner pink">層が上がるほど「相手に合わせる」要素が増える。①は自由、②は決まった窓口、③は画面と規約に合わせる。</div>
 <aside class="notes">この1枚が今日の地図。以降、①②を短く確認し、③に時間を割く。</aside>
 </section>
@@ -179,8 +179,8 @@ canvas.pbr-layer{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;borde
 <tr><td>Gmail / Calendar</td><td class="wrap">メール検索・下書き、予定の確認・作成</td><td class="wrap">締切管理、調整</td></tr>
 <tr><td>Drive / Sheets</td><td class="wrap">資料を読む、表に集計する、文書を作る</td><td class="wrap">仕様書・進捗表・発表資料</td></tr></table>
 <div class="shots two">
-<figure><canvas class="pbr-layer" data-lb-diff="assets/github_Lb_diff.webp?v=2" data-lb-norm="assets/github_Lb_norm.webp?v=2" data-lm-diff="assets/github_Lm_diff.webp?v=2" data-lm-norm="assets/github_Lm_norm.webp?v=2" data-lf-diff="assets/github_Lf_diff.webp?v=2" data-lf-norm="assets/github_Lf_norm.webp?v=2" aria-label="githubのPBR多層イラスト"></canvas><figcaption>GitHub連携：AIが開発メンバーとして合流する</figcaption></figure>
-<figure><canvas class="pbr-layer" data-lb-diff="assets/google_Lb_diff.webp?v=2" data-lb-norm="assets/google_Lb_norm.webp?v=2" data-lm-diff="assets/google_Lm_diff.webp?v=2" data-lm-norm="assets/google_Lm_norm.webp?v=2" data-lf-diff="assets/google_Lf_diff.webp?v=2" data-lf-norm="assets/google_Lf_norm.webp?v=2" aria-label="googleのPBR多層イラスト"></canvas><figcaption>Google連携：Drive・Gmail・Sheetsが文脈になる</figcaption></figure>
+<figure><canvas class="relief-view" data-diffuse="assets/github_R_diff.webp?v=1" data-norm="assets/github_R_norm.webp?v=1" data-depth="assets/github_depth.png?v=1" aria-label="githubの深度つきイラスト"></canvas><figcaption>GitHub連携：AIが開発メンバーとして合流する</figcaption></figure>
+<figure><canvas class="relief-view" data-diffuse="assets/google_R_diff.webp?v=1" data-norm="assets/google_R_norm.webp?v=1" data-depth="assets/google_depth.png?v=1" aria-label="googleの深度つきイラスト"></canvas><figcaption>Google連携：Drive・Gmail・Sheetsが文脈になる</figcaption></figure>
 </div>
 <div class="banner yel">連携＝「文脈と置き場所」を渡すこと。送信・公開など外向きの操作は、必ず人の承認を挟む。</div>
 <aside class="notes">実例：この授業準備自体、Slack #3dチャンネルの過去ログを読んで作っている。パスワードはセキュアストア経由で、チャットに貼らない。</aside>
@@ -371,6 +371,6 @@ addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preve
 addEventListener('load',fitAll);
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
 </script>
-<script src="assets/pbr-layer-viewer.js?v=20261123-pbrlayers2"></script>
+<script src="assets/relief-viewer.js?v=20261123-relief5"></script>
 </body>
 </html>
