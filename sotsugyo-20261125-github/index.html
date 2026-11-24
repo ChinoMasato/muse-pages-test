@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>卒業制作｜2026.11.25｜ベータまで13日 ― 金曜は通し動画で完成度評価（4D）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+</style>
+
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section id="title"><div class="kicker"><span class="no">0</span>卒業制作 ― 4D</div><h1>ベータまで13日<br>金曜は通し動画で完成度評価</h1><p class="lead">2026.11.25（水）時点の確認 ／ ベータは12/8（火）、残り授業は4回です</p></section>
+<section><div class="kicker"><span class="no">1</span>残り時間</div><h2>残り授業4回（時間割 Ver9）</h2><div class="timeline-bar"><div class="timeline-step"><div class="step-time">11/27 金</div><div class="step-name">ゲーム開発＝卒業制作<br>通し動画の提出・完成度評価</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">12/2 水</div><div class="step-name">振替・卒業制作<br>（12/1はスポーツ大会）</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">12/4 金</div><div class="step-name">ゲーム開発＝卒業制作</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">12/8 火</div><div class="step-name">ベータ</div></div></div><div class="glass-card yel"><span class="t">今日の数字</span><p>pushは「した／しない」ではなく、毎日動いているかで見ます。登録はスタートライン、pushしていないものは止まって見えます。</p></div></section>
+<section><div class="kicker"><span class="no">2</span>昨日の動き</div><h2>昨日〜今日、動いた作品</h2><div class="glass-card mint"><span class="t">21名が更新</span><p>磯江祐太朗、今泉香乃、岩澤ゆかり、大澤卓巳、大庭玲夢、小田切遙陽、小野胡桃、小出涼帆、向後亮佑、五木田望、笹尾健斗、菅真栄、鈴木翔太、髙橋汰進、髙橋輝晃、土屋覚、新山青菜、藤﨑衣波、松澤碧依、村石裕音、茂木恵大 の作品に新しいpushがありました。</p></div><div class="glass-card pink"><span class="t">GitHubで確認できていない人</span><p> はGitHubでリポジトリが確認できていません。金曜の動画以前に、置き場の共有が先です。実物を上げている人はURLを報告してください。</p></div></section>
+<section><div class="kicker"><span class="no">3</span>金曜の提出</div><h2>金曜（11/27）通し動画の提出仕様</h2><div class="glass-card mint"><span class="t">撮るもの</span><ul><li>タイトルから始めて、1周（結果が出るまで）を通して撮る</li><li>編集でごまかさない。詰まったら詰まったまま</li><li>長さの目安は1〜3分</li></ul></div><div class="glass-card yel"><span class="t">評価について</span><p>金曜は<b>ゲーム自体の完成度</b>を評価します。「1周通っているか」「遊び方が伝わるか」「終わりまであるか」が中心です。ベータ（12/8）の完成度予測にもつながります。</p></div></section>
+<section><div class="kicker"><span class="no">4</span>全員の状態 1/3</div><h2>卒業制作の状態（GitHub実測・今朝）</h2><table class="gt"><tr><th>名前</th><th>作品</th><th>状態</th></tr><tr><td>石川蒼太</td><td>ドパミンダンジョン</td><td>GitHub未確認</td></tr><tr><td>磯江祐太朗</td><td>魔物ごはんRPG</td><td>昨日〜今日 動いた</td></tr><tr><td>伊藤優斗</td><td>不明</td><td>GitHub未確認</td></tr><tr><td>伊橋愛翔</td><td>割りばしスワイプ(仮)</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>今泉香乃</td><td>雨の夜道シミュレーター</td><td>昨日〜今日 動いた</td></tr><tr><td>岩澤ゆかり</td><td>鏡の向こうの君</td><td>昨日〜今日 動いた</td></tr><tr><td>江澤弥希</td><td>マイポーカー</td><td>GitHub未確認</td></tr><tr><td>大澤卓巳</td><td>Slime Noob Swing</td><td>昨日〜今日 動いた</td></tr><tr><td>大庭玲夢</td><td>RE:TRACE</td><td>昨日〜今日 動いた</td></tr><tr><td>小田切遙陽</td><td>おしぼりマスター(仮)</td><td>昨日〜今日 動いた</td></tr><tr><td>小野胡桃</td><td>PIZZA GO BRRR(仮)</td><td>昨日〜今日 動いた</td></tr><tr><td>柏木春人</td><td>世界一弱いヒーロー</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>門田拓己</td><td>不明</td><td>GitHub未確認</td></tr><tr><td>菊地巧真</td><td>横スクロールアクション(仮称)</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>黒岩快那太</td><td>おせんべいクリッカー</td><td>停止中（最終 2026-11-20）</td></tr></table></section>
+<section><div class="kicker"><span class="no">5</span>全員の状態 2/3</div><h2>卒業制作の状態（つづき）</h2><table class="gt"><tr><th>名前</th><th>作品</th><th>状態</th></tr><tr><td>小出涼帆</td><td>神経衰弱バトル(仮)</td><td>昨日〜今日 動いた</td></tr><tr><td>向後亮佑</td><td>なんでも修理や</td><td>昨日〜今日 動いた</td></tr><tr><td>小澤祐仁</td><td>不明</td><td>GitHub未確認</td></tr><tr><td>小森皓太</td><td>不明</td><td>置き場のみ（中身なし）</td></tr><tr><td>五木田望</td><td>ElementShift(仮)</td><td>昨日〜今日 動いた</td></tr><tr><td>櫻井優成</td><td>不明</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>笹尾健斗</td><td>不明</td><td>昨日〜今日 動いた</td></tr><tr><td>菅真栄</td><td>Rubik&#x27;s</td><td>昨日〜今日 動いた</td></tr><tr><td>鈴木翔太</td><td>マイティー・ショー</td><td>昨日〜今日 動いた</td></tr><tr><td>鈴木里玖斗</td><td>不明</td><td>GitHub未確認</td></tr><tr><td>髙橋汰進</td><td>不明</td><td>昨日〜今日 動いた</td></tr><tr><td>髙橋輝晃</td><td>星空のキャンパス</td><td>昨日〜今日 動いた</td></tr><tr><td>武川隆斗</td><td>らくがきベーゴマバトル</td><td>停止中（最終 2026-10-21）</td></tr><tr><td>田母神唯人</td><td>不明（READMEのみ）</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>土屋覚</td><td>GearAction2D</td><td>昨日〜今日 動いた</td></tr></table></section>
+<section><div class="kicker"><span class="no">6</span>全員の状態 3/3</div><h2>卒業制作の状態（つづき）</h2><table class="gt"><tr><th>名前</th><th>作品</th><th>状態</th></tr><tr><td>鶴戸佑</td><td>PokerRogue</td><td>GitHub未確認</td></tr><tr><td>新山青菜</td><td>にじいろ調合室と空白のレシピ</td><td>昨日〜今日 動いた</td></tr><tr><td>新田萌夏子</td><td>DreamBoutique</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>藤﨑衣波</td><td>（仮・無題）</td><td>昨日〜今日 動いた</td></tr><tr><td>松澤碧依</td><td>おやすみ</td><td>昨日〜今日 動いた</td></tr><tr><td>三橋都和</td><td>NEON-SYNC</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>宮原翔音</td><td>アビスラッシュ</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>村石翼</td><td>不明</td><td>GitHub未確認</td></tr><tr><td>村石裕音</td><td>簡単将棋</td><td>昨日〜今日 動いた</td></tr><tr><td>茂木恵大</td><td>Risk-Runner</td><td>昨日〜今日 動いた</td></tr><tr><td>本吉晴輝</td><td>異界の校舎(仮)</td><td>停止中（最終 2026-11-20）</td></tr><tr><td>物見優羽</td><td>灰の闘技場</td><td>GitHub未確認</td></tr><tr><td>山本時雨</td><td>EGG CLICKER</td><td>GitHub未確認</td></tr></table></section>
+<section><div class="kicker"><span class="no">7</span>金曜までの宿題</div><h2>全員共通</h2><ul class="checks"><li>金曜に撮る「1周」の流れを決めた</li><li>撮る前に、タイトル→結果まで自分で1回通した</li><li>リポジトリに最新の状態をpushした</li><li>置き場がない人は、今日中に作って実物を上げた</li></ul></section>
+</div></div>
+<button id="backbtn" class="backbtn" hidden></button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+</body>
+</html>

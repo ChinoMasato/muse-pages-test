@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ゲーム開発｜2026.11.25｜金曜の通し動画へ ― 1周遊べる形にする（2D）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+</style>
+
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section id="title"><div class="kicker"><span class="no">0</span>ゲーム開発 ― 2D</div><h1>金曜の通し動画へ<br>今日は「1周遊べる形」にする</h1><p class="lead">2026.11.25（水）ゲーム開発（2D）／ 金曜（11/27）に通し動画を撮影して提出し、ゲーム自体の完成度を評価します</p></section>
+<section><div class="kicker"><span class="no">1</span>昨日の結果</div><h2>昨日は14/15チームが動いた</h2><div class="glass-card mint"><span class="t">肉付けループの結果</span><p>昨日の授業以降、2Dは15チーム中14チームがpushを再開しました。長く止まっていたチームも動き出しています。止まったままは2D-03だけです。</p></div><div class="glass-card yel"><span class="t">今日の転換</span><p>昨日は「量」（push数）の日でした。今日からは「質」です。金曜の通し動画で完成度を見るので、今日の仕事は<b>1周遊べる形にすること</b>です。</p></div></section>
+<section><div class="kicker"><span class="no">2</span>今日のゴール</div><h2>「1周」の定義</h2><div class="glass-card "><span class="t">1周 = この4つがつながっていること</span><ul><li>タイトル画面から始められる</li><li>遊び方・操作が分かる</li><li>遊んで、終わり（クリア／ゲームオーバー／結果）まで行ける</li><li>もう一度遊べる（リトライ）</li></ul></div><div class="glass-card pink"><span class="t">通っていないチームへ</span><p>新機能を足すのは今日は止める。まず通すこと。範囲を切る判断も、今日ここで決めること。</p></div></section>
+<section><div class="kicker"><span class="no">3</span>進め方</div><h2>今日の3ステップ</h2><div class="timeline-bar"><div class="timeline-step"><div class="step-time">STEP 1</div><div class="step-name">自チームで1周<br>通す・直す</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">STEP 2</div><div class="step-name">相互試遊<br>記録3点を書く</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">STEP 3</div><div class="step-name">直すのは1つだけ<br>直してpush</div></div></div><div class="glass-card "><span class="t">相互試遊の記録3点（記録スレッドへ）</span><ol><li>面白かった点</li><li>詰まった・分からなかった点</li><li>直すならこの1つ</li></ol><p>この記録が、そのまま検証メモになります（企画→動くプロトタイプ→検証メモの3点セット）。</p></div></section>
+<section><div class="kicker"><span class="no">4</span>チーム状況 1/2</div><h2>2Dチームの勢い（GitHub実測・今朝）</h2><table class="gt"><tr><th>チーム</th><th>作品</th><th>メンバー</th><th>勢い</th><th>直近3日</th><th>最終commit</th></tr><tr><td>2D-01</td><td>ローグライターズ「形容の塔」</td><td>一丸春翔・小林大叶・西悠寿・石𣘺陽光</td><td>▶ 再開</td><td>4</td><td>2026-11-24</td></tr><tr><td>2D-02</td><td>ペンギンのせかい大冒険</td><td>内田浩明・髙𣘺勁吾・織本花音</td><td>🔥 加速</td><td>5</td><td>2026-11-24</td></tr><tr><td>2D-03</td><td>Nade♡Me（なでなでし隊）</td><td>香月仁之介・角啓史・植田毬鈴</td><td>■ 停止中</td><td>0</td><td>2026-11-20</td></tr><tr><td>2D-04</td><td>貯めて解放</td><td>中村奏太・比連﨑光希・日笠瑛翔・池永雄一</td><td>🔥 加速</td><td>10</td><td>2026-11-24</td></tr><tr><td>2D-05</td><td>見越し入道ホラー</td><td>舘﨑慶・早川優碧・藤澤洵太</td><td>🔥 加速</td><td>10</td><td>2026-11-24</td></tr><tr><td>2D-06</td><td>Steel Waltz</td><td>黒澤大輝・星野大洋・棕澤蒼太</td><td>● 継続</td><td>5</td><td>2026-11-24</td></tr><tr><td>2D-07</td><td>KINETIC BREAK</td><td>荒巻魁斗・根本己太朗・西澤怜</td><td>🔥 加速</td><td>14</td><td>2026-11-24</td></tr><tr><td>2D-08</td><td>ドパっとNOW</td><td>中山悠誠・清水妃沙希・及川修斗</td><td>● 継続</td><td>2</td><td>2026-11-24</td></tr></table></section>
+<section><div class="kicker"><span class="no">5</span>チーム状況 2/2</div><h2>2Dチームの勢い（つづき）</h2><table class="gt"><tr><th>チーム</th><th>作品</th><th>メンバー</th><th>勢い</th><th>直近3日</th><th>最終commit</th></tr><tr><td>2D-09</td><td>森さん家</td><td>久保翔汰・黒澤大雅・森隼人</td><td>● 継続</td><td>1</td><td>2026-11-24</td></tr><tr><td>2D-10</td><td>ころころ障害物レース</td><td>染谷蓮音・湯田悠翔・城之内橙樹</td><td>● 継続</td><td>27</td><td>2026-11-24</td></tr><tr><td>2D-11</td><td>深淵の錬金探査</td><td>鷲見隆斗・大井珀実・髙木義人・櫻井真音</td><td>● 継続</td><td>8</td><td>2026-11-24</td></tr><tr><td>2D-12</td><td>おぎゃあ</td><td>髙橋楓絆・茂木泰靖・吉田飛燕</td><td>● 継続</td><td>5</td><td>2026-11-23</td></tr><tr><td>2D-13</td><td>人生建国記</td><td>川野晴菜・原田深月・宍倉佑都</td><td>🔥 加速</td><td>15</td><td>2026-11-24</td></tr><tr><td>2D-14</td><td>横スクSTG</td><td>ラモスソアレスジャイロ・藤井晴道・石橋美憂</td><td>● 継続</td><td>2</td><td>2026-11-24</td></tr><tr><td>2D-15</td><td>PUZZLE SHIFT KNIGHT</td><td>芳村錬躍・前田清斗・菅谷悠大</td><td>● 継続</td><td>6</td><td>2026-11-24</td></tr></table></section>
+<section><div class="kicker"><span class="no">6</span>金曜の提出</div><h2>金曜（11/27）通し動画の提出仕様</h2><div class="glass-card mint"><span class="t">撮るもの</span><ul><li>タイトルから始めて、1周（結果が出るまで）を通して撮る</li><li>編集でごまかさない。詰まったら詰まったまま（それも評価材料）</li><li>長さの目安は1〜3分</li></ul></div><div class="glass-card yel"><span class="t">評価について</span><p>金曜は<b>ゲーム自体の完成度</b>を評価します。push数ではありません。「1周通っているか」「遊び方が伝わるか」「終わりまであるか」が中心です。</p></div></section>
+<section><div class="kicker"><span class="no">7</span>声かけ</div><h2>2D-03へ</h2><div class="glass-card pink"><span class="t">2D-03『Nade♡Me』（角啓史君・植田毬鈴さん・香月仁之介君）</span><p>唯一、昨日も動かなかったチームです。今日のうちに、チームとしての次の一手を決めて、最初の一歩をpushしてください。角君は個人作の方は進んでいるので、その力をチームにも分けてください。</p></div></section>
+<section><div class="kicker"><span class="no">8</span>まとめ</div><h2>今日の終わりに残すもの</h2><ul class="checks"><li>1周通った（または、通らない理由が1行で言える）</li><li>相互試遊の記録3点をスレッドに書いた</li><li>「直す1つ」を直してpushした</li><li>金曜の撮影担当と撮る流れを決めた</li></ul></section>
+</div></div>
+<button id="backbtn" class="backbtn" hidden></button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+</body>
+</html>
