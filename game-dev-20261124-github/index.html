@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ゲーム開発｜2026.11.24｜ひたすら肉付けループ ― push数を増やす（3D）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+</style>
+
+</head>
+<body>
+<button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
+<nav class="quicknav"><a href="#/fact">📊 実測</a><a href="#/loop">🔁 ループの型</a><a href="#/plan">🕐 今日の時間割</a><a href="#/check">✅ 終了チェック</a></nav>
+<div class="reveal">
+<div class="slides">
+
+<section id="title">
+<p style="font-family:'DotGothic16',sans-serif;color:var(--main-color);font-size:.85em;letter-spacing:.12em;margin:0 0 .4em;width:100%;box-sizing:border-box;padding-right:min(38vw,17em);text-align:center">2026.11.24（火）3限　ゲーム開発（3D・624教室）　担当：千野正登</p>
+<div style="max-width:46em;width:100%">
+<p style="color:#aab;margin:0 0 .2em">ゲーム開発（チーム制作）</p>
+<h1 style="margin-bottom:.25em!important">ひたすら肉付けループ。<br><span style="font-size:.62em;color:#fff;text-shadow:0 0 12px rgba(0,255,204,.5)">今日の仕事は、push数を増やすこと。</span></h1>
+<div class="glass-card mint"><span class="t">今日の到達点</span><p>肉付けループを<b>最低5周</b>回し、<b>1周ごとに必ずpush</b>する。授業が終わる時点で、チームのリポジトリが「今日動いた」ことが一目で分かる状態にする。</p></div>
+<div class="banner pink">作っただけでは、進んだことにならない。pushして初めて、進んだことが見える。</div>
+</div>
+</section>
+
+<section id="today">
+<div class="kicker"><span class="no">01</span>今日やること</div>
+<h2>今日やることは、1つだけ</h2>
+<p class="lead">新しいことを始める日ではない。いまあるゲームを、遊んで・直して・pushする。それだけを繰り返す。</p>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">① 遊ぶ</span><p>いまの状態で実際に遊ぶ。気になった点を1つだけ選ぶ。</p></div>
+<div class="glass-card pink"><span class="t">② 直す</span><p>選んだ1つだけを直す。新要素は足さない。数字（パラメータ）から触る。</p></div>
+<div class="glass-card yel"><span class="t">③ pushする</span><p>直したら、その場でpush。ここまでで1周。pushしていない周は、終わっていない。</p></div>
+</div>
+<div class="banner mint">今日の合言葉 ― 「1周 ＝ 遊ぶ → 直す（1つ）→ 遊び直す → 記録 → <b>push</b>」</div>
+</section>
+
+<section id="fact">
+<div class="kicker"><span class="no">02</span>実測 ― 今朝のGitHub確認</div>
+<h2>止まっているチームが、多すぎる</h2>
+<p class="lead">Slack #ゲーム開発「GitHubリポジトリ報告スレッド」に報告されたチームのリポジトリ26件を、今朝（11/24）実測した結果。</p>
+<div class="grid3">
+<div class="glass-card pink"><span class="t">18件 ／ 26件</span><p>11/21以降のpushが <b>0件</b>。11/20で止まったままのチーム。</p></div>
+<div class="glass-card mint"><span class="t">動いたのは 8件だけ</span><p>11/21以降にpushがあったのは26件中8件。全体の約3割。</p></div>
+<div class="glass-card yel"><span class="t">3日間の合計 ＋30件</span><p>26チーム・3日間で増えたcommitは合計30件。1チームあたり、1日0.4件にもならない。</p></div>
+</div>
+<p class="small">※ 報告スレッド外のリポジトリ・別ブランチは含まない。今朝時点の実測値。今日の授業でこの数字を変える。</p>
+</section>
+
+<section id="good">
+<div class="kicker"><span class="no">03</span>実測 ― 動いたチーム</div>
+<h2>動いたチームは、ちゃんと見えている</h2>
+<p class="lead">11/21以降にpushが増えたチーム。上位は「小さく刻んで、何度も上げた」チーム。</p>
+<table class="gt"><tr><th>チーム／リポジトリ</th><th>報告</th><th>11/21以降</th></tr>
+<tr><td>Speed-Run</td><td class="wrap">染谷蓮音君（2D）</td><td>＋11件 ― 断トツ。刻み方が手本</td></tr>
+<tr><td>2d11</td><td class="wrap">櫻井真音さん（2D）</td><td>＋6件</td></tr>
+<tr><td>prototype</td><td class="wrap">髙橋楓絆君</td><td>＋5件</td></tr>
+<tr><td>2D-05</td><td class="wrap">早川優碧君（2D）</td><td>＋3件</td></tr>
+<tr><td>RefrectShadow</td><td class="wrap">大田紘生君（3D）</td><td>＋2件 ― 3Dではここが動いた</td></tr>
+<tr><td>G-race ほか</td><td class="wrap">工藤颯太君（3D）ほか</td><td>＋1件ずつ ― まず1件、出ている</td></tr>
+</table>
+<div class="banner mint">大きな1回より、小さな何回か。push数は、そのまま「回した回数」の証拠になる。</div>
+</section>
+
+<section id="stalled">
+<div class="kicker"><span class="no">04</span>実測 ― 止まっている側</div>
+<h2>「作っているはず」でも、見えない</h2>
+<p class="lead">11/20から不動のチームには、コードがしっかり入っているチームも多い。止まっているのは中身ではなく、push。</p>
+<div class="grid2">
+<div class="glass-card"><span class="t" style="color:var(--yellow)">中身はあるのに止まっている例</span><ul>
+<li>Traitor-Cooking（深栖巧翔君・3D）― コード9,651行、pushは11/20で停止</li>
+<li>REBOOT_OF_HUMANITY（後藤匡哉君・3D）― コード10,773行、同上</li>
+<li>Unity_ShogiAction（飛留間一吹君・3D）― コード8,371行、同上</li>
+<li>manbou／3D_RobotAction ほか ― コード1万行超でも不動</li></ul></div>
+<div class="glass-card pink"><span class="t">中身がまだ無いチーム ― 今日が最優先</span><ul>
+<li>Zgen-lolb/-（小林大叶君）― 空（commit 0件）</li>
+<li>nekoomo（織本花音さん・2D）― 中身なし</li>
+<li>-NOW（及川修斗君・2D）― commitはあるがコード0行</li></ul><p>この3件は肉付けの前に、まずゲーム本体を上げること。それが今日の1周目。</p></div>
+</div>
+</section>
+
+<section id="why">
+<div class="kicker"><span class="no">05</span>なぜpush数か</div>
+<h2>pushしていないものは、止まって見える</h2>
+<p class="lead">11/20にこのチャンネルで伝えたとおり。確認はリポジトリを見て行う。古い状態のままなら、進んでいないものとして扱われる。</p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">pushすると、得るもの</span><ul>
+<li>自分のAIエージェントが最新のコードを見て、手伝える</li>
+<li>チーム全員が、同じ最新状態で作業できる</li>
+<li>壊しても、前の状態にいつでも戻れる</li>
+<li>「いつ・何を・どれだけ進めたか」が自動で記録になる</li></ul></div>
+<div class="glass-card pink"><span class="t">pushしないと、起きること</span><ul>
+<li>ローカルで進めても、先生にもチームにも見えない</li>
+<li>PCが壊れたら、その分は消える</li>
+<li>「やったはず」が証拠なしになり、評価にも残らない</li></ul></div>
+</div>
+<div class="banner yel">だから今日は、完成度ではなく <b>push数</b> を数える。push数は、回したループの数そのもの。</div>
+</section>
+
+<section id="loop">
+<div class="kicker"><span class="no">06</span>肉付けループ ― 型</div>
+<h2>1周15分。型は変えない</h2>
+<p class="lead">11/17から使っている型。今日はこれに「push」を正式に組み込む。</p>
+<div class="timeline-bar">
+<div class="timeline-step"><div class="step-time">3分</div><div class="step-name">① 遊ぶ<br>気になる点を探す</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">2分</div><div class="step-name">② 決める<br>直すのは1つだけ</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">7分</div><div class="step-name">③ 直す<br>数字から触る</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">2分</div><div class="step-name">④ 遊び直す<br>変わったか測る</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">1分</div><div class="step-name">⑤ 記録＋push<br>4行書いて上げる</div></div>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">ルール（守る）</span><ul><li>変えるのは1周に1つだけ</li><li>新要素は足さない ― いまあるものを良くする</li><li>遊ばずに作らない ― 必ず遊んでから直す</li></ul></div>
+<div class="glass-card pink"><span class="t">今日の追加ルール</span><ul><li><b>pushしない周は、数えない</b></li><li>直し終わったら次へ行く前にpush。まとめて最後に上げない</li><li>小さくてよい ― パラメータ1個の変更でも1 push</li></ul></div>
+</div>
+</section>
+
+<section id="plan">
+<div class="kicker"><span class="no">07</span>今日の時間割</div>
+<h2>90分 ＝ 最低5周、目標6周</h2>
+<p class="lead">3限（13:20〜14:50）。説明は最小限にして、すぐに1周目に入る。</p>
+<div class="timeline-bar">
+<div class="timeline-step"><div class="step-time">13:20</div><div class="step-name">開始<br>まず現状をpush</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">13:30</div><div class="step-name">ループ1〜3周<br>15分×3</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">14:15</div><div class="step-name">中間確認<br>push数を数える</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">14:20</div><div class="step-name">ループ4〜6周<br>最後まで回す</div></div><div class="timeline-arrow">→</div>
+<div class="timeline-step"><div class="step-time">14:45</div><div class="step-name">記録提出<br>今日の周回数</div></div>
+</div>
+<div class="glass-card yel"><span class="t">最初の10分が大事</span><p>止まっていたチームは、まず<b>いま手元にある最新状態を、そのままpush</b>する。直してから上げようとしない。それだけで「不動」が今日で終わる。</p></div>
+</section>
+
+<section id="advice1">
+<div class="kicker"><span class="no">08</span>アドバイス① ― 止まっていたチームへ</div>
+<h2>再起動は、1 pushから</h2>
+<p class="lead">18件の「11/20で不動」チームへの、今日の具体的な動き方。</p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">やること</span><ol class="steps">
+<li>手元のプロジェクトを開き、動くかだけ確認する</li>
+<li>何も直さず、まず現状をpushする（＝再起動の合図）</li>
+<li>遊んで、直す点を1つ決めて、ループに入る</li></ol></div>
+<div class="glass-card"><span class="t" style="color:var(--yellow)">つまずきやすい所</span><ul>
+<li>「もっと直してから上げたい」→ それが3日止めた原因。現状で上げる</li>
+<li>pushでエラーが出る → その場で先生に声をかける。抱えたまま進まない</li>
+<li>誰のPCに最新があるか分からない → チームで最初に確認する</li></ul></div>
+</div>
+</section>
+
+<section id="advice2">
+<div class="kicker"><span class="no">09</span>アドバイス② ― 動いているチームへ</div>
+<h2>その調子で、もっと小さく刻む</h2>
+<p class="lead">動いた8件へのアドバイス。今日は「質」より「刻み方」を上げる。</p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">Speed-Run（＋11件）の刻み方を見習う</span><ul>
+<li>1回の変更を小さくし、動いたらすぐpush</li>
+<li>「直した→確認した→上げた」が短い間隔で回っている</li>
+<li>結果として、3日で他のチームの何倍も前に進んで見える</li></ul></div>
+<div class="glass-card yel"><span class="t">今日の伸ばし方</span><ul>
+<li>パラメータ調整だけの周も、遠慮なくpushする</li>
+<li>見た目（色・大きさ・速さ・音量）だけの周も立派な肉付け</li>
+<li>周回数を競う ― 今日6周が目標ライン</li></ul></div>
+</div>
+</section>
+
+<section id="advice3">
+<div class="kicker"><span class="no">10</span>アドバイス③ ― 何を直すか迷ったら</div>
+<h2>直す点の選び方 ― この順で探す</h2>
+<p class="lead">ループが止まる一番の理由は「何を直すか決まらない」こと。迷ったら上から順に。</p>
+<table class="gt"><tr><th>優先</th><th>見る所</th><th>例</th></tr>
+<tr><td>1</td><td class="wrap">遊んでいて引っかかる所</td><td class="wrap">操作が分からない／待たされる／見えない</td></tr>
+<tr><td>2</td><td class="wrap">数字で変えられる所</td><td class="wrap">速さ・強さ・出現間隔・制限時間・スコア</td></tr>
+<tr><td>3</td><td class="wrap">反応（juice）</td><td class="wrap">当たった時の音・光・揺れ・止まる感じ</td></tr>
+<tr><td>4</td><td class="wrap">見た目</td><td class="wrap">色・大きさ・配置・文字の読みやすさ</td></tr>
+</table>
+<p class="small">新要素の追加は今日は禁止。いまあるものの「気持ちよさ」と「分かりやすさ」を上げるのが肉付け。</p>
+</section>
+
+<section id="record">
+<div class="kicker"><span class="no">11</span>記録 ― 1周4行だけ</div>
+<h2>記録は短く。その代わり、毎周書く</h2>
+<p class="lead">記録先は Slack #ゲーム開発「11月20日 ゲーム開発 肉付けループ 8回転 記録スレッド」（最新の返信は今日11/24 10:46）。</p>
+<div class="prompt">チーム名／何周目か<br>① 測った結果：遊んで気づいたこと<br>② 変えたこと：直した1つ<br>③ AIへの指示：エージェントに頼んだこと（自分で直した場合は「自分で」）<br>④ 測り直した結果：どう変わったか ＋ push済み（commit／時刻）</div>
+<div class="banner mint">④に「push済み」と書けない周は、まだ終わっていない。書けるまでが1周。</div>
+</section>
+
+<section id="check">
+<div class="kicker"><span class="no">12</span>終了チェック ― 14:45</div>
+<h2>授業の終わりに、全チームで確認する</h2>
+<p class="lead">今日の成果は、完成度では測らない。回した数と、上げた数で測る。</p>
+<div class="glass-card mint"><ul class="checks">
+<li>ループを最低5周、回した</li>
+<li>1周ごとにpushした（今日のcommitがリポジトリに残っている）</li>
+<li>記録スレッドに、周ごとの4行記録を書いた</li>
+<li>最後のpushが、今日遊んだ最新の状態と一致している</li>
+</ul></div>
+<div class="grid2">
+<div class="glass-card pink"><span class="t">できなかったチーム</span><p>理由を記録に1行残す（例：pushでエラー／最新データの所在が不明）。次回、そこから始める。</p></div>
+<div class="glass-card yel"><span class="t">次回へ</span><p>金曜1・2限（611教室）でも同じ型で回す。今日の周回数が、次回のスタートライン。</p></div>
+</div>
+</section>
+
+<section id="source">
+<div class="kicker"><span class="no">13</span>出典</div>
+<h2>このスライドの根拠</h2>
+<p class="lead"></p>
+<div class="glass-card"><ul>
+<li>GitHub実測：2026-11-24朝、Slack #ゲーム開発「GitHubリポジトリ報告スレッド」報告の26リポジトリを clone／API で確認（最終push・commit数・コード行数）</li>
+<li>Slack #ゲーム開発（C039LL6QHPB）：GitHub報告スレッド（返信28件、最新 11/24 09:34）／肉付けループ記録スレッド（返信83件、最新 11/24 10:46）／11/20 千野の周知「リポジトリは必ず最新の状態に保ってください」</li>
+<li>肉付けループの型：2026-11-17 授業資料「プロトで形は見えた。高速でブラッシュアップする。」の15分型を継続</li>
+<li>時間割：2026年度後期 Ver9 ― 火曜3限・ゲーム開発（3D・624教室）</li>
+</ul>
+<p class="small">数値は今朝時点の実測。授業中のpushで変わる数字は、終了チェックで数え直す。</p></div>
+</section>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+</body>
+</html>
