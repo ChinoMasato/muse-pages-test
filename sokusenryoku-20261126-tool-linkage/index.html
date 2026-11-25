@@ -95,7 +95,7 @@ img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2
 </head>
 <body>
 <button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
-<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a><a href="#/bonus">🎁 オマケ</a></nav>
+<nav class="quicknav"><a href="#/news-ship">📰 ニュース</a><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a><a href="#/bonus">🎁 オマケ</a></nav>
 <div class="reveal">
 <div class="slides">
 
@@ -115,6 +115,42 @@ img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2
 </section>
 
 <!-- 01 前回 -->
+<!-- ニュース1 Claude Ship -->
+<section id="news-ship">
+<div class="kicker"><span class="no">📰</span>今週のニュース ① ─ ビジネス＋IT 2026.11.24</div>
+<h2>PRのレビューから承認まで、AIに丸投げ。</h2>
+<p class="lead">アンソロピックが11月23日（米国時間）、<span class="hl">「Claude Ship」</span>をベータ提供開始。プルリクエスト（PR）のレビュー・修正・<span class="ac">承認の判断まで</span>をAIエージェントに任せる仕組み。対象はClaudeのTeam／Enterpriseプラン、GitHubリポジトリ。</p>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">① Code Review（提供中）</span><p>PRをコードベース全体に照らして多角的に調べ、指摘を検証・分類して投稿。深さは Quick／Standard／Deep からリポジトリごとに選べる。</p></div>
+<div class="glass-card pink"><span class="t">② PR Steward（ベータ）</span><p>CIの失敗・競合・レビュー指摘に対応し、プッシュのたびに「何を変えたか／どう戻すか」をコメント。<span class="ac">承認とマージはしない</span>設計。</p></div>
+<div class="glass-card yel"><span class="t">③ Claude Approvals（ベータ）</span><p>チームがファイルに書いた<span class="yl">承認ポリシー</span>を適用し、定型的な変更はAIが自ら承認。重要な場面だけ人に回す。「より賢いCODEOWNERS」と説明されている。</p></div>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">使い方と実績</span><ul><li>開発者は新コマンド <span class="hl">/ship</span>：実行するとClaudeがプッシュ→PR作成→レビュー→失敗チェックへの対応まで進める</li><li>アンソロピック社内では、マージされたPRが<span class="hl">2倍超</span>に増え、差し戻し率は<span class="hl">40％以上減</span>（6〜9月）</li><li>管理者はリポジトリごとの有効化・月次支出上限を設定可能。料金はトークン従量課金</li></ul></div>
+<div class="glass-card yel"><span class="t">「人は不要か？」への答え</span><p>記事の見出しの問い。でも中身を読むと、承認の<span class="yl">ルールを書くのは人</span>で、推奨の始め方も「まず観察のみのモードで信頼できてから必須化」。つまり人の仕事が消えるのではなく、<span class="yl">チェック係からルール設計者へ</span>上がっている。今日のオマケ「ディレクター論」に直結する。</p></div>
+</div>
+<p class="small">出典：ビジネス＋IT「PRのレビューから承認までAIに丸投げ　アンソロピック『Claude Ship』、人は不要か」（2026/11/24） https://www.sbbit.jp/article/cont1/188696 ※後半は会員限定のため、紹介は公開部分に基づく</p>
+<aside class="notes">授業の冒頭で紹介。ポイントは「承認までAIが進んだ」ことと、「それでもポリシーを書く人・観察モードで信頼を作る手順が残る」ことの両方。</aside>
+</section>
+
+<!-- ニュース2 Code Mode -->
+<section id="news-codemode">
+<div class="kicker"><span class="no">📰</span>今週のニュース ② ─ ビジネス＋IT 2026.11.19</div>
+<h2>Claude Code「Code Mode」─ AIがJSを書いてツール連携。</h2>
+<p class="lead">アンソロピックが11月12日、Claude Code v2.1.323に実験機能<span class="hl">「Code Mode」</span>を追加。これは、まさに今日のテーマ<span class="ac">「ツール連携」の新しい実装方式</span>だ。</p>
+<div class="grid2">
+<div class="glass-card pink"><span class="t">従来：1つずつ呼ぶ</span><ul><li>コマンド実行・ファイル編集などのツールを<span class="ac">1回ずつ</span>呼び、結果を読んで次を判断</li><li>工程が増えるたびにAIとの通信往復が発生</li><li>検索で拾った大量の不要なログまでAIの記憶領域（コンテキスト）に入り、<span class="ac">遅く・高く</span>なる</li></ul></div>
+<div class="glass-card mint"><span class="t">Code Mode：プログラムで一括実行</span><ul><li>指示を受けると、Claudeが裏側で<span class="hl">JavaScriptのプログラムを書いて実行</span></li><li>独立したコマンドの並行処理や、前のツールの結果を次のツールへ渡す連携を、1スクリプトで完結</li><li>データの選別（フィルタリング）をJSの中で行い、AIに返すのは<span class="hl">「編集したファイルのパス」「テスト結果」など判断に必要な分だけ</span> → トークン削減</li></ul></div>
+</div>
+<div class="grid2">
+<div class="glass-card yel"><span class="t">具体例（記事より）</span><p>「設定値を書き換えて」と頼むと、AIが書いたコードが対象ファイルを検索してパスを特定し、修正し、テストを実行するところまでを一気に処理する。編集差分は従来どおり画面に出て、生成されたJS自体も <span class="yl">Ctrl+O</span> の履歴ビューアで監査できる。</p></div>
+<div class="glass-card mint"><span class="t">注意点</span><ul class="checks"><li>現時点では実験機能で、初期設定は無効（記事時点）</li><li>対応はネイティブ版Claude Codeと対応モデル、ターミナル環境。デスクトップアプリやVS Code拡張などは対象外とされる</li><li>企業利用では、権限モードごとにセキュリティチェックのタイミングが変わる点が焦点</li></ul></div>
+</div>
+<div class="banner mint">今日の演習でやる「工程ごとにつなぐ」は人の手による連携。Code Modeは、それを<span class="hl">AI自身がプログラムを書いて連携する</span>段階。連携の設計者になる、という話がまた一歩進んだ。</div>
+<p class="small">出典：ビジネス＋IT「Claude Codeに実験機能『Code Mode』、AIがJavaScriptでツール連携し作業自動化」（2026/11/19） https://www.sbbit.jp/article/cont1/188555 ※後半は会員限定のため、説明は公開部分に基づく</p>
+<aside class="notes">今日の本編（連携3層・演習フロー）への橋渡しに使う。フィルタリングの発想は、学生の発注文でも同じ（全部返させるな、必要な結果だけ返させよ）。</aside>
+</section>
+
 <section id="recap"><div class="kicker"><span class="no">01</span>前回の復習</div>
 <h2>前回まで：Museで作り、見た目を最大化した。</h2>
 <div class="shots">
