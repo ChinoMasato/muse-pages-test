@@ -95,7 +95,7 @@ img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2
 </head>
 <body>
 <button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
-<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a></nav>
+<nav class="quicknav"><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a><a href="#/bonus">🎁 オマケ</a></nav>
 <div class="reveal">
 <div class="slides">
 
@@ -351,6 +351,101 @@ img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2
 <p class="small" style="text-align:center">次回：今日の素材フローを、11/12に作った自分のゲームに移植する。／ 参考：AutoSprite公式 autosprite.io、検証手順「AutoSprite無料枠・1キャラ検証手順」（2026-11-20）、前回資料「Museの使い方と特徴」「Godot見た目最大化」（2026-11-19）、元資料「次世代ゲーム制作手法 ─ ツール連携」（2026-11-23・3D）</p>
 <p class="backline"><a class="jump" href="#/flow">▶ 08 演習フロー</a>　<a class="jump" href="#/order">▶ 12 発注文</a></p>
 <aside class="notes">提出は前回課題と同形式（exe＋スクショ）を #4dプログラマへ。評価は完成度だけでなく連携の設計と切り分けの報告を見る。</aside>
+</section>
+
+<!-- オマケ表紙 -->
+<section id="bonus">
+<div class="kicker"><span class="no">🎁</span>オマケ ─ 使い道は、もっと広い</div>
+<h2>連携の実例は、教室の外でも回っている。</h2>
+<p class="lead">ここからは先生の制作現場の実例集。今日の演習と同じ「つなぐ」考え方で、<span class="hl">運用の自動化</span>から、<span class="ac">1本のゲームの全素材調達</span>までが回っている。</p>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">⏰ 運用</span><p>毎日のログインとクレジット回収を、<span class="hl">寝ている間に自動化</span>する。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-login">▶ ログイン自動化</a></p></div>
+<div class="glass-card pink"><span class="t">🐴 素材調達</span><p>3Dモデルも、音楽も、実況も、効果音も。<span class="ac">工程ごとにAIを使い分けて</span>1本のゲームに組み込む。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-horse">▶ 競馬ゲームの全体像</a></p></div>
+<div class="glass-card yel"><span class="t">🎬 役割の変化</span><p>AIエージェントは「プログラマの代わり」から、<span class="yl">「ディレクターの代わり」</span>になりつつある。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-director">▶ ディレクター論</a></p></div>
+</div>
+<div class="banner mint">共通点は1つ：人間がやっているのは、全部<span class="hl">「決める・頼む・確かめる」</span>仕事だということ。</div>
+<aside class="notes">オマケ章の表紙。本編の提出案内の後に置く想定だが、時間が押したらログイン自動化とディレクター論の2枚だけでも価値がある。</aside>
+</section>
+
+<!-- オマケ1 ログイン自動化 -->
+<section id="bonus-login">
+<div class="kicker"><span class="no">🎁1</span>オマケ ─ 毎日の仕事を自動化する</div>
+<h2>毎日ログインして、クレジットをもらう。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">⏰ 毎朝、自動で回っている実例</span><ul>
+<li><b>Hi3D</b>：デイリーチェックインで <span class="hl">+10クレジット／日</span></li>
+<li><b>AutoSprite</b>：Daily Bonus で <span class="hl">+3クレジット／日</span>（今日使ったサービスの無料枠も、こうして貯まる）</li>
+<li><b>Meshy</b>：デイリーログインでクレジット付与（30日サイクルで日ごとに付与）</li></ul>
+<p style="margin-top:.3em">定期実行を予約しておけば、<span class="yl">寝ている間にもタスクが進む</span>。先生は毎朝、この回収をエージェントに任せている。</p></div>
+<div class="glass-card pink"><span class="t">🛡 任せ方のルールが大事</span><ul class="checks">
+<li>やること：ログイン、ボーナス受取、残高の確認だけ</li>
+<li>やらないこと：クレジットの消費・生成・購入は<span class="ac">しない</span></li>
+<li>報告：普段は静かに。ログインできなくなった時だけ知らせる</li></ul>
+<p style="margin-top:.3em">「何をさせないか」まで決めて渡すのが、運用を任せるコツ。</p></div>
+</div>
+<div class="banner yel">使い道は「作る」だけじゃない。<span class="yl">繰り返しの小さな仕事ほど、自動化が効く。</span></div>
+<aside class="notes">実例は2026-11-24から運用中。対象はHi3D／AutoSprite／Meshy。Tripoはデイリーボーナスが無いので対象外、という切り分けまで含めて実例。</aside>
+</section>
+
+<!-- オマケ2 競馬全体像 -->
+<section id="bonus-horse">
+<div class="kicker"><span class="no">🎁2</span>オマケ ─ 実例：スターホース牧場</div>
+<h2>1本のゲームの素材を、全部つないで調達した。</h2>
+<img class="heroimg" src="assets/horse_race.jpg" alt="スターホース牧場 レース画面（実スクショ）">
+<div class="grid3" style="margin-top:.5em">
+<div class="glass-card mint"><span class="t">🐴 3Dモデル</span><p>ChatGPT（画像）→ <span class="hl">Hi3D（3D化）</span> → ダウンロード → 軽量化・リグ → ゲームへ</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-hi3d">▶ Hi3Dの工程</a></p></div>
+<div class="glass-card pink"><span class="t">🎵 音楽</span><p><span class="ac">Gemini</span>でBGMを生成 → ゲームへ組み込み</p></div>
+<div class="glass-card yel"><span class="t">🎙 実況＋効果音</span><p><span class="yl">AI Studio</span>で実況29本、<span class="yl">ElevenLabs</span>で効果音15点 → レースに同期</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-audio">▶ 音の工程</a></p></div>
+</div>
+<aside class="notes">競馬ゲーム『スターホース牧場』が題材。コードだけでなく、モデル・音楽・声・効果音まで連携で揃えた実例として見せる。</aside>
+</section>
+
+<!-- オマケ3 Hi3D -->
+<section id="bonus-hi3d">
+<div class="kicker"><span class="no">🎁3</span>オマケ ─ ChatGPT → Hi3D → 組み込み</div>
+<h2>絵から、走る馬になるまで。</h2>
+<div class="shots">
+<figure><img src="assets/horse_check.png" alt="Hi3Dで生成した競走馬モデルの確認画面（実キャプチャ）"><figcaption>① Hi3D生成モデル（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/horse_mount.png" alt="馬にジョッキーを騎乗させた確認画面（実キャプチャ）"><figcaption>② ジョッキーを騎乗させる（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/horse_gallop_check.png" alt="ギャロップアニメーションの確認画面（実キャプチャ）"><figcaption>③ ギャロップ確認（実キャプチャ）</figcaption></figure>
+</div>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">STEP 1</span><span class="step-name">ChatGPT<br>馬とジョッキーを別々に描く</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 2</span><span class="step-name">Hi3D<br>画像から3D化・GLBで保存</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 3</span><span class="step-name">加工<br>軽量化・リグ・ギャロップ</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 4</span><span class="step-name">組み込み<br>Godotのレースへ</span></div>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">工夫：別々に生成する</span><p>馬＋ジョッキーを1枚で描くと、Hi3Dで脚や体が<span class="hl">癒着しやすい</span>。だから馬（横向き・騎手なし）とジョッキー（Tポーズ）を分け、ゲーム側で騎乗させて組む。</p></div>
+<div class="glass-card yel"><span class="t">実測</span><p>取得したGLBは馬・ジョッキーとも<span class="yl">数十MB級・200万ポリゴン級</span>。そのままではゲームに入らないので、軽量化とリグ付けが「つなぎ目」の仕事になる。</p></div>
+</div>
+<aside class="notes">生成は2026-11-22。ダウンロードはログイン後の正規の経路で取得。Web版への組み込みでは旧モデルへのフォールバック問題も起きたので、実機確認までが工程、という話もできる。</aside>
+</section>
+
+<!-- オマケ4 音 -->
+<section id="bonus-audio">
+<div class="kicker"><span class="no">🎁4</span>オマケ ─ 音も、全部連携で作る</div>
+<h2>音楽・実況・効果音の3本立て。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">🎵 Gemini → 音楽生成</span><p>Geminiの「音楽を作成」でシネマティックなインストBGMを生成。</p><ul><li>実例曲「BEYOND THE FIRST RIDGE」<span class="hl">2分59秒</span></li><li>静かな序奏 → 勇壮なクライマックス、ループ想定の構成を指定</li><li>生成曲はゲームのBGMとして組み込み（同じ工程で作ったSuno版ファンファーレも併用）</li></ul></div>
+<div class="glass-card pink"><span class="t">🎙 AI Studio → 実況生成</span><p>実況セリフ<span class="ac">29本</span>をTTSで生成し、レースに組み込んだ。</p><ul><li>声が毎回変わらないよう、<span class="ac">一度に生成して無音で分割</span>する方式</li><li>組み込み後は、発走・隊列・残り200m・着差など<span class="ac">レースの状態で再生を分岐</span></li><li>自動プレイ検証で、局面どおりに発火することを確認</li></ul></div>
+<div class="glass-card yel"><span class="t">🔊 ElevenLabs → SE生成</span><p>効果音は<span class="yl">全15点</span>を生成して組み込んだ。</p><ul><li>UI音8点：カーソル／決定／キャンセル／エラー／開閉／取得／レベルアップ 他</li><li>競馬SE7点：ゲート開放（5秒）／蹄音ループ（10秒）／大歓声（10秒）／拍手（12秒）／いななき／鞭／パドックの蹄音</li></ul></div>
+</div>
+<div class="banner pink">音は「1曲作って終わり」ではない。<span class="ac">局面に合わせて出し分ける仕組み</span>まで作るのが組み込みの仕事。</div>
+<aside class="notes">いずれも2026-11-24の実作業。実況の分割方式は千野の提案。SEは長さまで全点確認済み。BGMの組み込み版はファイルの所在の都合でSuno版を使った点は、聞かれたら正直に答える。</aside>
+</section>
+
+<!-- オマケ5 ディレクター -->
+<section id="bonus-director">
+<div class="kicker"><span class="no">🎁5</span>オマケ ─ 役割の変化</div>
+<h2>プログラマの代わりから、ディレクターの代わりへ。</h2>
+<table class="gt"><tr><th>段階</th><th>AIエージェントが担う仕事</th><th>人に残る仕事</th></tr>
+<tr><td>プログラマの代わり</td><td class="wrap">仕様どおりにコードを書く、直す、テストする</td><td class="wrap">仕様を決める、完成を判定する</td></tr>
+<tr><td>スタッフの代わり</td><td class="wrap">素材を作る（絵・3D・音楽・声・効果音）、ツールを操作する、毎日の運用を回す</td><td class="wrap">素材の良し悪しを選ぶ、工程を設計する</td></tr>
+<tr><td>ディレクターの代わり</td><td class="wrap">工程全体を計画し、道具と担当を割り振り、進捗を管理し、つなぎ目の不具合を切り分けて直す</td><td class="wrap"><span class="yl">何を作るか</span>を決める、<span class="yl">面白いかどうか</span>を判定する、公開の責任を持つ</td></tr></table>
+<div class="banner yel" style="font-size:1.12em">今日の実例が全部これを示している：人間がコードを書いた場面はほぼ無い。やったのは<span class="yl">企画・発注・選定・検証・判断</span> ─ ディレクターの仕事そのものだ。</div>
+<p class="lead" style="margin-top:.5em">だから学ぶべき力も変わる。コードを速く書く力より、<span class="hl">工程を設計する力、道具を選ぶ力、出てきたものを判定する力</span>。この授業で毎回やっている「発注文と完成条件」が、その訓練になっている。</p>
+<aside class="notes">締めの1枚。過度に断定せず「なりつつある」と言う。人の仕事が消えるのではなく、上流に移るという整理。学生の進路（プランナー・ディレクター志望）にも接続できる。</aside>
 </section>
 
 </div>
