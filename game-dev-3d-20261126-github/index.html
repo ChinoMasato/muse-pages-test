@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ゲーム開発｜2026.11.26｜肉付けループ ― 15分ステップで前に進める（3D）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+</style>
+
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section id="title"><div class="kicker"><span class="no">0</span>ゲーム開発 ― 3D</div><h1>肉付けループ<br>15分ステップで、確実に前に進める</h1><p class="lead">2026.11.26（木）ゲーム開発（3D）／ あさって金曜（11/27）に通し動画を撮影して提出し、ゲーム自体の完成度を評価します</p><aside class="notes">今日のテーマは「速く作る」こと。小さいステップを刻んで、pushで見える形にしながら積み上げる。</aside></section>
+<section><div class="kicker"><span class="no">1</span>金曜が本番</div><h2>あさっては通し動画の提出</h2><div class="glass-card mint"><span class="t">金曜（11/27）の提出</span><ul><li>タイトルから1周（結果が出るまで）を通して撮る</li><li>編集でごまかさない。詰まったら詰まったまま</li><li>長さの目安は1〜3分</li></ul></div><div class="glass-card yel"><span class="t">今日の仕事</span><p>金曜に撮れる状態を作る日です。新しい大きな機能ではなく、<b>今あるものを「通して遊べる形」に近づける</b>こと。</p></div><aside class="notes">金曜の動画で完成度を評価する。今日はその準備日だと全員に伝える。</aside></section>
+<section><div class="kicker"><span class="no">2</span>進め方</div><h2>肉付けループ ― 15分で1周する</h2><div class="timeline-bar"><div class="timeline-step"><div class="step-time">1</div><div class="step-name">決める<br>直す所を1つ</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">2</div><div class="step-name">直す<br>15分で収まる大きさ</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">3</div><div class="step-name">動かす<br>変わったか確認</div></div><div class="timeline-arrow">→</div><div class="timeline-step"><div class="step-time">4</div><div class="step-name">push<br>見える形で残す</div></div></div><div class="glass-card "><span class="t">なぜ小さく刻むのか</span><p>大きい変更は、壊れた時に原因が分からなくなる。15分ステップなら、壊れても直前の一つだけ戻せばいい。<b>小さいステップの積み重ねが、一番速い進み方</b>です。</p></div><aside class="notes">ループの4手を板書代わりに残す。ステップごとにpushが今日の絶対ルール。</aside></section>
+<section><div class="kicker"><span class="no">3</span>ステップの例</div><h2>15分ステップは、こんなに小さくて良い</h2><div class="glass-card mint"><span class="t">パラメータ調整も立派な1ステップ</span><ul><li>敵の速度を 1.2倍 にする／ジャンプの高さを変える</li><li>効果音を1つ足す／BGMを入れる</li><li>タイトルの文言・色を直す</li><li>スコア表示を出す／タイマーを出す</li><li>詰まる所の当たり判定を少し広げる</li></ul></div><div class="glass-card pink"><span class="t">大きくしない</span><p>「新システムを作る」は15分ステップではありません。今日は<b>今あるものの肉付け</b>に集中してください。</p></div><aside class="notes">パラメータ一つでも良い、と明言する。ペースを上げることが目的なら、小さいステップの方が回数が稼げる。</aside></section>
+<section><div class="kicker"><span class="no">4</span>手段について</div><h2>手段は問わない。ペースが大事</h2><div class="glass-card "><span class="t">AIでも、手作業でも、ハイブリッドでも良い</span><ul><li>AIに任せる部分があっても構いません</li><li>手で書く方が速い所は手で書いてください</li><li>ただし「何を変えたか」は自分で言えること。言えない変更は入れない</li></ul></div><div class="glass-card yel"><span class="t">評価されるのは結果</span><p>金曜に見るのは、通して遊べるかどうかと完成度です。作り方ではなく、<b>前に進んだ量と質</b>を見ます。</p></div><aside class="notes">AI必須ではないことをはっきり言う。ただし変更内容を説明できることが条件。</aside></section>
+<section><div class="kicker"><span class="no">5</span>pushのルール</div><h2>pushは「進捗の見える化」</h2><div class="glass-card mint"><span class="t">ステップごとにpushする</span><ul><li>15分ステップが終わるたびにpush</li><li>授業の終わりにまとめてpush、はしない</li><li>pushが止まっているチームは、詰まっている合図として見ます</li></ul></div><div class="glass-card "><span class="t">止まったら</span><p>15分考えて分からなければ、そのステップは飛ばして次の小さいステップへ。1か所で止まり続けないこと。</p></div><aside class="notes">pushの頻度そのものが今日のペースの指標になる。</aside></section>
+<section><div class="kicker"><span class="no">6</span>チーム状況 1/2</div><h2>3Dチームの現在地（GitHub実測・昨夜）</h2><table class="gt"><tr><th>チーム</th><th>作品</th><th>メンバー</th><th>勢い</th><th>最終commit</th><th>今日の最初の15分</th></tr><tr><td>3D-01</td><td>億万長者宇宙船</td><td>山川蓮司・吉原大貴・龍元大輝</td><td>■ 停止中</td><td>11-20</td><td>Unityプロジェクトを作り、モデル1体を置いてpush</td></tr><tr><td>3D-02</td><td>いつかの足場</td><td>三沢晃史・南蓮・花島響輝</td><td>未報告</td><td>―</td><td>リポジトリを作って、今あるものをpush</td></tr><tr><td>3D-03</td><td>Memorune</td><td>菊地柊・大田紘生・上田路美生</td><td>● 継続</td><td>11-24</td><td>ゲームオーバー画面を付ける</td></tr><tr><td>3D-04</td><td>G「重力レース」</td><td>遠藤誠也・塙瑛太・土田和輝・工藤颯太</td><td>● 継続</td><td>11-24</td><td>クリア判定を付ける</td></tr><tr><td>3D-05</td><td>単語ノベル</td><td>菅野凜・永野拳龍・西山幸太朗</td><td>■ 停止中</td><td>11-20</td><td>まずpushして再開する（5日止まっている）</td></tr><tr><td>3D-06</td><td>GolfBlackhole（VAMOS）</td><td>尾﨑隼人・齋藤結翔・松井杏介</td><td>● 継続</td><td>11-24</td><td>ゲームオーバーを付ける</td></tr></table><aside class="notes">未報告が2チーム（3D-02・3D-10）。停止中が4チーム。ここを今日動かす。</aside></section>
+<section><div class="kicker"><span class="no">7</span>チーム状況 2/2</div><h2>3Dチームの現在地（つづき）</h2><table class="gt"><tr><th>チーム</th><th>作品</th><th>メンバー</th><th>勢い</th><th>最終commit</th><th>今日の最初の15分</th></tr><tr><td>3D-07</td><td>Traitor Cooking</td><td>深栖巧翔・髙品裕紀・人見優季</td><td>● 継続</td><td>11-24</td><td>結果画面を付けて1周を閉じる</td></tr><tr><td>3D-08</td><td>SHOGI BLINK</td><td>五十嵐久遠・飛留間一吹・渡邉岳斗</td><td>■ 停止中</td><td>11-20</td><td>再開のpush＋スコア表示で要素9/9</td></tr><tr><td>3D-09</td><td>MATCH♡UNKNOWN</td><td>渡部壱心・井出成洋・テチュンウィ・粂内僚太</td><td>■ 停止中</td><td>11-20</td><td>再開のpush＋スコア表示</td></tr><tr><td>3D-10</td><td>Smashbump</td><td>小堀壯太・井澤紀玖・齊藤滉人</td><td>未報告</td><td>―</td><td>リポジトリを作って、今あるものをpush</td></tr><tr><td>3D-11</td><td>ELDEN MINI</td><td>岩村秋音・能崎慎吾・後藤匡哉</td><td>● 継続</td><td>11-24</td><td>勝敗のルールを1つ入れる</td></tr></table><div class="glass-card yel"><span class="t">各チームの「最初の15分」は決めてあります</span><p>表の右端が、今日の最初の一手です。まずそれを終わらせてpush。そこからループを回してください。</p></div><aside class="notes">最初の15分は各チーム分を個別に決めてある。迷ったら表に戻る。</aside></section>
+<section><div class="kicker"><span class="no">8</span>金曜の提出</div><h2>通し動画の撮り方</h2><div class="glass-card mint"><span class="t">撮るもの</span><ul><li>タイトルから始めて、1周（結果が出るまで）を通して撮る</li><li>編集でごまかさない</li><li>長さの目安は1〜3分</li></ul></div><div class="glass-card yel"><span class="t">今日の終わりに残すもの</span><ul><li>ステップのpushが複数回あること</li><li>金曜の撮影担当と撮る流れを決めたこと</li><li>「あと1手で通る」所が分かっていること</li></ul></div><aside class="notes">締め。金曜の撮影担当を今日決めさせる。</aside></section>
+</div></div>
+<button id="backbtn" class="backbtn" hidden></button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+</body>
+</html>
