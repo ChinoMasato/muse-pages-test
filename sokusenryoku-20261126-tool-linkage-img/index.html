@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>即戦力ゲームプログラミング ─ ツール連携｜Museから道具を呼び出す 2026.11.26</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" id="theme">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--main-color:#00ffcc;--accent-color:#ff00ff;--yellow:#ffea00;--bg-color:#05050a;--card-bg:rgba(15,15,30,.7);--border-color:#22223b}
+.reveal{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,rgba(255,0,255,.08) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(0,255,204,.08) 0px,transparent 50%);color:#f0f0f5;font-family:'Inter',"Yu Gothic","Meiryo",sans-serif}
+.reveal h1,.reveal h2,.reveal h3,.reveal h4{font-family:'DotGothic16',sans-serif;text-transform:none;letter-spacing:.05em}
+.reveal h1{color:var(--accent-color);text-shadow:0 0 20px rgba(255,0,255,.6);font-size:2.3em!important;line-height:1.25}
+.reveal h2{color:var(--main-color);text-shadow:0 0 15px rgba(0,255,204,.5);font-size:1.45em!important;margin:0 0 .35em!important;line-height:1.3}
+.reveal h3{font-size:1.02em!important;margin:0 0 .35em!important}
+.reveal p,.reveal li{line-height:1.55}
+.glass-card{background:var(--card-bg);border:2px solid var(--border-color);border-radius:12px;padding:.7em .9em!important;box-shadow:0 8px 32px 0 rgba(0,0,0,.37);margin:.25em 0;text-align:left;width:100%;box-sizing:border-box}
+.glass-card.mint{border-color:var(--main-color);background:rgba(0,255,204,.03)}
+.glass-card.pink{border-color:var(--accent-color);background:rgba(255,0,85,.03)}
+.glass-card.yel{border-color:var(--yellow);background:rgba(255,234,0,.03)}
+.glass-card .t{font-weight:bold;font-size:1.05em;display:block;margin-bottom:.2em}
+.mint .t,.hl{color:var(--main-color);font-weight:bold}
+.pink .t,.ac{color:var(--accent-color);font-weight:bold}
+.yel .t,.yl{color:var(--yellow);font-weight:bold}
+.glass-card p{margin:.2em 0 0;color:#ddd}
+.glass-card ul,.glass-card ol{margin:.2em 0 0 1.1em;color:#ddd}
+.glass-card li{margin:.12em 0}
+.kicker{font-family:'DotGothic16',sans-serif;font-size:.78em;color:var(--accent-color);letter-spacing:.12em;margin-bottom:.3em;align-self:flex-start}
+.kicker .no{display:inline-block;background:var(--accent-color);color:#05050a;padding:0 .45em;border-radius:4px;margin-right:.5em;font-weight:bold}
+.lead{font-size:1.02em;color:#ddd;margin:0 0 .55em!important;align-self:flex-start;text-align:left}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.8em;width:100%}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em;width:100%}
+.banner{width:100%;box-sizing:border-box;border-radius:8px;padding:.55em .9em;font-weight:bold;color:#fff;margin-top:.55em;text-align:center;line-height:1.55}
+.banner.mint{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.35)}
+.banner.pink{background:rgba(255,0,85,.08);border:1px solid rgba(255,0,85,.35)}
+.banner.yel{background:rgba(255,234,0,.07);border:1px solid rgba(255,234,0,.35)}
+.small{font-size:.88em;color:#aab}
+.reveal table.gt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92em;margin:.2em 0;background:rgba(0,0,0,.35);border:1px solid var(--border-color);border-radius:10px;overflow:hidden}
+.reveal table.gt th,.reveal table.gt td{border:none;border-bottom:1px solid var(--border-color);padding:.42em .7em;text-align:left;vertical-align:top;line-height:1.5}
+.reveal table.gt th{background:rgba(0,255,204,.1);color:var(--main-color);font-family:'DotGothic16',sans-serif;font-weight:normal}
+.reveal table.gt tr:last-child td{border-bottom:none}
+.reveal table.gt td:first-child{white-space:nowrap;color:var(--yellow);font-weight:bold}
+.reveal table.gt td.wrap{white-space:normal}
+.tag{display:inline-block;font-family:'DotGothic16',sans-serif;background:rgba(255,234,0,.15);border:1px solid var(--yellow);color:var(--yellow);border-radius:4px;padding:0 .35em;margin-right:.35em;font-size:.95em}
+.timeline-bar{display:flex;justify-content:space-between;align-items:stretch;margin:.3em 0 .5em;background:rgba(255,255,255,.02);padding:.45em;border-radius:10px;border:1px solid var(--border-color);width:100%;box-sizing:border-box}
+.timeline-step{text-align:center;padding:.35em;border-radius:6px;background:rgba(0,0,0,.5);border:1px solid var(--border-color);flex:1;display:flex;flex-direction:column;justify-content:center}
+.step-time{font-size:.85em;color:var(--accent-color);font-weight:bold;margin-bottom:2px;font-family:'DotGothic16',sans-serif}
+.step-name{font-size:.82em;font-weight:bold;line-height:1.35}
+.timeline-arrow{color:var(--main-color);font-weight:bold;font-size:1.2em;display:flex;align-items:center;justify-content:center;padding:0 .2em}
+.prompt{font-family:'Inter',"Yu Gothic",sans-serif;background:rgba(0,0,0,.55);border:1px dashed var(--main-color);border-radius:8px;padding:.5em .8em;color:#e8fffa;margin:.25em 0 0;line-height:1.6;font-size:.92em}
+.prompt::before{content:'▶ COPY';display:block;font-family:'DotGothic16',sans-serif;font-size:.72em;color:var(--main-color);letter-spacing:.15em;margin-bottom:.15em}
+.checks{list-style:none!important;margin:.2em 0 0!important;padding:0}
+.checks li{position:relative;padding-left:1.4em!important}
+.checks li::before{content:'□';position:absolute;left:0;color:var(--main-color)}
+.checks.ng li::before{content:none}
+.steps li::marker{color:var(--main-color);font-weight:bold}
+.jump{display:inline-block;font-family:'DotGothic16',sans-serif;font-size:.72em;font-weight:normal;color:#05050a!important;background:var(--main-color);border-radius:999px;padding:.05em .7em;margin:.1em .15em;text-decoration:none!important;white-space:nowrap;box-shadow:0 0 8px rgba(0,255,204,.45);vertical-align:middle;letter-spacing:.03em}
+.jump:hover{background:#fff;box-shadow:0 0 14px rgba(0,255,204,.9)}
+.backline{margin-top:.5em!important;text-align:center}.backline .jump{background:var(--accent-color);box-shadow:0 0 8px rgba(255,0,255,.45);font-size:.85em}
+.quicknav{position:fixed;top:10px;right:14px;z-index:50;display:flex;gap:8px}
+.quicknav a{font-family:'DotGothic16',sans-serif;font-size:clamp(12px,1vw,18px);color:#fff!important;text-decoration:none;background:rgba(15,15,30,.85);border:1px solid var(--accent-color);border-radius:6px;padding:4px 10px;box-shadow:0 0 8px rgba(255,0,255,.35)}
+.quicknav a:hover{background:var(--accent-color);color:#05050a!important}
+.backbtn{position:fixed;left:14px;bottom:14px;z-index:60;font-family:'DotGothic16',sans-serif;font-size:clamp(14px,1.25vw,24px);color:#05050a;background:var(--yellow);border:none;border-radius:8px;padding:.35em .9em;cursor:pointer;box-shadow:0 0 14px rgba(255,234,0,.6);max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:backPulse 1.6s ease-in-out 2}
+.backbtn:hover{background:#fff}
+.backbtn[hidden]{display:none}
+@keyframes backPulse{50%{box-shadow:0 0 26px rgba(255,234,0,1)}}
+.slack{background:#1a1d21;border:1px solid #3a3f45;border-radius:10px;text-align:left;overflow:hidden;font-family:"Yu Gothic","Meiryo",sans-serif;width:100%;box-sizing:border-box}
+.slack-h{background:#2c2f33;color:#d1d2d3;font-weight:bold;padding:.3em .7em;font-size:.82em}
+.slack-m{padding:.4em .8em;font-size:.8em;color:#d1d2d3;line-height:1.55;border-top:1px solid #2c2f33}
+.slack-name{display:block;font-weight:bold;color:#fff;margin-bottom:.1em}
+.slack .lnk{color:#1d9bd1;text-decoration:underline}
+.reveal-viewport{max-width:100%!important;max-height:100%!important}
+.reveal .slides{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;inset:0!important;margin:0!important;transform:none!important}
+.reveal .slides section{width:100%!important;height:100%!important;max-width:100%!important;max-height:96vh!important;box-sizing:border-box!important;padding:2.2vh 3.2vw!important;min-height:100%!important;top:0!important;left:0!important;display:flex!important;flex-direction:column!important;justify-content:safe center!important;align-items:center!important;overflow-y:auto!important;overflow-x:hidden!important;font-size:clamp(16px,min(2.15vw,3.9vh),46px)}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.timeline-bar{flex-wrap:wrap}.timeline-arrow{display:none}.reveal .slides section{justify-content:flex-start!important;font-size:15px}.reveal table.gt td:first-child{white-space:normal}.quicknav{flex-wrap:wrap;justify-content:flex-end;max-width:96vw}.reveal .slides section#title{padding-top:64px!important;justify-content:flex-start!important}}
+
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:.6em;width:100%;margin:.3em 0}
+.shots figure{margin:0}.shots img{width:100%;height:19vh;object-fit:cover;border-radius:10px;border:2px solid var(--border-color);display:block}
+.shots figcaption{font-size:.72em;color:#aab;margin-top:.25em;text-align:left}
+.shots.two{grid-template-columns:1fr 1fr}.shots.two img{height:24vh}
+.heroimg{width:100%;height:34vh;object-fit:cover;border-radius:12px;border:2px solid var(--main-color);display:block;box-shadow:0 0 18px rgba(0,255,204,.35)}
+.sideimg{width:100%;height:100%;max-height:52vh;object-fit:cover;border-radius:12px;border:2px solid var(--border-color);display:block}
+.charimg{height:30vh;border-radius:12px;border:2px solid var(--yellow);background:rgba(255,234,0,.05);display:block;margin:0 auto;padding:.3em}
+.flowimg{width:100%;height:30vh;object-fit:cover;border-radius:12px;border:2px solid var(--accent-color);display:block;box-shadow:0 0 18px rgba(255,0,255,.3)}
+.layer-view{position:relative;width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);overflow:hidden;background:#0a0f1e}
+canvas.relief-view{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;background:#0a0f1e}
+img.plain-art{width:100%;aspect-ratio:16/9;flex:none;border-radius:12px;border:2px solid var(--border-color);display:block;object-fit:cover}
+.layer-hero{width:46%;max-height:34vh;margin:0 auto;border-color:var(--main-color);box-shadow:0 0 18px rgba(0,255,204,.35)}
+@media (max-width:760px){.shots{grid-template-columns:1fr}.shots img,.shots.two img{height:auto}}
+</style>
+</head>
+<body>
+<button id="backbtn" class="backbtn" type="button" hidden>◀ 戻る</button>
+<nav class="quicknav"><a href="#/news-ship">📰 ニュース</a><a href="#/map">🗺 連携マップ</a><a href="#/flow">🎮 演習フロー</a><a href="#/autosprite">👾 AutoSprite</a><a href="#/proof1">🧪 実証結果</a><a href="#/order">📋 発注文</a><a href="#/check">✅ 提出</a><a href="#/bonus">🎁 オマケ</a></nav>
+<div class="reveal">
+<div class="slides">
+
+<!-- 00 表紙 -->
+<section id="title">
+<p style="font-family:'DotGothic16',sans-serif;color:var(--main-color);font-size:.85em;letter-spacing:.12em;margin:0 0.4em;width:100%;text-align:center">2026.11.26（木）1限　4D選・626教室　担当：千野正登（ゲームクリエイター科）　【比較版：イメージ図あり】</p>
+<div class="grid2" style="align-items:center">
+<div>
+<p style="color:#aab;margin:0 0.2em">授業タイトル</p>
+<h1 style="margin-bottom:.2em!important;font-size:2.6em!important">即戦力ゲーム<br>プログラミング</h1>
+<p style="font-size:1.2em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.2em 0.45em">今日のテーマ：ツール連携<br>Museから、道具を呼び出す。</p>
+<div class="glass-card mint"><span class="t">🎯 今日の到達点</span><p>1つのAIで完結させない。<span class="hl">ChatGPTでドット絵を描き → AutoSpriteでアニメ化し → ゲームにする</span>までを、<span class="yl">1本のフローとしてつないで通す</span>。</p></div>
+</div>
+<div><img class="plain-art" src="assets/hub_diffuse.webp" alt="Museが道具を指揮するイラスト"><p class="small" style="text-align:center;margin-top:.3em">Museは司令塔。道具を呼び出し、成果物をつなぐ。</p></div>
+</div>
+<aside class="notes">表紙。授業タイトルを大きく。内容は11/23の次世代ゲーム制作手法（3D）と同じツール連携。即戦力では、11/12に作った自分のゲームへつなぐ前提で進める。</aside>
+</section>
+
+<!-- 01 前回 -->
+<!-- ニュース1 Claude Ship -->
+<section id="news-ship">
+<div class="kicker"><span class="no">📰</span>今週のニュース ① ─ ビジネス＋IT 2026.11.24</div>
+<h2>PRのレビューから承認まで、AIに丸投げ。</h2>
+<p class="lead">アンソロピックが11月23日（米国時間）、<span class="hl">「Claude Ship」</span>をベータ提供開始。プルリクエスト（PR）のレビュー・修正・<span class="ac">承認の判断まで</span>をAIエージェントに任せる仕組み。対象はClaudeのTeam／Enterpriseプラン、GitHubリポジトリ。</p>
+<img class="heroimg" style="height:21vh" src="assets/news_ship.jpg" alt="AIロボットがプルリクエストをレビューして承認するイメージ図（ChatGPT生成）">
+<div class="grid3">
+<div class="glass-card mint"><span class="t">① Code Review（提供中）</span><p>PRをコードベース全体に照らして多角的に調べ、指摘を検証・分類して投稿。深さは Quick／Standard／Deep からリポジトリごとに選べる。</p></div>
+<div class="glass-card pink"><span class="t">② PR Steward（ベータ）</span><p>CIの失敗・競合・レビュー指摘に対応し、プッシュのたびに「何を変えたか／どう戻すか」をコメント。<span class="ac">承認とマージはしない</span>設計。</p></div>
+<div class="glass-card yel"><span class="t">③ Claude Approvals（ベータ）</span><p>チームがファイルに書いた<span class="yl">承認ポリシー</span>を適用し、定型的な変更はAIが自ら承認。重要な場面だけ人に回す。「より賢いCODEOWNERS」と説明されている。</p></div>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">使い方と実績</span><ul><li>開発者は新コマンド <span class="hl">/ship</span>：実行するとClaudeがプッシュ→PR作成→レビュー→失敗チェックへの対応まで進める</li><li>アンソロピック社内では、マージされたPRが<span class="hl">2倍超</span>に増え、差し戻し率は<span class="hl">40％以上減</span>（6〜9月）</li><li>管理者はリポジトリごとの有効化・月次支出上限を設定可能。料金はトークン従量課金</li></ul></div>
+<div class="glass-card yel"><span class="t">「人は不要か？」への答え</span><p>記事の見出しの問い。でも中身を読むと、承認の<span class="yl">ルールを書くのは人</span>で、推奨の始め方も「まず観察のみのモードで信頼できてから必須化」。つまり人の仕事が消えるのではなく、<span class="yl">チェック係からルール設計者へ</span>上がっている。今日のオマケ「ディレクター論」に直結する。</p></div>
+</div>
+<p class="small">出典：ビジネス＋IT「PRのレビューから承認までAIに丸投げ　アンソロピック『Claude Ship』、人は不要か」（2026/11/24） https://www.sbbit.jp/article/cont1/188696 ※後半は会員限定のため、紹介は公開部分に基づく</p>
+<aside class="notes">授業の冒頭で紹介。ポイントは「承認までAIが進んだ」ことと、「それでもポリシーを書く人・観察モードで信頼を作る手順が残る」ことの両方。</aside>
+</section>
+
+<!-- ニュース2 Code Mode -->
+<section id="news-codemode">
+<div class="kicker"><span class="no">📰</span>今週のニュース ② ─ ビジネス＋IT 2026.11.19</div>
+<h2>Claude Code「Code Mode」─ AIがJSを書いてツール連携。</h2>
+<p class="lead">アンソロピックが11月12日、Claude Code v2.1.323に実験機能<span class="hl">「Code Mode」</span>を追加。これは、まさに今日のテーマ<span class="ac">「ツール連携」の新しい実装方式</span>だ。</p>
+<img class="heroimg" style="height:21vh" src="assets/news_codemode.jpg" alt="AIロボットがコードの流れで複数の道具を一括操作するイメージ図（ChatGPT生成）">
+<div class="grid2">
+<div class="glass-card pink"><span class="t">従来：1つずつ呼ぶ</span><ul><li>コマンド実行・ファイル編集などのツールを<span class="ac">1回ずつ</span>呼び、結果を読んで次を判断</li><li>工程が増えるたびにAIとの通信往復が発生</li><li>検索で拾った大量の不要なログまでAIの記憶領域（コンテキスト）に入り、<span class="ac">遅く・高く</span>なる</li></ul></div>
+<div class="glass-card mint"><span class="t">Code Mode：プログラムで一括実行</span><ul><li>指示を受けると、Claudeが裏側で<span class="hl">JavaScriptのプログラムを書いて実行</span></li><li>独立したコマンドの並行処理や、前のツールの結果を次のツールへ渡す連携を、1スクリプトで完結</li><li>データの選別（フィルタリング）をJSの中で行い、AIに返すのは<span class="hl">「編集したファイルのパス」「テスト結果」など判断に必要な分だけ</span> → トークン削減</li></ul></div>
+</div>
+<div class="grid2">
+<div class="glass-card yel"><span class="t">具体例（記事より）</span><p>「設定値を書き換えて」と頼むと、AIが書いたコードが対象ファイルを検索してパスを特定し、修正し、テストを実行するところまでを一気に処理する。編集差分は従来どおり画面に出て、生成されたJS自体も <span class="yl">Ctrl+O</span> の履歴ビューアで監査できる。</p></div>
+<div class="glass-card mint"><span class="t">注意点</span><ul class="checks"><li>現時点では実験機能で、初期設定は無効（記事時点）</li><li>対応はネイティブ版Claude Codeと対応モデル、ターミナル環境。デスクトップアプリやVS Code拡張などは対象外とされる</li><li>企業利用では、権限モードごとにセキュリティチェックのタイミングが変わる点が焦点</li></ul></div>
+</div>
+<div class="banner mint">誤解しないでほしい：今日の演習でも、<span class="hl">ツールを呼び出すのは最初からエージェントの仕事</span>だ。人がやるのは、連携の設計・発注・検証。Code Modeは、その呼び出し方自体が「1回ずつ対話」から「プログラムを書いて一括実行」に進化した段階だ。</div>
+<p class="small">出典：ビジネス＋IT「Claude Codeに実験機能『Code Mode』、AIがJavaScriptでツール連携し作業自動化」（2026/11/19） https://www.sbbit.jp/article/cont1/188555 ※後半は会員限定のため、説明は公開部分に基づく</p>
+<aside class="notes">今日の本編（連携3層・演習フロー）への橋渡しに使う。フィルタリングの発想は、学生の発注文でも同じ（全部返させるな、必要な結果だけ返させよ）。</aside>
+</section>
+
+<section id="recap"><div class="kicker"><span class="no">01</span>前回の復習</div>
+<h2>前回まで：Museで作り、見た目を最大化した。</h2>
+<div class="shots">
+<figure><img src="assets/rpg_village.jpg" alt="HD-2D RPG 星屑の村の村画面（実スクショ）"><figcaption>HD-2D RPG『星屑の村』村画面 ─ Museで制作（実スクショ）</figcaption></figure>
+<figure><img src="assets/nova_gameplay.jpg" alt="SIDE NOVA プレイ画面（実スクショ）"><figcaption>3Dシューティング『SIDE NOVA』─ 授業当日に制作（実スクショ）</figcaption></figure>
+<figure><img src="assets/horse_race.jpg" alt="スターホース牧場 レース画面（実スクショ）"><figcaption>競馬ゲーム『スターホース牧場』レース ─ 実スクショ</figcaption></figure>
+</div>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">🎮 11/12 MAKE</span><p>Museでゲームを作り、<span class="hl">Windowsのexe</span>をビルドした。提出は5名まで集まった。</p></div>
+<div class="glass-card pink"><span class="t">✨ 11/19 LOOK</span><p>Museの特徴を学び、<span class="ac">Godotの見た目最大化</span>を発注文で頼んだ。</p></div>
+<div class="glass-card yel"><span class="t">📦 DELIVER</span><p>#4dプログラマ課題（11/19）：最大化版の提出は<span class="yl">まだ2名</span>。今日の演習と並行して回収する。</p></div>
+</div>
+<div class="banner mint">前回の学び：可能性は「賢さ」ではなく<span class="hl">「道具を足せるか」</span>で決まる。今日は足し方を3種類に増やす。 <a class="jump" href="#/map">▶ 03 連携マップ</a></div>
+<aside class="notes">スクショはすべて実際の制作物（次世代と共通の実証）。4D側の提出実績は11/12が5名、11/19最大化が2名という実数で共有する。</aside>
+</section>
+
+<!-- 02 論点 -->
+<section id="thesis"><div class="kicker"><span class="no">02</span>今日の論点</div>
+<h2>「どのAIを使うか」ではなく、「どうつなぐか」。</h2>
+<p class="lead">1つのツールで全部やろうとすると、どこかで詰まる。絵が得意なAI、動きが得意なサービス、実装が得意なエージェント ─ <span class="hl">工程ごとに最適な道具を選び、成果物をバトンとして渡す</span>のが連携設計だ。</p>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">素材</span><span class="step-name">企画・絵・音<br>生成AI</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">変換</span><span class="step-name">アニメ化・形式変換<br>専門ツール</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">実装</span><span class="step-name">ゲームに組み込む<br>Godot / Web</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">検証</span><span class="step-name">遊んで直す<br>ビルド・共有</span></div>
+</div>
+<img class="flowimg" src="assets/pixel-flow.jpg" alt="スプライトシートからゲーム画面になるドット絵のイラスト">
+<p class="small">▲ 今日の演習のイメージ：スプライトシート（左）が、タイルで組んだゲーム画面（右）になる。</p>
+<aside class="notes">つなぎ目で何が起きるか（形式・サイズ・命名・クレジット）を体で覚えるのが目的。</aside>
+</section>
+
+<!-- 03 マップ -->
+<section id="map"><div class="kicker"><span class="no">03</span>連携マップ</div>
+<h2>Museの連携は、3層ある。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">① インストール型</span><p><span class="hl">環境に入れて使う</span></p><p>Godot / Blender / Python / ffmpeg。自分のLinuxに道具を足す。前回の型。</p><p style="margin-top:.3em"><a class="jump" href="#/layer1">▶ 04 第1層</a></p></div>
+<div class="glass-card pink"><span class="t">② 標準連携型</span><p><span class="ac">つなげばすぐ使える</span></p><p>GitHub / Slack / Gmail / Drive / Calendar / Sheets。Museの標準機能。</p><p style="margin-top:.3em"><a class="jump" href="#/layer2">▶ 05 第2層</a></p></div>
+<div class="glass-card yel"><span class="t">③ ブラウザ操作型</span><p><span class="yl">サイトを開いて使う</span></p><p>ChatGPT / AI Studio / Gemini / AutoSprite。今日の主役。</p><p style="margin-top:.3em"><a class="jump" href="#/layer3">▶ 06 第3層</a></p></div>
+</div>
+<img class="plain-art layer-hero" src="assets/hub_diffuse.webp" alt="Museが道具を指揮するイラスト">
+<div class="banner pink">層が上がるほど「相手に合わせる」要素が増える。①は自由、②は決まった窓口、③は画面と規約に合わせる。</div>
+<aside class="notes">この1枚が今日の地図。以降、①②を短く確認し、③に時間を割く。</aside>
+</section>
+
+<!-- 04 第1層 -->
+<section id="layer1"><div class="kicker"><span class="no">04</span>第1層 ─ インストール型</div>
+<h2>インストールして使う。自由度は最大。</h2>
+<p><span class="tag">Godot</span><span class="tag">Blender</span><span class="tag">Python</span><span class="tag">ffmpeg</span><span class="tag">ImageMagick</span><span class="tag">コンパイラ</span><span class="tag">ブラウザ</span></p>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">できること</span><ul><li>モデル生成・変換（.glb /.fbx）</li><li>画像の切り抜き・リサイズ・形式変換</li><li>ビルド、テスト、動画書き出しまで自動化</li></ul></div>
+<div class="glass-card yel"><span class="t">連携のコツ</span><ul><li>「どのアプリで、何を入れて、何を出すか」を発注文に書く</li><li>入出力の<span class="yl">ファイル形式と置き場所</span>を決めて渡す</li><li>検証方法（スクショ／テスト）までセットで頼む</li></ul></div>
+</div>
+<div class="banner mint">次世代ゲーム制作手法（3D）では Godot + Blender がこの層だった。即戦力でも、最後のゲーム化とexe化はこの層で受ける。</div>
+<aside class="notes">短く。演習の出口も結局この層に戻ってくることを伝える。</aside>
+</section>
+
+<!-- 05 第2層 -->
+<section id="layer2"><div class="kicker"><span class="no">05</span>第2層 ─ 標準連携</div>
+<h2>標準連携は、つなげばすぐ使える。</h2>
+<table class="gt"><tr><th>サービス</th><th>Museからできること</th><th>制作で効く場面</th></tr>
+<tr><td>GitHub</td><td class="wrap">リポジトリを読む／課題を実装／pushする</td><td class="wrap">現行プロジェクトへの合流、版管理</td></tr>
+<tr><td>Slack</td><td class="wrap">チャンネルを読む／下書き・投稿（承認あり）</td><td class="wrap">課題確認、提出、連絡の整理</td></tr>
+<tr><td>Gmail / Calendar</td><td class="wrap">メール検索・下書き、予定の確認・作成</td><td class="wrap">締切管理、調整</td></tr>
+<tr><td>Drive / Sheets</td><td class="wrap">資料を読む、表に集計する、文書を作る</td><td class="wrap">仕様書・進捗表・発表資料</td></tr></table>
+<div class="shots two">
+<figure><canvas class="relief-view" data-diffuse="assets/github_R_diff.webp?v=1" data-norm="assets/github_R_norm.webp?v=1" data-depth="assets/github_depth.png?v=1" aria-label="githubの深度つきイラスト"></canvas><figcaption>GitHub連携：AIが開発メンバーとして合流する</figcaption></figure>
+<figure><canvas class="relief-view" data-diffuse="assets/google_R_diff.webp?v=1" data-norm="assets/google_R_norm.webp?v=1" data-depth="assets/google_depth.png?v=1" aria-label="googleの深度つきイラスト"></canvas><figcaption>Google連携：Drive・Gmail・Sheetsが文脈になる</figcaption></figure>
+</div>
+<div class="banner yel">連携＝「文脈と置き場所」を渡すこと。送信・公開など外向きの操作は、必ず人の承認を挟む。</div>
+<aside class="notes">実例：この授業準備自体、Slack #4dプログラマと #3dチャンネルの過去ログを読んで作っている。パスワードはセキュアストア経由で、チャットに貼らない。</aside>
+</section>
+
+<!-- 06 第3層 -->
+<section id="layer3"><div class="kicker"><span class="no">06</span>第3層 ─ ブラウザ操作</div>
+<h2>ブラウザ操作が、Museはかなり得意。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">💪 なぜ強いのか</span><ul><li>開く・読む・入力する・押す・上げ下げする ─ 人の操作をそのまま再現できる</li><li>専用連携がなくても、<span class="hl">Web画面がある限り使える</span></li><li>複数サイトをまたぐ手順をつなげられる</li></ul></div>
+<div class="glass-card pink"><span class="t">⚠ 弱みと注意</span><ul><li>ログイン・本人確認（MFA）は<span class="ac">本人がやる</span>。パスワードを貼らない</li><li>画面変更・制限・クレジット消費は相手次第。途中で止めて確認する設計に</li><li>課金・公開・送信の直前は必ず自分が確認</li></ul></div>
+</div>
+<div class="banner pink" style="font-size:1.15em">合言葉：「操作は任せる、ログインと課金と公開は自分」</div>
+<aside class="notes">CAPTCHAやログインで止まることはある。そこは人の担当範囲として引き取り、済んだらエージェントに返す分担が現実解。</aside>
+</section>
+
+<!-- 07 AIを呼ぶ -->
+<section id="aicall"><div class="kicker"><span class="no">07</span>ブラウザ経由で他のAIを呼ぶ</div>
+<h2>他のAIも、「部下の部下」として使える。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">ChatGPT</span><p><span class="hl">絵と相談役</span></p><p>画像生成（ドット絵キャラ／背景チップ）、企画の壁打ち。画像生成まで実機検証済み（2026-11-22）。</p></div>
+<div class="glass-card pink"><span class="t">Google AI Studio</span><p><span class="ac">Geminiで一気に作る</span></p><p>長いコード生成を頼める。HTMLゲーム全文の生成・回収まで検証済み（2026-11-22）。</p></div>
+<div class="glass-card yel"><span class="t">Gemini（Web）</span><p><span class="yl">調べ物と下書き</span></p><p>要約、翻訳、アイデア出し。ブラウザで開けるAIは原則どれも使える。</p></div>
+</div>
+<div class="banner mint">なぜMuse経由にするのか？ 生成して終わりではなく、<span class="hl">保存・変換・組み込み・検証まで自動でつなげるため</span>。ツールを単体で使うと、工程はそのツールのところで切れてしまう。エージェント経由なら、呼び出しから組み込みまでが1本の流れになる。</div>
+<aside class="notes">検証済みの範囲だけ断定する。制限や可否はアカウント・時期で変わるので画面表示を正とする。</aside>
+</section>
+
+<!-- 08 演習フロー -->
+<section id="flow"><div class="kicker"><span class="no">08</span>今日の演習 ─ 全体フロー</div>
+<h2>素材からゲームまで、1本つなぐ。</h2>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">STEP 1</span><span class="step-name">ChatGPT<br>背景チップ</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 2</span><span class="step-name">ChatGPT<br>キャラ1体</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 3</span><span class="step-name">AutoSprite<br>アニメ化</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 4</span><span class="step-name">Muse<br>ゲーム化</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 5</span><span class="step-name">遊んで<br>直す</span></div>
+</div>
+<img class="flowimg" src="assets/pixel-flow.jpg" alt="スプライトシートからゲーム画面になるドット絵のイラスト">
+<div class="grid2">
+<div class="glass-card mint"><span class="t">進め方</span><p><b>標準：Muse経由。</b>工程ごとの呼び出し・保存・組み込みは、全部エージェントに発注する。<br><b>詰まった時だけ：</b>止まった工程の画面を人が見て原因を確認する（切り分け）。操作の続きはエージェントに戻すこと。人が担うのは、最初から決まっている<span class="hl">ログイン・課金・公開</span>だけだ。</p></div>
+<div class="glass-card yel"><span class="t">今日の完成条件</span><p>キャラが<span class="yl">アニメーションして動き</span>、背景チップが敷かれ、キー操作で遊べる画面を<span class="yl">スクショで示せる</span>こと。</p></div>
+</div>
+<aside class="notes">時間目安：説明25分、STEP1-2で25分、STEP3で25分、STEP4-5で35分、共有10分。</aside>
+</section>
+
+<!-- 09 STEP1-2 -->
+<section id="dot"><div class="kicker"><span class="no">09</span>STEP 1-2 ─ ChatGPTでドット絵</div>
+<h2>背景チップとキャラを描く。</h2>
+<div class="grid2">
+<div>
+<div class="glass-card mint"><span class="t">🗺 背景チップ用プロンプト例</span><div class="prompt">16bit風ドット絵のタイルチップセットを作ってください。1タイル=32×32px相当で分割できる構図。含めるもの：草地、土、石畳、水辺の岸。色味とドットの粒度を統一し、継ぎ目が目立たないように。キャラクターや文字は入れない。</div></div>
+<div class="glass-card pink" style="margin-top:.6em"><span class="t">👤 キャラ用プロンプト例（重要）</span><div class="prompt">ドット絵のゲームキャラクターを1体、全身で描いてください。正面を向いた直立ポーズ、全身が切れずに入る。背景は単色（白）で輪郭をはっきり。色数は少なめ、シルエットは単純に。武器やマントなどの細い揺れ物は付けない。※このままAutoSpriteに渡します</div></div>
+</div>
+<div><img class="charimg" src="assets/hero.png" alt="ChatGPTで生成した検証用ドット絵キャラ（実物）"><p class="small" style="text-align:center;margin-top:.3em">▲ 実際の検証用キャラ（ChatGPT生成 → 背景除去）verify_hero_01<br>剣＋盾＋マント付き = あえての「崩れやすい例」。今日はもっと単純に。</p>
+<div class="banner yel">キャラの条件は「描きやすさ」ではなく<span class="yl">「アニメ化しやすさ」</span>で決める。</div></div>
+</div>
+<aside class="notes">検証知見：入力は512〜1024px推奨、背景とキャラの分離が明確なこと、複雑な衣装・小物は一貫性を崩す。</aside>
+</section>
+
+<!-- 10 AutoSprite -->
+<section id="autosprite"><div class="kicker"><span class="no">10</span>STEP 3 ─ AutoSprite（autosprite.io）</div>
+<h2>1枚を、アニメーションにする。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">手順（ゲート方式）</span><ol class="steps"><li><b>アップロード</b> ─ キャラ画像を上げる（プロンプト生成は使わない）</li><li><b>基準ビュー確認</b> ─ 顔・配色・比率が原画と一致するか見る。崩れていたら画像を直す</li><li><b>walkから生成</b> ─ 一番ごまかしが利かない動きで先に判定</li><li><b>書き出し</b> ─ PNGシート＋JSONアトラス＋個別フレームを保存</li></ol></div>
+<div><img src="assets/hero-dark.png" alt="検証用キャラを暗背景に置いたプレビュー（実物）" style="width:100%;height:22vh;object-fit:contain;border-radius:12px;border:2px solid var(--border-color);background:#111;display:block"><p class="small" style="text-align:center;margin-top:.25em">▲ 透過チェックは暗・明の両背景で（実物の検証プレビュー）</p>
+<div class="glass-card pink"><span class="t">⚠ 無料枠の配分がすべて</span><p>新規は<span class="ac">15クレジット</span>、1アニメ＝<span class="ac">5クレジット</span> → <b>3アニメまで、再生成の余裕はゼロ</b>。推奨：<span class="hl">walk → run → idle</span>。8方向パック（15で全額）など高額メニューを先に押さない。※仕様は当日の画面表示を正とする。</p></div></div>
+</div>
+<aside class="notes">配分は検証手順書（2026-11-20）そのもの。walk不合格なら残りを消費せず止め、入力を単純化して作り直す。止める判断も学び。</aside>
+</section>
+
+<!-- 11 STEP4-5 -->
+<section id="build"><div class="kicker"><span class="no">11</span>STEP 4-5 ─ ゲーム化して、遊んで直す</div>
+<h2>Museに渡して、ゲームにする。</h2>
+<div class="shots two">
+<figure><img src="assets/rpg_battle.jpg" alt="HD-2D RPG 戦闘画面（実スクショ）"><figcaption>組み込み先のイメージ①：HD-2D RPG 戦闘（実スクショ）</figcaption></figure>
+<figure><img src="assets/nova_boss.jpg" alt="SIDE NOVA ボス戦（実スクショ）"><figcaption>組み込み先のイメージ②：SIDE NOVA ボス戦（実スクショ）</figcaption></figure>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">📦 Museに渡す4点セット</span><ul class="checks"><li>背景チップ画像</li><li>スプライトシートPNG ＋ JSONアトラス</li><li>ゲーム仕様（視点／操作／ゴールを1画面で）</li><li>完成条件（下の発注文テンプレート）</li></ul><p style="margin-top:.3em">Godot要点：AnimatedSprite2D、Filter＝Nearest、Mipmaps＝Off、目安12fps、左向きは flip_h。</p></div>
+<div class="glass-card yel"><span class="t">🔍 遊んで直す</span><ul class="checks"><li>停止＝idle、移動＝walk、ダッシュ＝run に切り替わるか</li><li>足元が震えないか、左右反転で崩れないか</li><li>背景チップの継ぎ目が目立たないか</li><li>おかしい所は「素材／取り込み／コード」に分けてから直させる</li></ul></div>
+</div>
+<aside class="notes">Webで作ってもよい。完成条件を満たす方を選ぶ。exe化するならGodot＋Windowsビルドが本命。</aside>
+</section>
+
+<!-- 実証1 -->
+<section id="proof1"><div class="kicker"><span class="no">実証</span>先生が先に全部回してみた ─ ChatGPT → AutoSprite</div>
+<h2>フローは、実際に回った。</h2>
+<div class="grid2">
+<div><div class="shots two" style="margin-bottom:.4em">
+<figure><img src="assets/result_char.png" alt="ChatGPTが生成したドット絵キャラ（実物）" style="height:20vh;object-fit:contain;background:#fff"><figcaption>ChatGPT生成キャラ（実物）</figcaption></figure>
+<figure><img src="assets/result_tiles.jpg" alt="ChatGPTが生成したタイルセット（実物）" style="height:20vh;object-fit:cover"><figcaption>ChatGPT生成タイル（実物）</figcaption></figure>
+</div>
+<div class="glass-card mint"><span class="t">⏱ 実測（2026-11-23、授業前）</span><ul class="checks"><li>ChatGPT：2点の生成＋ダウンロードまで <b>約3分</b>。制限表示なし</li><li>キャラは「白背景・武器なし」の指示どおり → 背景除去も縁の白だけ抜けば済んだ</li><li>AutoSprite：walk生成 <b>約2分</b>、消費は表示どおり <b>5クレジット</b>（残高13→8で確認）</li></ul></div></div>
+<div><img src="assets/walk_anim.gif" alt="AutoSpriteが生成したwalkアニメーション（実物、ループ再生）" style="height:24vh;object-fit:contain;border-radius:12px;border:2px solid var(--border-color);background:#181c2c;display:block;margin:0 auto"><p class="small" style="text-align:center;margin-top:.25em">▲ 生成されたwalk（実物・25フレーム）</p>
+<div class="glass-card yel"><span class="t">📏 数値でも判定した</span><p>フレーム間の高さのばらつき <span class="ac">3.2%</span>、足元位置のブレ <span class="ac">0.46px</span>。目視だけでなく測れる。<br>⚠ 新発見：<b>シートの無料ダウンロードは月2回まで</b>。生成（クレジット）とダウンロード（月2回）は別枠。</p></div></div>
+</div>
+<aside class="notes">全部、今日の授業の前に実機で回した実物。クレジット残高は先生のアカウントの実測値（使い始めの残高は人によって違う）。</aside>
+</section>
+
+<!-- 実証2 -->
+<section id="proof2"><div class="kicker"><span class="no">実証</span>ゲーム化 ─ ハマりどころと直し方</div>
+<h2>歩かせたら、潰れた。測って直した。</h2>
+<div class="grid2">
+<div><video src="assets/gameplay.mp4" autoplay loop muted playsinline style="width:100%;border-radius:12px;border:2px solid var(--border-color);display:block"></video><p class="small" style="text-align:center;margin-top:.25em">▲ 検証ゲーム（実物）。遊べる版：chinomasato.github.io/muse-pages-test/flow-test-20261123/</p>
+<div class="glass-card mint"><span class="t">🎯 教訓</span><p>シートの1フレームは256×256、でもキャラ本体は <span class="ac">110×192</span> だけ。余白ごと縮めると潰れる。<b>「写っている範囲」に合わせて切り出す</b>のが正解（Godotなら AtlasTexture の Region）。</p></div></div>
+<div><div class="shots two">
+<figure><img src="assets/game_squish.png" alt="横に潰れたキャラ（実際のバグ画面）" style="height:19vh;object-fit:contain;background:#111"><figcaption>✕ 潰れた（実際の画面）</figcaption></figure>
+<figure><img src="assets/game_fixed.png" alt="切り出しを直したゲーム画面" style="height:19vh;object-fit:cover"><figcaption>○ 切り出し修正後</figcaption></figure>
+</div>
+<div class="glass-card pink"><span class="t">もう1つの実測</span><p>ChatGPTのタイルは見た目きれいなグリッドでも、<b>間隔が完全には均一でない</b>。等分で切り出すとずれる ─ 境界を見て切り出すこと。</p></div></div>
+</div>
+<aside class="notes">バグ画面は実際に起きたもの。「素材が悪い」で片づけず、取り込み側の切り出しを疑うのが切り分けの実例。</aside>
+</section>
+
+<!-- 実証3 -->
+<section id="proof3"><div class="kicker"><span class="no">実証</span>最終工程 ─ Godotでexe化</div>
+<h2>フローの終点は、Windowsのexe。</h2>
+<div class="shots two">
+<figure><img src="assets/godot_walk.png" alt="Godot版で歩くキャラ（実キャプチャ）" style="height:24vh;object-fit:cover"><figcaption>Godot版：歩行中（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/godot_idle.png" alt="Godot版で停止するキャラ（実キャプチャ）" style="height:24vh;object-fit:cover"><figcaption>Godot版：停止＝正面の待機絵に切替</figcaption></figure>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">🛠 Godot側の実装ポイント</span><ul class="checks"><li>AnimatedSprite2D ＋ AtlasTextureで25フレームを登録、12fps・ループ</li><li>Regionはキャラ本体の範囲（70,28／120×200）─ Web版の「潰れ」と同じ教訓がここでも効く</li><li>Filter＝Nearest、停止中は正面絵の別スプライトに切替、左向きは flip_h</li></ul></div>
+<div class="glass-card yel"><span class="t">📦 書き出し結果（実測）</span><ul class="checks"><li>Windows向けリリース書き出し成功：<b>単体exe・約82MB</b>（素材同梱）</li><li>プロジェクト一式を渡せば、同じ手順で自分のゲームもexe化できる</li><li>提出は前回どおり「exe＋スクショ」を #4dプログラマのスレッドへ</li></ul></div>
+</div>
+<aside class="notes">キャプチャはGodot実機（仮想画面）でキー入力を再現して撮ったもの。exe自体のWindows実機起動は各自のPCで確認すること。</aside>
+</section>
+
+<!-- 12 発注文 -->
+<section id="order"><div class="kicker"><span class="no">12</span>発注文テンプレート</div>
+<h2>そのまま使える発注文。</h2>
+<p class="lead">自分のAIエージェントに貼る。視点とゴールは自分のゲームに書き換えること。<span class="hl">要約せず、全文のまま渡す</span>（条件が抜けるのを防ぐ）。</p>
+<div class="glass-card mint"><div class="prompt" style="white-space:pre-wrap">
+工程をつないで進め、各工程の成果物をファイルで残してください。
+1. ブラウザでChatGPTを開き、ドット絵の背景チップと、全身・単色背景のドット絵キャラクター1体を生成して保存する。キャラはアニメ化しやすい単純なシルエットにすること。
+2. ブラウザでAutoSprite（autosprite.io）を開き、キャラをアップロードして walk → run → idle の順に生成する。無料枠は15クレジットしかないので、walkのプレビューで顔や脚が崩れていたら、残りを消費せず止めて報告すること。
+3. スプライトシートPNGとJSON、背景チップを使って、Godotでキー操作で動ける小さなゲームを作る。停止=idle、移動=walk、ダッシュ=run を切り替えること。スプライトはシートの余白ごと縮めると潰れるので、キャラが写っている範囲（Region）で切り出すこと。
+4. 最後にGodotのWindows向け書き出しで単体exeにする。
+5. 完成条件：exeと、キャラがアニメして動く画面のスクリーンショットを撮り、使った素材ファイルの一覧と一緒に報告すること。
+ログインや課金が必要な画面で止まったら、自分で判断せず私に回してください。</div></div>
+<div class="banner mint">ポイントは4つ：<span class="hl">工程・順序・止める条件・完成条件</span>。細部はAIエージェントに任せてよい。</div>
+<aside class="notes">発注文の型は第2回「いい感じにをなくす」、前回の「任せ方の型」と同じ。</aside>
+</section>
+
+<!-- 13 つまずき -->
+<section id="trouble"><div class="kicker"><span class="no">13</span>つまずき対処</div>
+<h2>つまずいたら、まず切り分ける。</h2>
+<table class="gt"><tr><th>症状</th><th>よくある原因</th><th>対処</th></tr>
+<tr><td>ログインで止まる</td><td class="wrap">MFA・本人確認は本人しかできない</td><td class="wrap">ログイン画面だけ人が担い、済んだらエージェントに引き継ぐ</td></tr>
+<tr><td>キャラが別人になる</td><td class="wrap">入力画像が複雑／揺れ物が多い</td><td class="wrap">クレジットを消費せず止める。画像を単純化して作り直す</td></tr>
+<tr><td>クレジット不足</td><td class="wrap">高額メニューや再生成の連打</td><td class="wrap">walk 1本で判定する配分に戻す</td></tr>
+<tr><td>絵がぼやける</td><td class="wrap">ドット絵のフィルタ設定</td><td class="wrap">Filter＝Nearest、Mipmaps＝Off で再インポート</td></tr>
+<tr><td>アニメが震える</td><td class="wrap">基準線・サイズの不一致</td><td class="wrap">JSONの columns / frameCount でグリッドを合わせ直す</td></tr></table>
+<div class="banner yel">「全部AIのせい」にしない。<span class="yl">素材・変換・取り込み・コード</span>のどこで壊れたかを言えることが、次世代の制作スキルの本体。</div>
+<aside class="notes">先生の検証では数値判定（身長のばらつき、足元のブレ）まで行っている。余裕のある学生にはその話も。</aside>
+</section>
+
+<!-- 14 提出 -->
+<section id="check"><div class="kicker"><span class="no">14</span>提出と今日のゴール</div>
+<h2>提出物（#4dプログラマへ）</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">📮 提出するもの</span><ul class="checks"><li>ゲーム画面のスクショ（アニメ中の1枚でよい）</li><li>使った素材：背景チップ／キャラ原画／スプライトシート</li><li>一言レポート：どの層の連携をどこで使ったか。止まった所と切り分け</li><li>可能なら：動くゲーム本体（exe または URL）</li></ul></div>
+<div class="glass-card pink"><span class="t">🏁 今日のゴール</span><ul class="checks"><li>連携の3層を自分の言葉で説明できる</li><li>ChatGPT → AutoSprite → ゲーム化を1回通した</li><li>クレジット配分と「止める判断」を含めて工程を設計できる</li></ul></div>
+</div>
+<p style="font-size:1.25em;font-family:'DotGothic16',sans-serif;color:var(--yellow);margin:.45em 0 0;text-align:center">道具は、つないで初めて力になる。<br>あなたの仕事は、工程を設計し、道具を選び、つなぎ目を検証すること。</p>
+<p class="small" style="text-align:center">次回：今日の素材フローを、11/12に作った自分のゲームに移植する。／ 参考：AutoSprite公式 autosprite.io、検証手順「AutoSprite無料枠・1キャラ検証手順」（2026-11-20）、前回資料「Museの使い方と特徴」「Godot見た目最大化」（2026-11-19）、元資料「次世代ゲーム制作手法 ─ ツール連携」（2026-11-23・3D）</p>
+<p class="backline"><a class="jump" href="#/flow">▶ 08 演習フロー</a>　<a class="jump" href="#/order">▶ 12 発注文</a></p>
+<aside class="notes">提出は前回課題と同形式（exe＋スクショ）を #4dプログラマへ。評価は完成度だけでなく連携の設計と切り分けの報告を見る。</aside>
+</section>
+
+<!-- オマケ表紙 -->
+<section id="bonus">
+<div class="kicker"><span class="no">🎁</span>オマケ ─ 使い道は、もっと広い</div>
+<h2>連携の実例は、教室の外でも回っている。</h2>
+<p class="lead">ここからは先生の制作現場の実例集。今日の演習と同じ「つなぐ」考え方で、<span class="hl">運用の自動化</span>から、<span class="ac">1本のゲームの全素材調達</span>までが回っている。</p>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">⏰ 運用</span><p>毎日のログインとクレジット回収を、<span class="hl">寝ている間に自動化</span>する。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-login">▶ ログイン自動化</a></p></div>
+<div class="glass-card pink"><span class="t">🐴 素材調達</span><p>3Dモデルも、音楽も、実況も、効果音も。<span class="ac">工程ごとにAIを使い分けて</span>1本のゲームに組み込む。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-horse">▶ 競馬ゲームの全体像</a></p></div>
+<div class="glass-card yel"><span class="t">🎬 役割の変化</span><p>AIエージェントは「プログラマの代わり」から、<span class="yl">「ディレクターの代わり」</span>になりつつある。</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-director">▶ ディレクター論</a></p></div>
+</div>
+<div class="banner mint">共通点は1つ：人間がやっているのは、全部<span class="hl">「決める・頼む・確かめる」</span>仕事だということ。</div>
+<aside class="notes">オマケ章の表紙。本編の提出案内の後に置く想定だが、時間が押したらログイン自動化とディレクター論の2枚だけでも価値がある。</aside>
+</section>
+
+<!-- オマケ1 ログイン自動化 -->
+<section id="bonus-login">
+<div class="kicker"><span class="no">🎁1</span>オマケ ─ 毎日の仕事を自動化する</div>
+<h2>毎日ログインして、クレジットをもらう。</h2>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">⏰ 毎朝、自動で回っている実例</span><ul>
+<li><b>Hi3D</b>：デイリーチェックインで <span class="hl">+10クレジット／日</span></li>
+<li><b>AutoSprite</b>：Daily Bonus で <span class="hl">+3クレジット／日</span>（今日使ったサービスの無料枠も、こうして貯まる）</li>
+<li><b>Meshy</b>：デイリーログインでクレジット付与（30日サイクルで日ごとに付与）</li></ul>
+<p style="margin-top:.3em">定期実行を予約しておけば、<span class="yl">寝ている間にもタスクが進む</span>。先生は毎朝、この回収をエージェントに任せている。</p></div>
+<div class="glass-card pink"><span class="t">🛡 任せ方のルールが大事</span><ul class="checks">
+<li>やること：ログイン、ボーナス受取、残高の確認だけ</li>
+<li>やらないこと：クレジットの消費・生成・購入は<span class="ac">しない</span></li>
+<li>報告：普段は静かに。ログインできなくなった時だけ知らせる</li></ul>
+<p style="margin-top:.3em">「何をさせないか」まで決めて渡すのが、運用を任せるコツ。</p></div>
+</div>
+<div class="banner yel">使い道は「作る」だけじゃない。<span class="yl">繰り返しの小さな仕事ほど、自動化が効く。</span></div>
+<aside class="notes">実例は2026-11-24から運用中。対象はHi3D／AutoSprite／Meshy。Tripoはデイリーボーナスが無いので対象外、という切り分けまで含めて実例。</aside>
+</section>
+
+<!-- オマケ2 競馬全体像 -->
+<section id="bonus-horse">
+<div class="kicker"><span class="no">🎁2</span>オマケ ─ 実例：スターホース牧場</div>
+<h2>1本のゲームの素材を、全部つないで調達した。</h2>
+<img class="heroimg" src="assets/horse_race.jpg" alt="スターホース牧場 レース画面（実スクショ）">
+<div class="grid3" style="margin-top:.5em">
+<div class="glass-card mint"><span class="t">🐴 3Dモデル</span><p>ChatGPT（画像）→ <span class="hl">Hi3D（3D化）</span> → ダウンロード → 軽量化・リグ → ゲームへ</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-hi3d">▶ Hi3Dの工程</a></p></div>
+<div class="glass-card pink"><span class="t">🎵 音楽</span><p><span class="ac">Gemini</span>でBGMを生成 → ゲームへ組み込み</p></div>
+<div class="glass-card yel"><span class="t">🎙 実況＋効果音</span><p><span class="yl">AI Studio</span>で実況29本、<span class="yl">ElevenLabs</span>で効果音15点 → レースに同期</p><p style="margin-top:.3em"><a class="jump" href="#/bonus-audio">▶ 音の工程</a></p></div>
+</div>
+<aside class="notes">競馬ゲーム『スターホース牧場』が題材。コードだけでなく、モデル・音楽・声・効果音まで連携で揃えた実例として見せる。</aside>
+</section>
+
+<!-- オマケ3 Hi3D -->
+<section id="bonus-hi3d">
+<div class="kicker"><span class="no">🎁3</span>オマケ ─ ChatGPT → Hi3D → 組み込み</div>
+<h2>絵から、走る馬になるまで。</h2>
+<div class="shots">
+<figure><img src="assets/horse_check.png" alt="Hi3Dで生成した競走馬モデルの確認画面（実キャプチャ）"><figcaption>① Hi3D生成モデル（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/horse_mount.png" alt="馬にジョッキーを騎乗させた確認画面（実キャプチャ）"><figcaption>② ジョッキーを騎乗させる（実キャプチャ）</figcaption></figure>
+<figure><img src="assets/horse_gallop_check.png" alt="ギャロップアニメーションの確認画面（実キャプチャ）"><figcaption>③ ギャロップ確認（実キャプチャ）</figcaption></figure>
+</div>
+<div class="timeline-bar">
+<div class="timeline-step"><span class="step-time">STEP 1</span><span class="step-name">ChatGPT<br>馬とジョッキーを別々に描く</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 2</span><span class="step-name">Hi3D<br>画像から3D化・GLBで保存</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 3</span><span class="step-name">加工<br>軽量化・リグ・ギャロップ</span></div><div class="timeline-arrow">➡</div>
+<div class="timeline-step"><span class="step-time">STEP 4</span><span class="step-name">組み込み<br>Godotのレースへ</span></div>
+</div>
+<div class="grid2">
+<div class="glass-card mint"><span class="t">工夫：別々に生成する</span><p>馬＋ジョッキーを1枚で描くと、Hi3Dで脚や体が<span class="hl">癒着しやすい</span>。だから馬（横向き・騎手なし）とジョッキー（Tポーズ）を分け、ゲーム側で騎乗させて組む。</p></div>
+<div class="glass-card yel"><span class="t">実測</span><p>取得したGLBは馬・ジョッキーとも<span class="yl">数十MB級・200万ポリゴン級</span>。そのままではゲームに入らないので、軽量化とリグ付けが「つなぎ目」の仕事になる。</p></div>
+</div>
+<aside class="notes">生成は2026-11-22。ダウンロードはログイン後の正規の経路で取得。Web版への組み込みでは旧モデルへのフォールバック問題も起きたので、実機確認までが工程、という話もできる。</aside>
+</section>
+
+<!-- オマケ4 音 -->
+<section id="bonus-audio">
+<div class="kicker"><span class="no">🎁4</span>オマケ ─ 音も、全部連携で作る</div>
+<h2>音楽・実況・効果音の3本立て。</h2>
+<div class="grid3">
+<div class="glass-card mint"><span class="t">🎵 Gemini → 音楽生成</span><p>Geminiの「音楽を作成」でシネマティックなインストBGMを生成。</p><ul><li>実例曲「BEYOND THE FIRST RIDGE」<span class="hl">2分59秒</span></li><li>静かな序奏 → 勇壮なクライマックス、ループ想定の構成を指定</li><li>生成曲はゲームのBGMとして組み込み（同じ工程で作ったSuno版ファンファーレも併用）</li></ul></div>
+<div class="glass-card pink"><span class="t">🎙 AI Studio → 実況生成</span><p>実況セリフ<span class="ac">29本</span>をTTSで生成し、レースに組み込んだ。</p><ul><li>声が毎回変わらないよう、<span class="ac">一度に生成して無音で分割</span>する方式</li><li>組み込み後は、発走・隊列・残り200m・着差など<span class="ac">レースの状態で再生を分岐</span></li><li>自動プレイ検証で、局面どおりに発火することを確認</li></ul></div>
+<div class="glass-card yel"><span class="t">🔊 ElevenLabs → SE生成</span><p>効果音は<span class="yl">全15点</span>を生成して組み込んだ。</p><ul><li>UI音8点：カーソル／決定／キャンセル／エラー／開閉／取得／レベルアップ 他</li><li>競馬SE7点：ゲート開放（5秒）／蹄音ループ（10秒）／大歓声（10秒）／拍手（12秒）／いななき／鞭／パドックの蹄音</li></ul></div>
+</div>
+<div class="banner pink">音は「1曲作って終わり」ではない。<span class="ac">局面に合わせて出し分ける仕組み</span>まで作るのが組み込みの仕事。</div>
+<aside class="notes">いずれも2026-11-24の実作業。実況の分割方式は千野の提案。SEは長さまで全点確認済み。BGMの組み込み版はファイルの所在の都合でSuno版を使った点は、聞かれたら正直に答える。</aside>
+</section>
+
+<!-- オマケ5 ディレクター -->
+<section id="bonus-director">
+<div class="kicker"><span class="no">🎁5</span>オマケ ─ 役割の変化</div>
+<h2>プログラマの代わりから、ディレクターの代わりへ。</h2>
+<img class="heroimg" style="height:23vh" src="assets/bonus_director.jpg" alt="人間のディレクターがAIスタッフを指揮するイメージ図（ChatGPT生成）">
+<table class="gt"><tr><th>段階</th><th>AIエージェントが担う仕事</th><th>人に残る仕事</th></tr>
+<tr><td>プログラマの代わり</td><td class="wrap">仕様どおりにコードを書く、直す、テストする</td><td class="wrap">仕様を決める、完成を判定する</td></tr>
+<tr><td>スタッフの代わり</td><td class="wrap">素材を作る（絵・3D・音楽・声・効果音）、ツールを操作する、毎日の運用を回す</td><td class="wrap">素材の良し悪しを選ぶ、工程を設計する</td></tr>
+<tr><td>ディレクターの代わり</td><td class="wrap">工程全体を計画し、道具と担当を割り振り、進捗を管理し、つなぎ目の不具合を切り分けて直す</td><td class="wrap"><span class="yl">何を作るか</span>を決める、<span class="yl">面白いかどうか</span>を判定する、公開の責任を持つ</td></tr></table>
+<div class="banner yel" style="font-size:1.12em">今日の実例が全部これを示している：人間がコードを書いた場面はほぼ無い。やったのは<span class="yl">企画・発注・選定・検証・判断</span> ─ ディレクターの仕事そのものだ。</div>
+<p class="lead" style="margin-top:.5em">だから学ぶべき力も変わる。コードを速く書く力より、<span class="hl">工程を設計する力、道具を選ぶ力、出てきたものを判定する力</span>。この授業で毎回やっている「発注文と完成条件」が、その訓練になっている。</p>
+<aside class="notes">締めの1枚。過度に断定せず「なりつつある」と言う。人の仕事が消えるのではなく、上流に移るという整理。学生の進路（プランナー・ディレクター志望）にも接続できる。</aside>
+</section>
+
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:true,showNotes:false,width:'100%',height:'100%',margin:0,minScale:1,maxScale:1,plugins:[RevealNotes]});
+function fitSlide(s){if(!s)return;s.style.fontSize='';let fs=parseFloat(getComputedStyle(s).fontSize);let n=0;while(s.scrollHeight>s.clientHeight+1&&fs>14&&n<40){fs*=0.96;s.style.fontSize=fs+'px';n++}}
+function fitAll(){document.querySelectorAll('.slides>section').forEach(fitSlide)}
+Reveal.on('ready',()=>{document.fonts.ready.then(fitAll)});Reveal.on('slidechanged',e=>fitSlide(e.currentSlide));
+const backStack=[];const backBtn=document.getElementById('backbtn');
+function slideName(sec){const k=sec&&sec.querySelector('.kicker');if(!k)return 'タイトル';const no=k.querySelector('.no');return (no?no.textContent+' ':'')+k.textContent.replace(no?no.textContent:'','').trim().split(' ─ ')[0].slice(0,18)}
+function updateBack(){if(!backStack.length){backBtn.hidden=true;return}const t=backStack[backStack.length-1];backBtn.hidden=false;backBtn.textContent='◀ 戻る（'+t.name+'）'+(backStack.length>1?' ×'+backStack.length:'')}
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#/"]');if(!a)return;const cur=Reveal.getCurrentSlide();if('#/'+cur.id===a.getAttribute('href'))return;backStack.push({idx:Reveal.getIndices(),name:slideName(cur)});if(backStack.length>20)backStack.shift();updateBack()},true);
+function goBack(){const t=backStack.pop();if(!t)return;Reveal.slide(t.idx.h,t.idx.v);updateBack()}
+backBtn.addEventListener('click',goBack);
+addEventListener('keydown',e=>{if(e.key==='Backspace'&&backStack.length){e.preventDefault();goBack()}});
+addEventListener('load',fitAll);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(fitAll,150)});
+</script>
+<script src="assets/relief-viewer.js?v=20261123-relief6"></script>
+</body>
+</html>
