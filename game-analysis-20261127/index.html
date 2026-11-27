@@ -1,0 +1,563 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ゲーム開発・卒業制作 分析ページ 2026-11-27</title>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>body{background:#05050a;color:#e8e8f0;font-family:'DotGothic16',sans-serif;margin:0;padding:24px}
+h1{font-size:30px;margin:0 0 6px} h2{font-size:26px;margin:34px 0 6px;color:#7dffce}
+.sub{color:#9a9ab0;font-size:14px;line-height:1.7}
+.nav{margin:14px 0;font-size:16px}.nav a{color:#7dffce;margin-right:18px}
+.sum{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.sumc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 18px;line-height:1.7;font-size:15px}
+.sumc b{color:#ffd76a;font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:16px}
+.tcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px}
+.thead{display:flex;gap:10px;align-items:baseline}.tid{color:#ff7de9;font-weight:bold;font-size:18px}
+.twork{font-size:17px}.tmem{color:#9a9ab0;font-size:13px;margin:2px 0 8px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.b{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:1px 10px;font-size:12.5px}
+.b.ok{border-color:#7dffce;color:#7dffce}.b.ng{border-color:#ff7d7d;color:#ff7d7d}.b.wn{border-color:#ffd76a;color:#ffd76a}
+.vid{position:relative;padding-top:56.25%;background:#000;border-radius:8px;overflow:hidden}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.novid{background:rgba(255,125,125,.08);border:1px dashed rgba(255,125,125,.5);border-radius:8px;padding:18px;text-align:center;color:#ff9d9d;font-size:14px}
+.tqual{font-size:14px;line-height:1.75;margin-top:10px}
+.tenv{font-size:12.5px;color:#9a9ab0;margin-top:4px}
+.tfut{font-size:14px;line-height:1.75;margin-top:8px;background:rgba(125,255,206,.06);border-radius:8px;padding:8px 12px}
+.tfut b{color:#ffd76a}.note{font-size:13px;color:#ffd76a;margin-top:8px;line-height:1.7}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;margin:14px 0;line-height:1.8;font-size:15px}.card b{color:#ffd76a}</style></head><body>
+<h1>ゲーム開発・卒業制作 分析ページ</h1>
+<div class="sub">2026-11-27（金）通し動画の提出日。提出された動画はそのままこのページで再生できます。<br>
+スコア・クオリティはソースコード実査ベース（面白さの評価ではありません）。4Dの完成度・リリース準備度は 11/20 時点の評価です。本日コミット数は 11/27 12:10 時点の実測です。</div>
+<div class="nav"><a href="#d2">2D（15チーム）</a><a href="#d3">3D（11チーム）</a><a href="#d4">4D 卒業制作（43名）</a></div>
+<div class="sum">
+<div class="sumc">2D 動画提出 <b>11 / 15</b><br>未提出：2D-01、2D-08、2D-12、2D-14</div>
+<div class="sumc">3D 動画提出 <b>8 / 11</b><br>未提出：3D-01、3D-04、3D-11</div>
+<div class="sumc">4D 動画提出 <b>10 / 43</b><br>提出は小田切・宮原・藤﨑・土屋・田母神・武川・五木田・小野・大庭・大澤</div>
+<div class="sumc">今日 push したチーム <b>20 / 26</b><br>最多は 3D-02 の36コミット</div>
+</div>
+<div class="card"><b>今日の見どころ</b><br>
+・3D-02 は今日36コミットで全チーム最多。動画も提出済みで、PR のマージまで進んだ<br>
+・3D-09 は昨日 Unity 6 で作り直した新リポジトリで、今日も4人全員がコミット。動画も提出済み<br>
+・2D-08 は毎日更新が続いているのに動画だけ未提出（昼に Unity 版の push あり）<br>
+・3D-05 の動画は Unity 版の録画。Godot 版と同じ作品の別エンジン版の可能性が高く、本線の確認中<br>
+・4D は宮原君が GitHub 停止中でも動画は提出。ベータ（12/8）まで11日</div>
+
+<h2 id="d2">2D ゲーム開発（15チーム）</h2>
+<div class="grid"><div class="tcard">
+<div class="thead"><span class="tid">2D-01</span><span class="twork">ローグライターズ「形容の塔」</span></div>
+<div class="tmem">一丸春翔・小林大叶・西悠寿・石𣘺陽光</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b">本日コミット 2</span><span class="b">スコア 5</span><span class="b">勢い ▶ 再開／最終push 11/25</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">置き場の枠だけある</div>
+<div class="tenv">―／素材なし</div>
+<div class="tfut">コンテストエントリーまで：× まだ遠い<br>次の一手：<b>プロジェクト本体を上げ直す</b></div>
+<div class="note">※ リポジトリは雛形のみ。動画もなし</div></div><div class="tcard">
+<div class="thead"><span class="tid">2D-02</span><span class="twork">ペンギンのせかい大冒険</span></div>
+<div class="tmem">内田浩明・髙𣘺勁吾・織本花音</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 9</span><span class="b">スコア 38</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1Ma4FyW_kwRoYkdAHdp3CEFlw5S0OAUz3/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">タイトル・クリア・セーブの形はある</div>
+<div class="tenv">単一HTML／素材ゼロ・全てコード描画</div>
+<div class="tfut">コンテストエントリーまで：× まだ遠い<br>次の一手：<b>ゲームオーバーとリトライを付ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-03</span><span class="twork">Nade♡Me（なでなでし隊）</span></div>
+<div class="tmem">香月仁之介・角啓史・植田毬鈴</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 2</span><span class="b">スコア 22</span><span class="b">勢い ■ 停止中／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1iW__kAOzEtoqFuvQegTftlg0NY26PJtz/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">キャラ絵18枚は作品の武器になる</div>
+<div class="tenv">単一HTML／キャラ絵PNG 18枚（自作）</div>
+<div class="tfut">コンテストエントリーまで：× まだ遠い<br>次の一手：<b>絵を使う最小の触れる場面を1つ作る</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-04</span><span class="twork">貯めて解放</span></div>
+<div class="tmem">中村奏太・比連﨑光希・日笠瑛翔・池永雄一</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 15</span><span class="b">スコア 45</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/14MDQ9W5cUgMxIAmjY1JmI08MpfQn-mWR/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">中身は演出込みで1作分ある</div>
+<div class="tenv">単一HTML×8本（分裂）／素材ゼロ</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>本線を1本に決め、残りはarchiveへ</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-05</span><span class="twork">見越し入道ホラー</span></div>
+<div class="tmem">舘﨑慶・早川優碧・藤澤洵太</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ng">本日コミット 0</span><span class="b">スコア 58</span><span class="b">勢い 🔥 加速／最終push 11/26</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1JDhPzMkmLpuN_8RMaRpphM1QWF7weaUy/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">シーン32個の探索構造に独自性。ただしホラーなのに無音</div>
+<div class="tenv">Unity 6／シーン32・マテリアル39／音声なし</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>BGM・環境音・SEを入れる。結果・リトライも</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-06</span><span class="twork">Steel Waltz</span></div>
+<div class="tmem">黒澤大輝・星野大洋・棕澤蒼太</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 7</span><span class="b">スコア 62</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1Y6-KbRwi7X2BoRmkgrqdbOqVwUEhoTpl/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">手触りの実装量は随一（シェイク・ヒットストップ・SE）＋音24本</div>
+<div class="tenv">Unity 6／WAV 24・PNG 37・Prefab 14</div>
+<div class="tfut">コンテストエントリーまで：◎ 射程圏内<br>次の一手：<b>勝敗の判定を作って1周の出口を通す</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-07</span><span class="twork">KINETIC BREAK</span></div>
+<div class="tmem">荒巻魁斗・根本己太朗・西澤怜</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 7</span><span class="b">スコア 55</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1_MsD_zygZOgUkL4nUx3SQta2OjlCziCW/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">Unity側の部品は作り込まれている</div>
+<div class="tenv">Unity（1シーン）＋HTML版が実体／素材ほぼ無し</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>今日、本線を決めて片方を凍結</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-08</span><span class="twork">ドパっとNOW</span></div>
+<div class="tmem">中山悠誠・清水妃沙希・及川修斗</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">本日コミット 0</span><span class="b">スコア 78</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">テストとデータ分離が両方ある唯一のチーム</div>
+<div class="tenv">単一HTML＋自動テスト／データはJSON管理／音はコード合成</div>
+<div class="tfut">コンテストエントリーまで：◎ 射程圏内<br>次の一手：<b>本線を1本に固定。見た目と音に厚みを足す</b></div>
+<div class="note">※ 動画は未提出。ただし12:21に Unity 版の push（キャラ画像・フォント）あり。作ってはいる</div></div><div class="tcard">
+<div class="thead"><span class="tid">2D-09</span><span class="twork">森さん家</span></div>
+<div class="tmem"></div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ng">本日コミット 0</span><span class="b">スコア 48</span><span class="b">勢い ● 継続／最終push 11/25</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1lwb2N4QS7ryWTgXQJKvRb8oUhJeCVJJt/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">ManbouGame.cs には中身がある</div>
+<div class="tenv">Unity＋HTML版2本＋別フォルダ（三重管理）</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>本線を1つに決め、他はarchiveへ</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-10</span><span class="twork">ころころ障害物レース</span></div>
+<div class="tmem">染谷蓮音・湯田悠翔・城之内橙樹</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 24</span><span class="b">スコア 65</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/12HPhMYv8aZZQ9dQ3A8ujnghTiJY2IKxU/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">見た目の豪華さは一番。ただし外部素材が大半</div>
+<div class="tenv">Unity 6／65MB・FBX 335・Prefab 87（外部パック多め）</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>ゲームオーバーを確定し、自作部分を切り分ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-11</span><span class="twork">深淵の錬金探査</span></div>
+<div class="tmem">鷲見隆斗・大井珀実・髙木義人・櫻井真音</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 12</span><span class="b">スコア 74</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1DHOnbayOOfLzqeI9MkhbXCYLaojGQ1SW/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">表示・データ・シミュレーションの分離が一番綺麗</div>
+<div class="tenv">React＋Vite＋Three.js／コード駆動・素材ほぼ無し</div>
+<div class="tfut">コンテストエントリーまで：◎ 射程圏内<br>次の一手：<b>操作説明を足す。自分の追加分を説明できるように</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-12</span><span class="twork">おぎゃあ</span></div>
+<div class="tmem">髙橋楓絆・茂木泰靖・吉田飛燕</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b">本日コミット 1</span><span class="b">スコア 55</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">技術構成は一番本格的</div>
+<div class="tenv">Unity 6／Cinemachine等・本格構成（取得不完全のため参考値）</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>自分たちの追加分の一覧を作る</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-13</span><span class="twork">人生建国記</span></div>
+<div class="tmem">川野晴菜・原田深月・宍倉佑都</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 9</span><span class="b">スコア 60</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1wL5HB6KhvYK_TYA0_X-ZAH5Yio0x0W3n/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">マネージャ分割とデータ量、演出（フェード等）は本物</div>
+<div class="tenv">Unity 6＋HTML版同居／PNG 39</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>TODO 71件の仕分けと本線の宣言</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-14</span><span class="twork">横スクSTG</span></div>
+<div class="tmem">ラモスソアレスジャイロ・藤井晴道・石橋美憂</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b">本日コミット 4</span><span class="b">スコア 52</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">1ファイルで全要素が揃っている</div>
+<div class="tenv">単一HTML／素材ゼロ</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>敵の種類と面の量を増やす</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">2D-15</span><span class="twork">PUZZLE SHIFT KNIGHT</span></div>
+<div class="tmem">芳村錬躍・前田清斗・菅谷悠大</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 10</span><span class="b">スコア 55</span><span class="b">勢い ● 継続／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1nrt5KEwfSCT53ByF5chg7pN45YZnxLQ3/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">1ファイルで全要素の形が揃っている</div>
+<div class="tenv">単一HTML／素材ゼロ</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>面数とギミックを増やす</b></div>
+</div></div>
+
+<h2 id="d3">3D ゲーム開発（11チーム）</h2>
+<div class="grid"><div class="tcard">
+<div class="thead"><span class="tid">3D-01</span><span class="twork">億万長者宇宙船</span></div>
+<div class="tmem">山川蓮司・吉原大貴・龍元大輝</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">本日コミット 0</span><span class="b">スコア 25</span><span class="b">勢い ■ 停止中／最終push 11/20</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">モデル53点の制作は本物。ただしゲーム本体がGitHubに上がっていない／見た目（11/19試遊会）は4（モデルの評価）</div>
+<div class="tenv">Blenderモデル制作（GLB 53点）／ゲーム本体はGitHub未反映</div>
+<div class="tfut">コンテストエントリーまで：× まだ遠い<br>次の一手：<b>ゲーム本体をpushする。UEで作っているなら、そのプロジェクトを上げる</b></div>
+<div class="note">※ ゲーム本体が GitHub に無く、今日の push も動画もなし</div></div><div class="tcard">
+<div class="thead"><span class="tid">3D-02</span><span class="twork">いつかの足場</span></div>
+<div class="tmem">三沢晃史・南蓮・花島響輝</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 36</span><span class="b">スコア 62</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1dPLCbsLWw_Yn7sRqAn8UGjoKKMOwAHqk/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">種を植えると時間経過で足場が育つ核の仕組みが実装済みで、ステージ量も多い。11/24にステージ追加、今日（11/26）も作業が続いている。欠けはスコア・タイマー・セーブ・音／見た目（11/19試遊会）は1。絵作りはこれから</div>
+<div class="tenv">Unity 6／シーン13・自作C# 863行（本体は develop ブランチ、GROWTH）</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>効果音を1つ入れる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-03</span><span class="twork">ReflectShadow</span></div>
+<div class="tmem">菊地柊・大田紘生・上田路美生</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 8</span><span class="b">スコア 60</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1iwDZBEOWgkzjjF0ZpMQNg4ZOc4oU77Ol/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">光の仕組みと管理系が揃う。欠けはゲームオーバーとスコア／見た目（11/19試遊会）は4。色混合が独自性</div>
+<div class="tenv">Unity 6／自作C# 1,906行</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>ゲームオーバー画面を付ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-04</span><span class="twork">G「重力レース」</span></div>
+<div class="tmem">遠藤誠也・塙瑛太・土田和輝・工藤颯太</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b">本日コミット 3</span><span class="b">スコア 45</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">移動まわりはあるが要素3/9で、1周がまだ遠い／見た目（11/19試遊会）は1で最低。絵作りが課題</div>
+<div class="tenv">Unity 6／C# 1,488行・音1点</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>クリア判定を付ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-05</span><span class="twork">単語ノベル</span></div>
+<div class="tmem">菅野凜・永野拳龍・西山幸太朗</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ng">本日コミット 0</span><span class="b">スコア 58</span><span class="b">勢い ■ 停止中／最終push 11/20</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/184fD6co9CoykMdeg49cEvTAZpSnyAIEA/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">テスト13本はクラス唯一の本格派。ただし11/20から停止し、今日の授業でもpushがなかった／見た目（11/19試遊会）は3</div>
+<div class="tenv">Godot／GDScript 1,985行・テスト13本（置き場に不要ファイル混入）</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>まずpushして再開。次にリトライを付ける</b></div>
+<div class="note">※ 提出された動画は Unity 版（renai_proto2_unity）の録画。Godot 版『単語ノベル』のプロジェクト名も Renai Proto 2 で、同じ作品の別エンジン版の可能性が高い。本線は要確認</div></div><div class="tcard">
+<div class="thead"><span class="tid">3D-06</span><span class="twork">GolfBlackhole（VAMOS）</span></div>
+<div class="tmem">尾﨑隼人・齋藤結翔・松井杏介</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 7</span><span class="b">スコア 55</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1qZEezPnjw1lklMpq9ixwCrc3HXgf4BY4/preview" loading="lazy" allowfullscreen></iframe></div><div class="vid"><iframe src="https://drive.google.com/file/d/15BO4x-jwTwSWyO8KL_HsZrt9H-d5BvOe/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">HTML 1本で要素6/9まで来た／見た目（11/19試遊会）は3。音はコード合成で実装あり</div>
+<div class="tenv">単一HTML 1,250行</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>ゲームオーバーを付ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-07</span><span class="twork">Traitor Cooking</span></div>
+<div class="tmem">深栖巧翔・髙品裕紀・人見優季</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 5</span><span class="b">スコア 55</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/14-i-wXb0KP8oupyMi927Dxqt2Cb_8GO8/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">シーン32と料理の仕組みはある。結果の閉じ方が無い／見た目（11/19試遊会）は3</div>
+<div class="tenv">Unity 6／シーン32・C# 1,347行</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>結果画面を付けて1周を閉じる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-08</span><span class="twork">SHOGI BLINK</span></div>
+<div class="tmem">五十嵐久遠・飛留間一吹・渡邉岳斗</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 21</span><span class="b">スコア 72</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1i3Ce9bcSsbIHx0RnvjfZBTTUKjtthbUj/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">要素8/9・自作コード最大級で、一番完成に近い。11/24にタイトル画面とエンディングを追加し、新リポジトリ（act_shogi）で再始動した／見た目（11/19試遊会）は4</div>
+<div class="tenv">HTML/JS 3,789行・モジュール分割（Tauriでexe化準備中）／リポジトリは act_shogi に変更</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>スコア表示で要素9/9にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-09</span><span class="twork">MATCH♡UNKNOWN</span></div>
+<div class="tmem">渡部壱心・井出成洋・テチュンウィ・粂内僚太</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 10</span><span class="b">スコア 55</span><span class="b">勢い ▶ 再開／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1f5TuFCEpE4DORrlZnRoQ8M9LnQldj12B/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">11/26に Unity 6 で作り直して新リポジトリで再始動。キャラエディタとアート取り込みまで入り、要素は早くも8/9（欠けはゲームオーバー）。今日（11/27）も授業中にメンバーそれぞれのブランチが動いている／見た目（11/19試遊会）は12でクラス最高。カメラ演出の磨きが効いた</div>
+<div class="tenv">Unity 6／C# 4,069行・シーン2（11/26に新リポジトリ MatchUnknown へ移行し作り直し）</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>ゲームオーバー（勝敗の締め）を付ける</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-10</span><span class="twork">Smashbump</span></div>
+<div class="tmem">小堀壯太・井澤紀玖・齊藤滉人</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b">本日コミット 2</span><span class="b">スコア 60</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1B1FSBaS_TjRK0WAgM2Xn35f9EMy89Qjm/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">要素は9/9で全部入り（スコア・タイマー・セーブ・音まで）。FEVERとジャストカウンターの核も実装済みで、v14→v25の小さい改良サイクルが今日（11/26）も6件回っている。弱みは規模の小ささ（単一ファイル738行）／見た目（11/19試遊会）は3</div>
+<div class="tenv">単一HTML 738行（94KB）／バージョン刻みの小コミット運用（v14→v25）</div>
+<div class="tfut">コンテストエントリーまで：○ 手が届く<br>次の一手：<b>敵かスキルの種類を1つ増やす</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">3D-11</span><span class="twork">ELDEN MINI</span></div>
+<div class="tmem">岩村秋音・能崎慎吾・後藤匡哉</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b">本日コミット 5</span><span class="b">スコア 42</span><span class="b">勢い 🔥 加速／最終push 11/27</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">素材とシーンは大量だが、ゲームの要素は1/9／見た目（11/19試遊会）は5で2位。ただし素材の力</div>
+<div class="tenv">Unity 6／FBX 180・シーン37（素材中心）</div>
+<div class="tfut">コンテストエントリーまで：△ 土台あり<br>次の一手：<b>勝敗のルールを1つ入れる</b></div>
+</div></div>
+
+<h2 id="d4">4D 卒業制作（43名）</h2>
+<div class="sub">完成度とリリース準備度は 11/20 時点。動画は今日提出された分だけ埋め込んであります。</div>
+<div class="grid"><div class="tcard">
+<div class="thead"><span class="tid">4D-01</span><span class="twork">ドパミンダンジョン</span></div>
+<div class="tmem">石川蒼太君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">危険</span><span class="b">完成度 35</span><span class="b">リリース準備度 30</span><span class="b">Steam</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">ボスまで実装。アイテム/バランス未。10/20展示に体験版も提出</div>
+<div class="tfut">次の一手：<b>Steam開発者登録と$100支払いを今日中に済ませ、公開日を逆算し直す。11/30目標は手続き上成立しない</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-02</span><span class="twork">魔物ごはんRPG</span></div>
+<div class="tmem">磯江祐太朗君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">危険</span><span class="b">完成度 3</span><span class="b">リリース準備度 15</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">プロトタイプはAIイメージのみ、実装ほぼなし。手続き「何も進んでない」</div>
+<div class="tfut">次の一手：<b>Unity移行を今日中に終わらせ、最小ループ（歩く・食べる）を通す。範囲は半分に削る</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-03</span><span class="twork">不明</span></div>
+<div class="tmem">伊藤優斗君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-04</span><span class="twork">割りばしスワイプ(仮)</span></div>
+<div class="tmem">伊橋愛翔君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 30</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">本編・設定・ガチャ実装済み。企画書は画像のみ、計画なし</div>
+<div class="tfut">次の一手：<b>リリース計画を提出し、ルートを確定する。次にミニゲームの枠ずれを直す</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-05</span><span class="twork">雨の夜道シミュレーター</span></div>
+<div class="tmem">今泉香乃さん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 10</span><span class="b">リリース準備度 10</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">歩行と視点のみ。計画はファイル提出のみで内容未確認</div>
+<div class="tfut">次の一手：<b>計画（ルート・日程）を文章で出し直す。素材の仮置きを本素材に替える</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-06</span><span class="twork">鏡の向こうの君</span></div>
+<div class="tmem">岩澤ゆかりさん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 15</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">HTML簡易版で分岐・調査・簡易ストーリー。Unity動作は未確認</div>
+<div class="tfut">次の一手：<b>Unity版を通しで動かして確認し、計画とルートを提出する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-07</span><span class="twork">マイポーカー</span></div>
+<div class="tmem">江澤弥希君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 20</span><span class="b">リリース準備度 20</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">ポーカー基本動作のみ。登録・費用はすべて「まだしていない」</div>
+<div class="tfut">次の一手：<b>Google Play登録と$25支払いを先に済ませる。独自役はその後</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-08</span><span class="twork">Slime Noob Swing</span></div>
+<div class="tmem">大澤卓巳君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 15</span><span class="b">リリース準備度 30</span><span class="b">Steam</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1NN2hCcXnKswXhLY3l-WqsCtF1PxfXvYs/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">ゴール判定のみ。説明・音・終了処理が未実装</div>
+<div class="tfut">次の一手：<b>Steam登録を進めながら、終了方法とチュートリアルを入れて「通し」を作る</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-09</span><span class="twork">RE:TRACE</span></div>
+<div class="tmem">大庭玲夢君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 40</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1FDFFujBSP-e6wYscnizT36IiWnpjG0SX/preview" loading="lazy" allowfullscreen></iframe></div><div class="vid"><iframe src="https://drive.google.com/file/d/1jJOY1Cx84-Ga3xfM_kcZJzCA-H5ImF-m/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">記録・再生ギミック、昇降機、クリア、メニューまで実装。計画だけがない</div>
+<div class="tfut">次の一手：<b>完成度はクラス2位。今すぐ計画とリリース先を提出し、手続きを始める</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-10</span><span class="twork">おしぼりマスター(仮)</span></div>
+<div class="tmem">小田切遙陽君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 28</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1z37cyRdSq2BP44fEmSJuseHp4WhJgVcB/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">温度調整・提供・スコア・タイム・リトライ実装済み</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。タイトル画面と見た目をベータ仕様にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-11</span><span class="twork">PIZZA GO BRRR(仮)</span></div>
+<div class="tmem">小野胡桃さん</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 30</span><span class="b">リリース準備度 35</span><span class="b">Steam</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1oeo4QZ_yEDZ828roPdUoJSJohp6N4qRW/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">制作・金額管理・2種の解放/強化。ラグとバグあり。本人の日程は全体にタイト</div>
+<div class="tfut">次の一手：<b>Steamの本人確認と支払いを前倒しする。他ピザの強化より先に通しの安定化</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-12</span><span class="twork">世界一弱いヒーロー</span></div>
+<div class="tmem">柏木春人君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 22</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">プレイヤー制御と敵判定・行動は実装。罠は未実装</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。ジャンプと敵行動の不具合を先に潰す</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-13</span><span class="twork">不明</span></div>
+<div class="tmem">門田拓己君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-14</span><span class="twork">横スクロールアクション(仮称)</span></div>
+<div class="tmem">菊地巧真君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 22</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">コースギミックは実装済み。デザイン関連が未</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。デザイン関連をベータ範囲に確定する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-15</span><span class="twork">おせんべいクリッカー</span></div>
+<div class="tmem">黒岩快那太君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 18</span><span class="b">リリース準備度 15</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">Webクリッカー、ラッシュ機能あり。本人記載の不安は「熱意」、準備はなし</div>
+<div class="tfut">次の一手：<b>週2時間では1/1に届かない。作業時間を確保し、Google Play登録を先に済ませる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-16</span><span class="twork">神経衰弱バトル(仮)</span></div>
+<div class="tmem">小出涼帆さん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 26</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">全体操作と勝敗判定は実装。スマホ対応とイラスト全般が未</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する（スマホならGoogle Play）。イラストは最小限に絞る</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-17</span><span class="twork">なんでも修理や</span></div>
+<div class="tmem">向後亮佑君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 10</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">スナップ配置のみ。デザイン・掃除・UI・購入・タスク・タイトルが未</div>
+<div class="tfut">次の一手：<b>未実装が多すぎる。ベータ範囲を「配置と掃除」に絞り、計画を提出する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-18</span><span class="twork">不明</span></div>
+<div class="tmem">小澤祐仁君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-19</span><span class="twork">不明</span></div>
+<div class="tmem">小森皓太君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-20</span><span class="twork">ElementShift(仮)</span></div>
+<div class="tmem">五木田望君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 15</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1dE6DguQX1KStCAp3ridj1VWryDrEF-Aw/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">大まかな内容は動作。キャラクターアニメーション未</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。床すり抜けなど進行系のバグを最優先で直す</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-21</span><span class="twork">不明</span></div>
+<div class="tmem">櫻井優成君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-22</span><span class="twork">不明</span></div>
+<div class="tmem">笹尾健斗君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-23</span><span class="twork">Rubik&#x27;s</span></div>
+<div class="tmem">菅真栄君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 10</span><span class="b">リリース準備度 15</span><span class="b">Steam</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">ステージ基盤のみ。本人「遊べる状態まで行ってない」。10/20にも卒業制作品として提出</div>
+<div class="tfut">次の一手：<b>計画を提出しSteam手続きを始める。列回転を通して「遊べる」状態にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-24</span><span class="twork">マイティー・ショー</span></div>
+<div class="tmem">鈴木翔太君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ok">見守り</span><span class="b">完成度 32</span><span class="b">リリース準備度 55</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">移動・攻撃・謎解き一連を実装。アカウント登録済み・費用準備済み</div>
+<div class="tfut">次の一手：<b>手続きは先行している。エフェクト・UI・モデルをベータ範囲に絞って仕上げる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-25</span><span class="twork">不明</span></div>
+<div class="tmem">鈴木里玖斗君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">卒業制作の提出記録なし（#4dへの投稿はルーレット共有のみ）</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-26</span><span class="twork">不明</span></div>
+<div class="tmem">髙橋汰進君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-27</span><span class="twork">星空のキャンパス</span></div>
+<div class="tmem">髙橋輝晃君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">危険</span><span class="b">完成度 18</span><span class="b">リリース準備度 30</span><span class="b">東京ゲームダンジョン</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">移動・雑魚戦闘・ステータス実装。ボス・施設・演出など未実装が多い。申込準備は未記入だった</div>
+<div class="tfut">次の一手：<b>今日20:00の申込がすべて。Discord参加・申込・支払いを今日中に完了させる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-28</span><span class="twork">らくがきベーゴマバトル</span></div>
+<div class="tmem">武川隆斗君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 20</span><span class="b">リリース準備度 20</span><span class="b">Google Play</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1xJ7GtwvAowuzdnWVFOZKK_1hZFxkBMrg/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">発射と勝敗は動作。費用は未用意、手続きは未把握</div>
+<div class="tfut">次の一手：<b>$25の準備とGoogle Play登録を先に済ませる。「描いて回す」はベータ後でもよいと判断する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-29</span><span class="twork">不明（READMEのみ）</span></div>
+<div class="tmem">田母神唯人君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ng">危険</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/13m3F0CuFDZ_1LXnT0C406XO9tF7eyvoi/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">企画書はREADMEファイルのみ。以後、本体の証拠が一切ない</div>
+<div class="tfut">次の一手：<b>遊べる本体の現物を今日中に見せること。無ければ、作り直しの範囲を今日決める</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-30</span><span class="twork">GearAction2D</span></div>
+<div class="tmem">土屋覚君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ok">見守り</span><span class="b">完成度 25</span><span class="b">リリース準備度 50</span><span class="b">東京ゲームダンジョン</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1fuRRymeqzBYpYTDWwRzCwifX5vPzst36/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">11/17残作業の提出は全員で唯一。基本システムと攻撃（仮）は実装、素材・ステージ・敵は未</div>
+<div class="tfut">次の一手：<b>今日20:00のダンジョン申込を完了させる。次に1面を通しで遊べる状態にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-31</span><span class="twork">PokerRogue</span></div>
+<div class="tmem">鶴戸佑君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 24</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">ポーカー＋簡単なローグライク。江澤のマイポーカーとは別作品</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。文字化けを直し、デザインは最小限にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-32</span><span class="twork">にじいろ調合室と空白のレシピ</span></div>
+<div class="tmem">新山青菜さん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 20</span><span class="b">リリース準備度 15</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">手帳と調合は実装。週8時間。計画の手続き欄は未記入</div>
+<div class="tfut">次の一手：<b>計画の目標日と手続き欄を埋めて出し直す。謎解きを通しに入れる</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-33</span><span class="twork">DreamBoutique</span></div>
+<div class="tmem">新田萌夏子さん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 12</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">基本動作のみ。グラフィック未</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。通り抜けを直し、グラフィックは最小限にする</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-34</span><span class="twork">（仮・無題）</span></div>
+<div class="tmem">藤﨑衣波さん</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b ng">危険</span><span class="b">完成度 4</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1cgVD0ipYS4CyjtRnVNT7HOc5-A9ngVz8/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">前後左右とジャンプだけ。3Dモデル未、起動方法の記載も「無し」</div>
+<div class="tfut">次の一手：<b>移動とジャンプだけではベータにならない。敵かゴールの入った最小ステージを通す</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-35</span><span class="twork">おやすみ</span></div>
+<div class="tmem">松澤碧依さん</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 8</span><span class="b">リリース準備度 20</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">ブラウザ簡易版のみでUnity動作は未確認。本人「プログラム全般」が不安</div>
+<div class="tfut">次の一手：<b>Unityで動く版を先に作る（ブラウザ版は参考まで）。作品名を統一する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-36</span><span class="twork">NEON-SYNC</span></div>
+<div class="tmem">三橋都和君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">危険</span><span class="b">完成度 5</span><span class="b">リリース準備度 10</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">本体は容量不足で未提出＝提出条件未達。スコア機能も未実装</div>
+<div class="tfut">次の一手：<b>遊べる本体を提出することが全ての前提。PC容量の問題を今日中に解決する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-37</span><span class="twork">アビスラッシュ</span></div>
+<div class="tmem">宮原翔音君</div>
+<div class="badges"><span class="b ok">動画 提出済み</span><span class="b wn">注意</span><span class="b">完成度 45</span><span class="b">リリース準備度 35</span><span class="b">Steam</span></div>
+<div class="vid"><iframe src="https://drive.google.com/file/d/1js59-UjKHK6ZPcJwaoNVDlDiH-OphWs2/preview" loading="lazy" allowfullscreen></iframe></div>
+<div class="tqual">本人申告「ほぼ実装済み・未実装なし・不具合なし」。逆に登録料の支払いを1/12に置く計画で公開がタイト</div>
+<div class="tfut">次の一手：<b>本体は完成域。Steamの支払いとComing Soon公開を今日、前倒しで済ませる</b></div>
+<div class="note">※ GitHub は止まったままだが、動画は提出されている</div></div><div class="tcard">
+<div class="thead"><span class="tid">4D-38</span><span class="twork">不明</span></div>
+<div class="tmem">村石翼君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">未報告</span><span class="b">完成度 0</span><span class="b">リリース準備度 0</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">企画書・プロトタイプ・計画すべて提出記録なし</div>
+<div class="tfut">次の一手：<b>未報告。今日中に作品名・現在地・リリース先を必ず報告する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-39</span><span class="twork">簡単将棋</span></div>
+<div class="tmem">村石裕音君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 25</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">将棋AIは動作。リリース先は企画時点で「お金の問題で検討中」のまま</div>
+<div class="tfut">次の一手：<b>リリース先を今日決める（費用が理由なら東京ゲームダンジョンも選択肢）。計画を提出する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-40</span><span class="twork">Risk-Runner</span></div>
+<div class="tmem">茂木恵大君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b ng">危険</span><span class="b">完成度 3</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">本人申告「ほぼなし／そもそもできていない」。Webテスト版のみ</div>
+<div class="tfut">次の一手：<b>実装はほぼゼロ。今日中に「進める最小ループ」を通し、やる範囲を宣言する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-41</span><span class="twork">異界の校舎(仮)</span></div>
+<div class="tmem">本吉晴輝君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 18</span><span class="b">リリース準備度 25</span><span class="b">Google Play</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">校舎と敵は仮モデル。手続きはすべて「確認中」</div>
+<div class="tfut">次の一手：<b>本モデルへの差し替えと当たり判定を通し、Google Play登録を始める</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-42</span><span class="twork">灰の闘技場</span></div>
+<div class="tmem">物見優羽君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 24</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">敵・回避・攻撃・ウェーブ制は実装。自機とアニメーション未、動作が重い</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。自機とアニメーションを入れて軽量化する</b></div>
+</div><div class="tcard">
+<div class="thead"><span class="tid">4D-43</span><span class="twork">EGG CLICKER</span></div>
+<div class="tmem">山本時雨君</div>
+<div class="badges"><span class="b ng">動画 未提出</span><span class="b wn">注意</span><span class="b">完成度 15</span><span class="b">リリース準備度 5</span><span class="b">未定</span></div>
+<div class="novid">動画はまだ提出されていません</div>
+<div class="tqual">クリック・仮UI・アップグレード雛形のみ</div>
+<div class="tfut">次の一手：<b>計画とルートを提出する。バリエーションより先に、通しと保存を入れる</b></div>
+</div></div>
+</body></html>
