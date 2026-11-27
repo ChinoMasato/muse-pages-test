@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub リポジトリ登録アプリ｜使い方</title>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05050a;--mint:#00ffcc;--pink:#ff00ff;--yel:#ffea00;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.16);--txt:#eef}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;line-height:1.7}
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 60px}
+h1{font-family:'DotGothic16',sans-serif;font-size:1.9em;margin:.15em 0;color:#fff}
+h2{font-family:'DotGothic16',sans-serif;margin:1.5em 0 .5em;font-size:1.3em;color:var(--mint)}
+.lead{font-size:1.05em;color:#dfe}
+.step{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--mint);border-radius:12px;padding:12px 16px;margin:10px 0}
+.step b.t{font-family:'DotGothic16',sans-serif;font-size:1.1em;color:#fff}
+.step .n{display:inline-block;background:var(--mint);color:#003;font-family:'DotGothic16',sans-serif;border-radius:50%;width:1.6em;height:1.6em;text-align:center;line-height:1.6em;margin-right:.5em}
+.warn{border-left-color:var(--yel)} .warn b.t{color:var(--yel)}
+.stop{border-left-color:var(--pink)} .stop b.t{color:#f9f}
+code{background:rgba(0,255,204,.12);padding:.05em .35em;border-radius:5px;font-family:Consolas,monospace}
+.mock{background:#f0f0f0;color:#222;border-radius:10px;padding:0;overflow:hidden;margin:14px 0;border:1px solid #999;max-width:640px}
+.mock .bar{background:#2b579a;color:#fff;padding:6px 12px;font-size:.9em}
+.mock .body{padding:12px 14px;font-size:.88em}
+.mock .fld{border:1px solid #aaa;background:#fff;padding:3px 8px;margin:2px 0 8px;color:#555}
+.mock .btn{background:#2b579a;color:#fff;text-align:center;padding:9px;border-radius:6px;font-weight:700;margin:8px 0}
+.mock .link{color:#0066cc;text-decoration:underline;font-size:.92em}
+.mock .log{border:1px solid #aaa;background:#fff;height:64px;padding:4px 8px;color:#666;font-family:Consolas,monospace;font-size:.85em}
+.mock label{font-weight:700}
+ul{margin:.3em 0 .3em 1.2em;padding:0} li{margin:.25em 0}
+.note{color:#aab;font-size:.88em}
+</style></head><body><div class="wrap">
+<p style="font-family:'DotGothic16',sans-serif;color:var(--mint);letter-spacing:.1em">卒業制作・ゲーム開発 共通ツール</p>
+<h1>GitHub リポジトリ登録アプリ｜使い方</h1>
+<p class="lead">このアプリは、<b>自分のゲームをGitHubに上げる作業を、ボタン1つで終わらせる</b>ためのものです。リポジトリの作成、登録（init）、コミット、push、pullまで全部自動でやります。コマンドを打つ必要はありません。</p>
+
+<h2>画面はこんな形です</h2>
+<div class="mock"><div class="bar">GitHub リポジトリ登録アプリ</div><div class="body">
+<label>1. プロジェクトのフォルダ</label><div class="fld">D:\自分のゲームのフォルダ　［選ぶ...］</div>
+<label>☑ Unityプロジェクト（Libraryなどを自動で除外する）</label><br>
+<label>2. リポジトリ名（英数字）</label><div class="fld">my-game-project　　☑ GitHubに自動で作る　☑ 非公開にする</div>
+<label>3. リポジトリURL（自動で作る場合は空でOK）</label><div class="fld">（空でOK）</div>
+<label>4. コミットメッセージ（空なら日時で自動入力）</label><div class="fld">（空でOK）</div>
+<div class="btn">commit して GitHub へ push</div>
+<div class="link">GitHubのページを開く: https://github.com/あなた/リポジトリ名</div>
+<div class="log">=== 開始 ...<br>=== 成功: GitHubに上がりました。</div>
+</div></div>
+
+<h2>初回の手順（4ステップ）</h2>
+<div class="step"><b class="t"><span class="n">1</span>アプリを開く</b>
+<p>配られた <code>GitPushApp.exe</code> をダブルクリックします。青い警告画面（「WindowsによってPCが保護されました」）が出たら、<b>「詳細情報」→「実行」</b>の順に押してください。これは配布元が未登録のアプリを開くときの、Windowsの通常の確認です。</p></div>
+<div class="step"><b class="t"><span class="n">2</span>フォルダを選ぶ</b>
+<p>「選ぶ...」から、<b>自分のゲームのプロジェクトフォルダ</b>を選んでください（Unityなら、Assetsフォルダが入っている場所です）。フォルダは記憶されるので、次回からは選ぶ必要がありません。</p></div>
+<div class="step"><b class="t"><span class="n">3</span>リポジトリ名を確認する</b>
+<p>名前はフォルダ名から自動で入ります。<b>フォルダ名が日本語だと名前が空になることがある</b>ので、その場合は英数字で入れてください（例：<code>mamono-gourmet-rpg</code>）。「GitHubに自動で作る」と「非公開にする」のチェックは、入れたままでOKです。</p></div>
+<div class="step"><b class="t"><span class="n">4</span>ボタンを押す</b>
+<p>「commit して GitHub へ push」を押します。途中でGitHubのサインイン画面が出たら、<b>自分のGitHubアカウント</b>でサインインしてください。終わったら、青いリンク「GitHubのページを開く」から、自分のページにファイルが上がっていることを確認してください。</p>
+<p>リポジトリは非公開で作られ、先生（chinomasato）が自動で招待されます。先生からは見えるので、そのまま提出になります。</p></div>
+
+<h2>2回目以降（毎日のpush）</h2>
+<div class="step"><b class="t">ボタンを押すだけ</b>
+<p>アプリを開いて、ボタンを1回押すだけです。フォルダは記憶されています。流れは <b>pull（GitHub側の変更を取り込む）→ commit → push</b> で、コミットメッセージも空欄なら日時で自動入力されます。自宅と学校の両方で作業している人は、先に取り込んでから上がるので、ぶつかりにくくなります。</p></div>
+
+<h2>止まったときは</h2>
+<div class="step warn"><b class="t">「100MBを超えるファイル」で止まった</b>
+<p>GitHubには1ファイル100MBまでしか上げられません。表示されたファイルを確認してください。Unityの「Library」フォルダのファイルなら、「Unityプロジェクト」のチェックが入っているか確認してください。大きな動画や音源ファイルは、プロジェクトの外に出してから、もう一度押してください。</p></div>
+<div class="step warn"><b class="t">ロックファイルの確認が出た</b>
+<p>Museなど、別のプログラムがgitを使っているときに残ることがあります。そのプログラムを使い終わっているなら「はい」（削除して続行）で大丈夫です。使っている最中なら「いいえ」を選んで、終わってからもう一度ボタンを押してください。</p></div>
+<div class="step stop"><b class="t">「競合」で止まった／よく分からないエラーが出た</b>
+<p>自分のコミットは消えていません（安全な状態で止まっています）。アプリの下のほうに出ている<b>ログの文面を、そのまま先生に見せてください</b>。自分で直そうとしてファイルを消したりしないでください。</p></div>
+
+<h2>知っておくこと</h2>
+<ul>
+<li>名前とメール（コミット用）は、GitHubアカウントから自動で設定されます。メールにはGitHubの匿名アドレスが使われるので、本物のメールアドレスが公開されることはありません。</li>
+<li>このアプリがパスワードを聞くことはありません。サインインは、GitHub公式の画面でのみ行ってください。</li>
+<li>「Library」などの自動生成フォルダは、最初から上がらない設定になります。消してもUnityが作り直すので心配いりません。</li>
+</ul>
+<p class="note">分からないことがあれば、ログの文面と一緒に千野まで連絡してください。</p>
+</div></body></html>
